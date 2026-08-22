@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { buildScenario } from "../evals/scenarios.mjs";
 import { referenceSourceDirection } from "../evals/reference-signals.mjs";
-import { scorePackets } from "../evals/scorers.mjs";
+import { blindReviewMarkdown, scorePackets } from "../evals/scorers.mjs";
 
 const repositoryPack = {
   summary: "owner/repo is a public repository.",
@@ -53,4 +53,10 @@ test("eval scorer reports grounding and diversity metrics", () => {
   assert.equal(metrics.passRate, 1);
   assert.equal(metrics.distinctAngleRate, 1);
   assert.equal(metrics.sourcedLineRate, 1);
+});
+
+test("blind review hides provider, model, and source mix labels", () => {
+  const markdown = blindReviewMarkdown([{ runId: "repo_only__gpt", provider: "gpt", model: "gpt-5.6", packets: [{ title: "Draft", lines: [{ text: "A joke" }] }] }]);
+  assert.match(markdown, /Candidate A/);
+  assert.doesNotMatch(markdown, /gpt|repo_only/i);
 });

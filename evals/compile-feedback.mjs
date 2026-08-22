@@ -15,9 +15,15 @@ const runs = await Promise.all(entries.filter((entry) => entry.isDirectory() && 
   return { id: entry.name, results, reviews: parseCsv(reviewText) };
 }));
 const compiled = compileFeedback(runs);
-const summary = { generatedAt: new Date().toISOString(), leaderboard: compiled.leaderboard, records: compiled.records };
+const summary = {
+  generatedAt: new Date().toISOString(),
+  leaderboard: compiled.leaderboard,
+  records: compiled.records,
+  pairwiseComparisons: compiled.comparisons.length,
+  pairwiseStandings: compiled.standings,
+};
 await Promise.all([
   writeFile(path.join(root, "leaderboard.json"), `${JSON.stringify(summary, null, 2)}\n`),
   writeFile(path.join(root, "preference-pairs.jsonl"), compiled.pairs.map((pair) => JSON.stringify(pair)).join("\n") + (compiled.pairs.length ? "\n" : "")),
 ]);
-console.log(JSON.stringify({ reviewedRecords: compiled.records.length, preferencePairs: compiled.pairs.length, leaderboard: compiled.leaderboard }, null, 2));
+console.log(JSON.stringify({ reviewedRecords: compiled.records.length, preferencePairs: compiled.pairs.length, pairwiseComparisons: compiled.comparisons.length, leaderboard: compiled.leaderboard }, null, 2));

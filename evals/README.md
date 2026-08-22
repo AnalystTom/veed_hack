@@ -48,4 +48,8 @@ Use `--reference-strength light` (default, three evenly sampled sources), `mediu
 
 ## Human comedy review
 
-The auto-scores measure mechanical quality, not whether a joke is funny. Give the reviewer only `blind-review.md` first, then record outcomes in a copy of `review-template.csv` using `keep`, `revise`, or `reject`, a rank, and one concrete reason. Reveal `results.json` after the ranking to compare provider, source mix, duration, and grounding failures. This is the seed dataset for the future preference ranker.
+The auto-scores measure mechanical quality, not whether a joke is funny. Give the reviewer only `blind-review.md` first: it labels outputs `Candidate A`, `Candidate B`, and so on, with provider, model, and source-mix names removed. Record outcomes in the adjacent `review.csv` using `candidate-a`, `candidate-b`, and so on for `run_id`; the compiler resolves those aliases after the review. Use `keep`, `revise`, or `reject`, a rank, and one concrete reason. Equal ranks mean a tie.
+
+Add optional `mechanics`, `tone`, and `grounding` labels when useful. Recommended mechanics include `specificity`, `mismatch`, `escalation`, `misdirection`, and `callback`; use `|` between multiple values. This lets us learn *why* something won without treating a generic LLM score as ground truth. Reveal `results.json` only after ranking to compare provider, source mix, duration, and grounding failures.
+
+`npm run evals:compile-feedback` turns ranks into every valid pairwise preference, plus a 0–100 pairwise win score and Wilson 95% interval in `evals/shared-runs/leaderboard.json`. The interval is deliberately honest about small samples: it is a prioritisation aid, not proof that a model is funnier.

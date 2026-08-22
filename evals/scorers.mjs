@@ -4,6 +4,17 @@ function normalise(value) {
   return String(value || "").toLowerCase().replace(/[^a-z0-9\s]/g, " ").replace(/\s+/g, " ").trim();
 }
 
+function candidateLabel(index) {
+  let value = index + 1;
+  let label = "";
+  while (value > 0) {
+    value -= 1;
+    label = String.fromCharCode(65 + (value % 26)) + label;
+    value = Math.floor(value / 26);
+  }
+  return label;
+}
+
 export function scorePackets(packets, evidence) {
   const evaluations = packets.map((packet) => evaluateRoastPacket(packet, evidence));
   const lines = packets.flatMap((packet) => packet.lines || []);
@@ -24,9 +35,9 @@ export function scorePackets(packets, evidence) {
 }
 
 export function blindReviewMarkdown(results) {
-  const rows = ["# Blind candidate review", "", "Provider labels are intentionally replaced with run IDs for human ranking.", ""];
-  for (const result of results) {
-    rows.push(`## ${result.runId}`, "");
+  const rows = ["# Blind candidate review", "", "Provider, model, and context labels are hidden for first-pass human ranking. Rank candidates by humour first; reveal `results.json` only after recording the review.", ""];
+  for (const [index, result] of results.entries()) {
+    rows.push(`## Candidate ${candidateLabel(index)}`, "");
     for (const packet of result.packets) {
       rows.push(`### ${packet.title}`, "", ...(packet.lines || []).map((line) => `- ${line.text}`), "");
     }
