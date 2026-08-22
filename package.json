@@ -9,6 +9,7 @@
   "scripts": {
     "check": "node --check src/*.js",
     "evals": "node evals/run.mjs",
+    "evals:publish": "node scripts/publish-eval-run.mjs",
     "fal:image": "node src/index.js fal:image",
     "grok": "node src/index.js grok",
     "prototype": "node prototype/serve.js",

@@ -1,0 +1,186 @@
+{
+  "generatedAt": "2026-08-22T11:43:34.477Z",
+  "options": {
+    "providers": [
+      "ollama"
+    ],
+    "profiles": [
+      "repo_only"
+    ],
+    "count": 1,
+    "treatment": "Funny / Roast",
+    "instructions": "",
+    "outputRoot": "data/eval-runs",
+    "referenceStrength": "light",
+    "repositoryUrl": "https://github.com/AnalystTom/veed_hack"
+  },
+  "repository": {
+    "repository": "AnalystTom/veed_hack",
+    "description": null,
+    "defaultBranch": "main",
+    "pinnedSha": "7bffade40b45d86ec1d783b4b2040e1f8134398c",
+    "languages": [
+      {
+        "name": "js",
+        "count": 19
+      },
+      {
+        "name": "tsx",
+        "count": 13
+      },
+      {
+        "name": "ts",
+        "count": 6
+      },
+      {
+        "name": "mjs",
+        "count": 2
+      }
+    ],
+    "package": {
+      "name": "veed-hack",
+      "scripts": [
+        "check",
+        "fal:image",
+        "grok",
+        "prototype",
+        "test",
+        "veed:fabric",
+        "veed:lipsync"
+      ],
+      "dependencies": [
+        "@fal-ai/client",
+        "dotenv"
+      ]
+    },
+    "importHints": [
+      {
+        "path": "prototype/serve.js",
+        "imports": [
+          "node:http",
+          "node:fs/promises",
+          "node:path"
+        ]
+      },
+      {
+        "path": "src/fal.js",
+        "imports": [
+          "@fal-ai/client",
+          "./config.js"
+        ]
+      },
+      {
+        "path": "src/index.js",
+        "imports": [
+          "./fal.js",
+          "./veed.js",
+          "./openrouter.js"
+        ]
+      },
+      {
+        "path": "src/openrouter.js",
+        "imports": [
+          "./config.js"
+        ]
+      },
+      {
+        "path": "src/veed.js",
+        "imports": [
+          "@fal-ai/client",
+          "./config.js"
+        ]
+      },
+      {
+        "path": "test/config.test.js",
+        "imports": [
+          "node:assert/strict",
+          "node:test"
+        ]
+      },
+      {
+        "path": "test/media.test.js",
+        "imports": [
+          "node:assert/strict",
+          "node:test",
+          "../web/lib/media.mjs"
+        ]
+      },
+      {
+        "path": "test/mvp.test.js",
+        "imports": [
+          "node:assert/strict",
+          "node:test",
+          "../web/lib/mvp.mjs"
+        ]
+      },
+      {
+        "path": "web/next.config.ts",
+        "imports": [
+          "next"
+        ]
+      },
+      {
+        "path": "web/proxy.ts",
+        "imports": [
+          "next/server",
+          "next/server"
+        ]
+      },
+      {
+        "path": "web/app/LandingPage.tsx",
+        "imports": [
+          "next/link",
+          "./components/VideoLibrary",
+          "./components/BrandShell.module.css",
+          "./LandingPage.module.css"
+        ]
+      },
+      {
+        "path": "web/app/layout.tsx",
+        "imports": [
+          "next"
+        ]
+      }
+    ],
+    "selectedPaths": [
+      "README.md",
+      "package.json",
+      "web/README.md",
+      "web/app/prototype/landing/README.md",
+      "web/package.json",
+      "prototype/serve.js",
+      "src/config.js",
+      "src/fal.js",
+      "src/index.js",
+      "src/openrouter.js",
+      "src/veed.js",
+      "test/config.test.js",
+      "test/media.test.js",
+      "test/mvp.test.js",
+      "web/next.config.ts",
+      "web/proxy.ts",
+      "prototype/landing/shared.js",
+      "prototype/landing/switcher.js",
+      "prototype/landing/templates.js",
+      "web/app/LandingPage.tsx",
+      "web/app/layout.tsx",
+      "web/app/page.tsx",
+      "web/app/RoastStudio.tsx",
+      "web/lib/media.mjs"
+    ]
+  },
+  "perception": {
+    "mode": "not_requested",
+    "evidenceCount": 0
+  },
+  "referenceSignals": {
+    "available": true,
+    "videoCount": 10,
+    "segmentCount": 2852,
+    "wordCount": 24594,
+    "totalSeconds": 10065,
+    "wordsPerMinute": 147,
+    "medianBeatSeconds": 1.84,
+    "message": "Use only these high-level pacing signals from 10 authorised references: about 147 words per minute and 1.8 seconds per spoken beat. Write original material; do not imitate, quote, or reference any performer."
+  }
+}
