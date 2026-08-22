@@ -1,0 +1,240 @@
+[
+  {
+    "runId": "openclaw-roast-oneliner-v3-venice__hard-callback__cycle-01",
+    "provider": "openai-compatible",
+    "model": "venice-uncensored",
+    "profile": "master_comedy_arena",
+    "variant": "hard-callback",
+    "title": "Production comedy script",
+    "script": "OpenClaw promises a personal AI assistant, but with 387,119 stars, it’s more like a digital circus with too many clowns.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 20,
+      "meanSeconds": 8
+    },
+    "sourceBundle": "openclaw-roast-oneliner-v3-venice"
+  },
+  {
+    "runId": "openclaw-roast-oneliner-v3-venice__discourse-compression__cycle-01",
+    "provider": "openai-compatible",
+    "model": "venice-uncensored",
+    "profile": "master_comedy_arena",
+    "variant": "discourse-compression",
+    "title": "Production comedy script",
+    "script": "OpenClaw promises your own personal AI, but with 30 contributors and 387,000 stars, it’s more of a lobster cocktail than a solo experience.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 23,
+      "meanSeconds": 10
+    },
+    "sourceBundle": "openclaw-roast-oneliner-v3-venice"
+  },
+  {
+    "runId": "openclaw-roast-oneliner-v3-luna__viewer-first__cycle-01",
+    "provider": "production",
+    "model": "openai/gpt-5.6-luna",
+    "profile": "master_comedy_arena",
+    "variant": "viewer-first",
+    "title": "Production comedy script",
+    "script": "OpenClaw promises \"any OS, any platform\" for an assistant that handles everything, yet reviewers say it mostly handles crashing, and its licence field just reads NOASSERTION.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 26,
+      "meanSeconds": 11
+    },
+    "sourceBundle": "openclaw-roast-oneliner-v3-luna"
+  },
+  {
+    "runId": "openclaw-roast-oneliner-v3-opus__baseline__cycle-01",
+    "provider": "openai-compatible",
+    "model": "anthropic/claude-opus-4.6",
+    "profile": "master_comedy_arena",
+    "variant": "baseline",
+    "title": "Production comedy script",
+    "script": "OpenClaw rebranded twice, survived 387,000 GitHub stars, and got its founder hired at OpenAI, proving the best thing a personal assistant can do is get you a better job.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 29,
+      "meanSeconds": 12
+    },
+    "sourceBundle": "openclaw-roast-oneliner-v3-opus"
+  },
+  {
+    "runId": "openclaw-roast-oneliner-v3-opus__one-premise__cycle-01",
+    "provider": "openai-compatible",
+    "model": "anthropic/claude-opus-4.6",
+    "profile": "master_comedy_arena",
+    "variant": "one-premise",
+    "title": "Production comedy script",
+    "script": "OpenClaw rebranded from Warelay to Moltbot to OpenClaw, which makes sense because the hardest autonomous task it performs reliably is changing its own name.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 24,
+      "meanSeconds": 10
+    },
+    "sourceBundle": "openclaw-roast-oneliner-v3-opus"
+  },
+  {
+    "runId": "openclaw-roast-oneliner-v3-opus__hard-callback__cycle-01",
+    "provider": "openai-compatible",
+    "model": "anthropic/claude-opus-4.6",
+    "profile": "master_comedy_arena",
+    "variant": "hard-callback",
+    "title": "Production comedy script",
+    "script": "OpenClaw rebranded from Warelay to Moltbot to OpenClaw, which is three names for a personal assistant whose most reliable skill is introducing itself.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 23,
+      "meanSeconds": 10
+    },
+    "sourceBundle": "openclaw-roast-oneliner-v3-opus"
+  },
+  {
+    "runId": "openclaw-roast-oneliner-v3-opus__viewer-first__cycle-01",
+    "provider": "openai-compatible",
+    "model": "anthropic/claude-opus-4.6",
+    "profile": "master_comedy_arena",
+    "variant": "viewer-first",
+    "title": "Production comedy script",
+    "script": "OpenClaw started as a one-hour prototype, rebranded three times, and now ships 90% TypeScript across five languages to autonomously fail at sending your emails.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 24,
+      "meanSeconds": 10
+    },
+    "sourceBundle": "openclaw-roast-oneliner-v3-opus"
+  },
+  {
+    "runId": "openclaw-roast-oneliner-v3-opus__discourse-compression__cycle-01",
+    "provider": "openai-compatible",
+    "model": "anthropic/claude-opus-4.6",
+    "profile": "master_comedy_arena",
+    "variant": "discourse-compression",
+    "title": "Production comedy script",
+    "script": "OpenClaw rebranded twice, survived its founder leaving for OpenAI, and still ships autonomous workflows that need more babysitting than the agent was supposed to replace.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 25,
+      "meanSeconds": 10
+    },
+    "sourceBundle": "openclaw-roast-oneliner-v3-opus"
+  },
+  {
+    "runId": "openclaw-roast-oneliner-v3-luna__baseline__cycle-01",
+    "provider": "production",
+    "model": "openai/gpt-5.6-luna",
+    "profile": "master_comedy_arena",
+    "variant": "baseline",
+    "title": "Production comedy script",
+    "script": "OpenClaw promises \"any OS, any platform,\" which is bold for an assistant that reportedly can't reliably survive the platform it's already on.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 22,
+      "meanSeconds": 9
+    },
+    "sourceBundle": "openclaw-roast-oneliner-v3-luna"
+  },
+  {
+    "runId": "openclaw-roast-oneliner-v3-venice__viewer-first__cycle-01",
+    "provider": "openai-compatible",
+    "model": "venice-uncensored",
+    "profile": "master_comedy_arena",
+    "variant": "viewer-first",
+    "title": "Production comedy script",
+    "script": "OpenClaw is \"on your devices,\" unless your device is a Mac, a Linux box, or a phone, in which case it's a team project.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 24,
+      "meanSeconds": 10
+    },
+    "sourceBundle": "openclaw-roast-oneliner-v3-venice"
+  },
+  {
+    "runId": "openclaw-roast-oneliner-v3-luna__hard-callback__cycle-01",
+    "provider": "production",
+    "model": "openai/gpt-5.6-luna",
+    "profile": "master_comedy_arena",
+    "variant": "hard-callback",
+    "title": "Production comedy script",
+    "script": "OpenClaw promises \"any OS, any platform,\" which is bold for an assistant that renamed itself repeatedly under trademark pressure and still can't reliably talk to your calendar on any platform.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 30,
+      "meanSeconds": 12
+    },
+    "sourceBundle": "openclaw-roast-oneliner-v3-luna"
+  },
+  {
+    "runId": "openclaw-roast-oneliner-v3-venice__one-premise__cycle-01",
+    "provider": "openai-compatible",
+    "model": "venice-uncensored",
+    "profile": "master_comedy_arena",
+    "variant": "one-premise",
+    "title": "Production comedy script",
+    "script": "OpenClaw promised a personal AI, but with 387,119 stars, it's less a helper and more a committee meeting you can't leave.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 21,
+      "meanSeconds": 9
+    },
+    "sourceBundle": "openclaw-roast-oneliner-v3-venice"
+  },
+  {
+    "runId": "openclaw-roast-oneliner-v3-luna__one-premise__cycle-01",
+    "provider": "production",
+    "model": "openai/gpt-5.6-luna",
+    "profile": "master_comedy_arena",
+    "variant": "one-premise",
+    "title": "Production comedy script",
+    "script": "OpenClaw promises an assistant on any OS, any platform, in every chat, which is ambitious for something the reviews describe as debugging that occasionally answers a message.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 27,
+      "meanSeconds": 11
+    },
+    "sourceBundle": "openclaw-roast-oneliner-v3-luna"
+  },
+  {
+    "runId": "openclaw-roast-oneliner-v3-luna__discourse-compression__cycle-01",
+    "provider": "production",
+    "model": "openai/gpt-5.6-luna",
+    "profile": "master_comedy_arena",
+    "variant": "discourse-compression",
+    "title": "Production comedy script",
+    "script": "OpenClaw promises \"any OS, any platform,\" a personal assistant that handles everything, yet reviewers say it mostly handles crashing, and the license field just reads NOASSERTION.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 26,
+      "meanSeconds": 11
+    },
+    "sourceBundle": "openclaw-roast-oneliner-v3-luna"
+  }
+]

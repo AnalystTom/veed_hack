@@ -1,0 +1,74 @@
+[
+  {
+    "runId": "baseline__cycle-01",
+    "provider": "openai-compatible",
+    "model": "venice-uncensored",
+    "profile": "production_comedy",
+    "variant": "baseline",
+    "failed": "Production narration did not meet the script contract after three attempts: Generated narration used banned filler: em dash."
+  },
+  {
+    "runId": "one-premise__cycle-01",
+    "provider": "openai-compatible",
+    "model": "venice-uncensored",
+    "profile": "production_comedy",
+    "variant": "one-premise",
+    "title": "Production comedy script",
+    "script": "OpenClaw promised a personal AI, but with 387,119 stars, it's less a helper and more a committee meeting you can't leave.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 21,
+      "meanSeconds": 9
+    }
+  },
+  {
+    "runId": "discourse-compression__cycle-01",
+    "provider": "openai-compatible",
+    "model": "venice-uncensored",
+    "profile": "production_comedy",
+    "variant": "discourse-compression",
+    "title": "Production comedy script",
+    "script": "OpenClaw promises your own personal AI, but with 30 contributors and 387,000 stars, it’s more of a lobster cocktail than a solo experience.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 23,
+      "meanSeconds": 10
+    }
+  },
+  {
+    "runId": "hard-callback__cycle-01",
+    "provider": "openai-compatible",
+    "model": "venice-uncensored",
+    "profile": "production_comedy",
+    "variant": "hard-callback",
+    "title": "Production comedy script",
+    "script": "OpenClaw promises a personal AI assistant, but with 387,119 stars, it’s more like a digital circus with too many clowns.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 20,
+      "meanSeconds": 8
+    }
+  },
+  {
+    "runId": "viewer-first__cycle-01",
+    "provider": "openai-compatible",
+    "model": "venice-uncensored",
+    "profile": "production_comedy",
+    "variant": "viewer-first",
+    "title": "Production comedy script",
+    "script": "OpenClaw is \"on your devices,\" unless your device is a Mac, a Linux box, or a phone, in which case it's a team project.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 24,
+      "meanSeconds": 10
+    }
+  }
+]

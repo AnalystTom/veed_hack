@@ -1,0 +1,11 @@
+{
+  "generatedAt": "2026-08-22T15:41:03.728Z",
+  "kind": "master_comedy_arena",
+  "sourceRuns": [
+    "openclaw-roast-oneliner-v3-luna",
+    "openclaw-roast-oneliner-v3-venice",
+    "openclaw-roast-oneliner-v3-opus"
+  ],
+  "candidateCount": 14,
+  "jokeGuidelinesSha256": "2f037711b831b785990baf2440954b6ea528bb9f85799fba287ea8af3fbbfc06"
+}

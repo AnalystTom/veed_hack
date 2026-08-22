@@ -1,0 +1,74 @@
+[
+  {
+    "runId": "baseline__cycle-01",
+    "provider": "openai-compatible",
+    "model": "venice-uncensored",
+    "profile": "production_comedy",
+    "variant": "baseline",
+    "title": "Production comedy script",
+    "script": "I'm the Clawfather, and my weekend lobster side-project is now an OpenAI-backed foundation, proving that personal AI really is a personal decision.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 22,
+      "meanSeconds": 9
+    }
+  },
+  {
+    "runId": "one-premise__cycle-01",
+    "provider": "openai-compatible",
+    "model": "venice-uncensored",
+    "profile": "production_comedy",
+    "variant": "one-premise",
+    "failed": "Production narration did not meet the script contract after three attempts: Generated one-liner must be 18 to 32 words; received 68."
+  },
+  {
+    "runId": "discourse-compression__cycle-01",
+    "provider": "openai-compatible",
+    "model": "venice-uncensored",
+    "profile": "production_comedy",
+    "variant": "discourse-compression",
+    "title": "Production comedy script",
+    "script": "Hi, I'm the Clawfather, and my weekend project is now an OpenAI foundation, because nothing says personal like a walled garden holding a shell.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 24,
+      "meanSeconds": 10
+    }
+  },
+  {
+    "runId": "hard-callback__cycle-01",
+    "provider": "openai-compatible",
+    "model": "venice-uncensored",
+    "profile": "production_comedy",
+    "variant": "hard-callback",
+    "title": "Production comedy script",
+    "script": "I am the Clawfather: my weekend project has 387,119 stars and 81,307 forks, proving \"your assistant, on your devices\" works best when it's in the cloud.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 26,
+      "meanSeconds": 11
+    }
+  },
+  {
+    "runId": "viewer-first__cycle-01",
+    "provider": "openai-compatible",
+    "model": "venice-uncensored",
+    "profile": "production_comedy",
+    "variant": "viewer-first",
+    "title": "Production comedy script",
+    "script": "Well, we promised omnichannel, but let's be real, you're going to need a PhD to configure this lobster.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 18,
+      "meanSeconds": 8
+    }
+  }
+]
