@@ -1,9 +1,17 @@
 import type { NextConfig } from 'next';
+import path from 'node:path';
 
 const nextConfig: NextConfig = {
-  // The repo root also has a package-lock.json (the fal/VEED CLI starter),
-  // so pin Turbopack's root to this app to keep it from walking up.
-  turbopack: { root: __dirname },
+  // Script generation consumes one canonical Markdown file from the repository
+  // root, so Turbopack and output tracing share that boundary.
+  turbopack: { root: path.join(__dirname, '..') },
+  // Server-side script generation reads the canonical repository-level
+  // joke_guidelines.md. Trace it into Vercel's function bundle while keeping
+  // one source of truth for local and deployed generation.
+  outputFileTracingRoot: path.join(__dirname, '..'),
+  outputFileTracingIncludes: {
+    '/*': ['../joke_guidelines.md'],
+  },
   // The 127.0.0.1:3101 preview runs `next start` alongside `next dev`; they
   // cannot share one build directory, so that server sets NEXT_DIST_DIR.
   distDir: process.env.NEXT_DIST_DIR || '.next',
