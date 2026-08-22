@@ -1,0 +1,20 @@
+{
+  "name": "veed-hack",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "check": "node --check src/fal.js && node --check src/veed.js && node --check src/index.js",
+    "fal:image": "node src/index.js fal:image",
+    "test": "node --test",
+    "veed:fabric": "node src/index.js veed:fabric",
+    "veed:lipsync": "node src/index.js veed:lipsync"
+  },
+  "dependencies": {
+    "@fal-ai/client": "^1.9.0",
+    "dotenv": "^16.6.1"
+  }
+}
