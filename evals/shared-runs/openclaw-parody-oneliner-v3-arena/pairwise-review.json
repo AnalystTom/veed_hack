@@ -1,0 +1,130 @@
+{
+  "updatedAt": "2026-08-22T15:52:14.815Z",
+  "answers": {
+    "candidate-a__candidate-b": {
+      "choice": "right",
+      "comment": "remove \"debugging the harness that promised to run any OS, any platform, any excuse.\"",
+      "reviewedAt": "2026-08-22T15:43:15.349Z"
+    },
+    "candidate-g__candidate-h": {
+      "choice": "right",
+      "comment": "option A is so bland. option B is still a bit too long",
+      "reviewedAt": "2026-08-22T15:43:33.784Z"
+    },
+    "candidate-i__candidate-m": {
+      "choice": "right",
+      "comment": "",
+      "reviewedAt": "2026-08-22T15:43:41.722Z"
+    },
+    "candidate-e__candidate-k": {
+      "choice": "right",
+      "comment": "",
+      "reviewedAt": "2026-08-22T15:43:52.835Z"
+    },
+    "candidate-c__candidate-i": {
+      "choice": "right",
+      "comment": "",
+      "reviewedAt": "2026-08-22T15:44:03.912Z"
+    },
+    "candidate-k__candidate-n": {
+      "choice": "right",
+      "comment": "",
+      "reviewedAt": "2026-08-22T15:44:12.166Z"
+    },
+    "candidate-b__candidate-l": {
+      "choice": "right",
+      "comment": "",
+      "reviewedAt": "2026-08-22T15:44:28.586Z"
+    },
+    "candidate-a__candidate-g": {
+      "choice": "right",
+      "comment": "",
+      "reviewedAt": "2026-08-22T15:44:37.383Z"
+    },
+    "candidate-d__candidate-e": {
+      "choice": "right",
+      "comment": "",
+      "reviewedAt": "2026-08-22T15:44:48.651Z"
+    },
+    "candidate-a__candidate-f": {
+      "choice": "left",
+      "comment": "",
+      "reviewedAt": "2026-08-22T15:49:01.646Z"
+    },
+    "candidate-g__candidate-l": {
+      "choice": "right",
+      "comment": "",
+      "reviewedAt": "2026-08-22T15:49:05.354Z"
+    },
+    "candidate-j__candidate-k": {
+      "choice": "right",
+      "comment": "",
+      "reviewedAt": "2026-08-22T15:49:09.451Z"
+    },
+    "candidate-c__candidate-f": {
+      "choice": "right",
+      "comment": "",
+      "reviewedAt": "2026-08-22T15:49:27.411Z"
+    },
+    "candidate-a__candidate-j": {
+      "choice": "right",
+      "comment": "",
+      "reviewedAt": "2026-08-22T15:49:30.627Z"
+    },
+    "candidate-c__candidate-g": {
+      "choice": "right",
+      "comment": "",
+      "reviewedAt": "2026-08-22T15:49:33.732Z"
+    },
+    "candidate-b__candidate-d": {
+      "choice": "left",
+      "comment": "shorten the \"renamed it three times\" bit",
+      "reviewedAt": "2026-08-22T15:49:59.548Z"
+    },
+    "candidate-c__candidate-l": {
+      "choice": "left",
+      "comment": "",
+      "reviewedAt": "2026-08-22T15:51:26.179Z"
+    },
+    "candidate-h__candidate-i": {
+      "choice": "left",
+      "comment": "",
+      "reviewedAt": "2026-08-22T15:51:31.294Z"
+    },
+    "candidate-c__candidate-d": {
+      "choice": "left",
+      "comment": "",
+      "reviewedAt": "2026-08-22T15:51:36.038Z"
+    },
+    "candidate-b__candidate-g": {
+      "choice": "left",
+      "comment": "",
+      "reviewedAt": "2026-08-22T15:51:43.766Z"
+    },
+    "candidate-a__candidate-l": {
+      "choice": "right",
+      "comment": "",
+      "reviewedAt": "2026-08-22T15:51:48.014Z"
+    },
+    "candidate-h__candidate-m": {
+      "choice": "left",
+      "comment": "",
+      "reviewedAt": "2026-08-22T15:51:53.837Z"
+    },
+    "candidate-e__candidate-l": {
+      "choice": "left",
+      "comment": "",
+      "reviewedAt": "2026-08-22T15:52:01.471Z"
+    },
+    "candidate-f__candidate-k": {
+      "choice": "right",
+      "comment": "",
+      "reviewedAt": "2026-08-22T15:52:12.022Z"
+    },
+    "candidate-j__candidate-n": {
+      "choice": "left",
+      "comment": "",
+      "reviewedAt": "2026-08-22T15:52:14.794Z"
+    }
+  }
+}

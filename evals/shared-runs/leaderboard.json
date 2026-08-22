@@ -1,17 +1,37 @@
 {
-  "generatedAt": "2026-08-22T13:50:50.946Z",
+  "generatedAt": "2026-08-22T15:52:28.892Z",
   "leaderboard": [
     {
-      "provider": "grok",
-      "model": "x-ai/grok-4.6",
-      "profile": "repo_only",
+      "provider": "openai-compatible",
+      "model": "anthropic/claude-opus-4.6",
+      "profile": "master_comedy_arena",
+      "variant": "baseline",
       "reviewed": 1,
-      "keeps": 1,
+      "keeps": 0,
       "revisions": 0,
       "rejects": 0,
-      "meanRank": 1,
-      "meanSeconds": 84,
-      "gatePassRate": 0,
+      "meanRank": null,
+      "meanSeconds": 11,
+      "gatePassRate": 1,
+      "pairwiseScore": 100,
+      "pairwiseInterval95": {
+        "lower": 56.6,
+        "upper": 100
+      },
+      "pairwiseComparisons": 5
+    },
+    {
+      "provider": "openai-compatible",
+      "model": "venice-uncensored",
+      "profile": "master_comedy_arena",
+      "variant": "viewer-first",
+      "reviewed": 1,
+      "keeps": 0,
+      "revisions": 0,
+      "rejects": 0,
+      "meanRank": null,
+      "meanSeconds": 8,
+      "gatePassRate": 1,
       "pairwiseScore": 100,
       "pairwiseInterval95": {
         "lower": 34.2,
@@ -20,16 +40,17 @@
       "pairwiseComparisons": 2
     },
     {
-      "provider": "grok",
-      "model": "x-ai/grok-4.6",
-      "profile": "repo_plus_reference_sources",
+      "provider": "openai-compatible",
+      "model": "venice-uncensored",
+      "profile": "master_comedy_arena",
+      "variant": "baseline",
       "reviewed": 1,
       "keeps": 0,
-      "revisions": 1,
+      "revisions": 0,
       "rejects": 0,
-      "meanRank": 3,
-      "meanSeconds": 76,
-      "gatePassRate": 0,
+      "meanRank": null,
+      "meanSeconds": 9,
+      "gatePassRate": 1,
       "pairwiseScore": 100,
       "pairwiseInterval95": {
         "lower": 34.2,
@@ -38,277 +59,726 @@
       "pairwiseComparisons": 2
     },
     {
-      "provider": "gpt",
-      "model": "gpt-5.6-luna",
-      "profile": "repo_only",
-      "reviewed": 2,
-      "keeps": 2,
-      "revisions": 0,
-      "rejects": 0,
-      "meanRank": 1.5,
-      "meanSeconds": 66,
-      "gatePassRate": 0,
-      "pairwiseScore": 50,
-      "pairwiseInterval95": {
-        "lower": 9.5,
-        "upper": 90.5
-      },
-      "pairwiseComparisons": 2
-    },
-    {
-      "provider": "gpt",
-      "model": "gpt-5.6-luna",
-      "profile": "repo_plus_reference_sources",
-      "reviewed": 1,
-      "keeps": 0,
-      "revisions": 1,
-      "rejects": 0,
-      "meanRank": 4,
-      "meanSeconds": 65,
-      "gatePassRate": 0,
-      "pairwiseScore": 50,
-      "pairwiseInterval95": {
-        "lower": 9.5,
-        "upper": 90.5
-      },
-      "pairwiseComparisons": 2
-    },
-    {
-      "provider": "openrouter:cognitivecomputations/dolphin-mistral-24b-venice-edition",
-      "model": "cognitivecomputations/dolphin-mistral-24b-venice-edition",
-      "profile": "repo_plus_reference_sources",
+      "provider": "openai-compatible",
+      "model": "anthropic/claude-opus-4.6",
+      "profile": "master_comedy_arena",
+      "variant": "one-premise",
       "reviewed": 1,
       "keeps": 0,
       "revisions": 0,
-      "rejects": 1,
-      "meanRank": 5,
-      "meanSeconds": 38,
+      "rejects": 0,
+      "meanRank": null,
+      "meanSeconds": 9,
+      "gatePassRate": 1,
+      "pairwiseScore": 66.7,
+      "pairwiseInterval95": {
+        "lower": 20.8,
+        "upper": 93.9
+      },
+      "pairwiseComparisons": 3
+    },
+    {
+      "provider": "production",
+      "model": "openai/gpt-5.6-luna",
+      "profile": "master_comedy_arena",
+      "variant": "one-premise",
+      "reviewed": 1,
+      "keeps": 0,
+      "revisions": 0,
+      "rejects": 0,
+      "meanRank": null,
+      "meanSeconds": 12,
+      "gatePassRate": 1,
+      "pairwiseScore": 66.7,
+      "pairwiseInterval95": {
+        "lower": 20.8,
+        "upper": 93.9
+      },
+      "pairwiseComparisons": 3
+    },
+    {
+      "provider": "openai-compatible",
+      "model": "anthropic/claude-opus-4.6",
+      "profile": "master_comedy_arena",
+      "variant": "discourse-compression",
+      "reviewed": 1,
+      "keeps": 0,
+      "revisions": 0,
+      "rejects": 0,
+      "meanRank": null,
+      "meanSeconds": 10,
+      "gatePassRate": 1,
+      "pairwiseScore": 66.7,
+      "pairwiseInterval95": {
+        "lower": 20.8,
+        "upper": 93.9
+      },
+      "pairwiseComparisons": 3
+    },
+    {
+      "provider": "openai-compatible",
+      "model": "anthropic/claude-opus-4.6",
+      "profile": "master_comedy_arena",
+      "variant": "hard-callback",
+      "reviewed": 1,
+      "keeps": 0,
+      "revisions": 0,
+      "rejects": 0,
+      "meanRank": null,
+      "meanSeconds": 11,
+      "gatePassRate": 1,
+      "pairwiseScore": 60,
+      "pairwiseInterval95": {
+        "lower": 23.1,
+        "upper": 88.2
+      },
+      "pairwiseComparisons": 5
+    },
+    {
+      "provider": "production",
+      "model": "openai/gpt-5.6-luna",
+      "profile": "master_comedy_arena",
+      "variant": "hard-callback",
+      "reviewed": 1,
+      "keeps": 0,
+      "revisions": 0,
+      "rejects": 0,
+      "meanRank": null,
+      "meanSeconds": 12,
+      "gatePassRate": 1,
+      "pairwiseScore": 50,
+      "pairwiseInterval95": {
+        "lower": 15,
+        "upper": 85
+      },
+      "pairwiseComparisons": 4
+    },
+    {
+      "provider": "production",
+      "model": "openai/gpt-5.6-luna",
+      "profile": "master_comedy_arena",
+      "variant": "discourse-compression",
+      "reviewed": 1,
+      "keeps": 0,
+      "revisions": 0,
+      "rejects": 0,
+      "meanRank": null,
+      "meanSeconds": 13,
+      "gatePassRate": 1,
+      "pairwiseScore": 40,
+      "pairwiseInterval95": {
+        "lower": 11.8,
+        "upper": 76.9
+      },
+      "pairwiseComparisons": 5
+    },
+    {
+      "provider": "openai-compatible",
+      "model": "venice-uncensored",
+      "profile": "master_comedy_arena",
+      "variant": "hard-callback",
+      "reviewed": 1,
+      "keeps": 0,
+      "revisions": 0,
+      "rejects": 0,
+      "meanRank": null,
+      "meanSeconds": 11,
+      "gatePassRate": 1,
+      "pairwiseScore": 33.3,
+      "pairwiseInterval95": {
+        "lower": 6.1,
+        "upper": 79.2
+      },
+      "pairwiseComparisons": 3
+    },
+    {
+      "provider": "openai-compatible",
+      "model": "anthropic/claude-opus-4.6",
+      "profile": "master_comedy_arena",
+      "variant": "viewer-first",
+      "reviewed": 1,
+      "keeps": 0,
+      "revisions": 0,
+      "rejects": 0,
+      "meanRank": null,
+      "meanSeconds": 10,
+      "gatePassRate": 1,
+      "pairwiseScore": 33.3,
+      "pairwiseInterval95": {
+        "lower": 6.1,
+        "upper": 79.2
+      },
+      "pairwiseComparisons": 3
+    },
+    {
+      "provider": "openai-compatible",
+      "model": "venice-uncensored",
+      "profile": "master_comedy_arena",
+      "variant": "discourse-compression",
+      "reviewed": 1,
+      "keeps": 0,
+      "revisions": 0,
+      "rejects": 0,
+      "meanRank": null,
+      "meanSeconds": 10,
+      "gatePassRate": 1,
+      "pairwiseScore": 25,
+      "pairwiseInterval95": {
+        "lower": 4.6,
+        "upper": 69.9
+      },
+      "pairwiseComparisons": 4
+    },
+    {
+      "provider": "production",
+      "model": "openai/gpt-5.6-luna",
+      "profile": "master_comedy_arena",
+      "variant": "viewer-first",
+      "reviewed": 1,
+      "keeps": 0,
+      "revisions": 0,
+      "rejects": 0,
+      "meanRank": null,
+      "meanSeconds": 11,
       "gatePassRate": 1,
       "pairwiseScore": 0,
       "pairwiseInterval95": {
         "lower": 0,
-        "upper": 65.8
+        "upper": 43.4
       },
-      "pairwiseComparisons": 2
+      "pairwiseComparisons": 5
     },
     {
-      "provider": "openrouter:cognitivecomputations/dolphin-mistral-24b-venice-edition",
-      "model": "cognitivecomputations/dolphin-mistral-24b-venice-edition",
-      "profile": "repo_only",
+      "provider": "production",
+      "model": "openai/gpt-5.6-luna",
+      "profile": "master_comedy_arena",
+      "variant": "baseline",
       "reviewed": 1,
       "keeps": 0,
       "revisions": 0,
-      "rejects": 1,
-      "meanRank": 6,
-      "meanSeconds": 42,
+      "rejects": 0,
+      "meanRank": null,
+      "meanSeconds": 12,
       "gatePassRate": 1,
       "pairwiseScore": 0,
       "pairwiseInterval95": {
         "lower": 0,
-        "upper": 65.8
+        "upper": 56.2
       },
-      "pairwiseComparisons": 2
+      "pairwiseComparisons": 3
     }
   ],
   "records": [
     {
-      "bundle": "provider-baseline-gpt-grok-repo-only",
-      "runId": "repo_only__gpt",
-      "packetId": "roast-001",
-      "provider": "gpt",
-      "model": "gpt-5.6-luna",
-      "profile": "repo_only",
-      "decision": "keep",
-      "rank": 1,
-      "reason": "funny and specific",
-      "notes": "Use this premise for a rewrite.",
-      "title": "The Prototype That Refuses to Leave",
-      "angle": "A mock-serious roast about a project whose prototype has become its most committed relationship.",
-      "metrics": {
-        "candidateCount": 1,
-        "passedCount": 0,
-        "passRate": 0,
-        "meanWords": 166,
-        "meanSeconds": 67,
-        "sourcedLineRate": 0.857,
-        "perceptionLineRate": 0,
-        "distinctAngleRate": 1,
-        "gateIssueCount": 2
-      }
-    },
-    {
-      "bundle": "provider-context-light-reference-matrix",
-      "runId": "repo_only__gpt",
-      "packetId": "packet-01",
-      "provider": "gpt",
-      "model": "gpt-5.6-luna",
-      "profile": "repo_only",
-      "decision": "keep",
-      "rank": 2,
-      "reason": "Funny, specific, and escalating; the 512-by-512 closer lands.",
-      "notes": "Preserve: 'one emotional support .env file.'",
-      "title": "The Repository Has a Repository for Its Repositories",
-      "angle": "A startup that built an evaluation bureaucracy before finishing the product",
-      "metrics": {
-        "candidateCount": 1,
-        "passedCount": 0,
-        "passRate": 0,
-        "meanWords": 162,
-        "meanSeconds": 65,
-        "sourcedLineRate": 0.833,
-        "perceptionLineRate": 0,
-        "distinctAngleRate": 1,
-        "gateIssueCount": 1
-      }
-    },
-    {
-      "bundle": "provider-context-light-reference-matrix",
-      "runId": "repo_only__grok",
-      "packetId": "rb-onestep-selfaudit",
-      "provider": "grok",
-      "model": "x-ai/grok-4.6",
-      "profile": "repo_only",
-      "decision": "keep",
-      "rank": 1,
-      "reason": "Best hook-to-escalation structure; the technical details consistently become punchlines.",
-      "notes": "Preserve: 'Cinematic, if your cinema is a postage stamp that gave up early.'",
-      "title": "One-Step Cinema, Twenty-Four Files",
-      "angle": "A roast-video factory that branded itself twice, described itself zero times, and spent the rest of the repo on eval bureaucracy and 512-pixel thrift.",
-      "metrics": {
-        "candidateCount": 1,
-        "passedCount": 0,
-        "passRate": 0,
-        "meanWords": 209,
-        "meanSeconds": 84,
-        "sourcedLineRate": 0.875,
-        "perceptionLineRate": 0,
-        "distinctAngleRate": 1,
-        "gateIssueCount": 1
-      }
-    },
-    {
-      "bundle": "provider-context-light-reference-matrix",
-      "runId": "repo_only__openrouter:cognitivecomputations/dolphin-mistral-24b-venice-edition",
-      "packetId": "roast-hack-001",
-      "provider": "openrouter:cognitivecomputations/dolphin-mistral-24b-venice-edition",
-      "model": "cognitivecomputations/dolphin-mistral-24b-venice-edition",
-      "profile": "repo_only",
-      "decision": "reject",
-      "rank": 6,
-      "reason": "Mostly generic stage patter with no substantive repository-specific joke.",
-      "notes": "Rewrite from grounded repo details; remove the 'Ladies and gentlemen' setup.",
-      "title": "The Missing Manifesto",
-      "angle": "The repository's lack of a description is a feature, not a bug. It's a roast pack of pure, unadulterated intrigue. What secrets lie in this digital goodness bag?",
+      "bundle": "openclaw-parody-oneliner-v3-arena",
+      "runId": "openclaw-parody-oneliner-v3-luna__discourse-compression__cycle-01",
+      "packetId": "packet-1",
+      "provider": "production",
+      "model": "openai/gpt-5.6-luna",
+      "profile": "master_comedy_arena",
+      "variant": "discourse-compression",
+      "decision": "",
+      "rank": null,
+      "reason": "",
+      "notes": "",
+      "title": "Production comedy script",
+      "angle": "discourse-compression",
       "metrics": {
         "candidateCount": 1,
         "passedCount": 1,
         "passRate": 1,
-        "meanWords": 104,
-        "meanSeconds": 42,
-        "sourcedLineRate": 0.25,
-        "perceptionLineRate": 0,
-        "distinctAngleRate": 1,
-        "gateIssueCount": 0
+        "meanWords": 31,
+        "meanSeconds": 13
       }
     },
     {
-      "bundle": "provider-context-light-reference-matrix",
-      "runId": "repo_plus_reference_sources__gpt",
-      "packetId": "packet-eval-cinema",
-      "provider": "gpt",
-      "model": "gpt-5.6-luna",
-      "profile": "repo_plus_reference_sources",
-      "decision": "revise",
-      "rank": 4,
-      "reason": "Clear premise, but it repeats the roast-of-the-roast idea instead of adding fresh turns.",
-      "notes": "Keep: 'so even the insult arrives with compliance documentation'; add a different technical angle.",
-      "title": "The Roast Has a Review Process",
-      "angle": "A roast-video generator that has more governance than runtime",
-      "metrics": {
-        "candidateCount": 1,
-        "passedCount": 0,
-        "passRate": 0,
-        "meanWords": 162,
-        "meanSeconds": 65,
-        "sourcedLineRate": 0.833,
-        "perceptionLineRate": 0,
-        "distinctAngleRate": 1,
-        "gateIssueCount": 1
-      }
-    },
-    {
-      "bundle": "provider-context-light-reference-matrix",
-      "runId": "repo_plus_reference_sources__grok",
-      "packetId": "self-scorecard-factory",
-      "provider": "grok",
-      "model": "x-ai/grok-4.6",
-      "profile": "repo_plus_reference_sources",
-      "decision": "revise",
-      "rank": 3,
-      "reason": "Several sharp details land, but it runs long and revisits the same review-board premise.",
-      "notes": "Preserve: 'Two libraries and a review board. That is not a product. That is a group project that unionized.'",
-      "title": "The Roast Factory That Grades Itself",
-      "angle": "A nameless GitHub hack that spent more architecture on scoring jokes than on introducing the product.",
-      "metrics": {
-        "candidateCount": 1,
-        "passedCount": 0,
-        "passRate": 0,
-        "meanWords": 190,
-        "meanSeconds": 76,
-        "sourcedLineRate": 0.6,
-        "perceptionLineRate": 0.1,
-        "distinctAngleRate": 1,
-        "gateIssueCount": 1
-      }
-    },
-    {
-      "bundle": "provider-context-light-reference-matrix",
-      "runId": "repo_plus_reference_sources__openrouter:cognitivecomputations/dolphin-mistral-24b-venice-edition",
-      "packetId": "YkghzKpW91Lifh5t",
-      "provider": "openrouter:cognitivecomputations/dolphin-mistral-24b-venice-edition",
-      "model": "cognitivecomputations/dolphin-mistral-24b-venice-edition",
-      "profile": "repo_plus_reference_sources",
-      "decision": "reject",
-      "rank": 5,
-      "reason": "Grounded details are merely listed; the final line is generic and does not form a joke.",
-      "notes": "Build one specific premise from the file mix instead of summarizing repository metadata.",
-      "title": "RoastBench: The GitHub Roaster",
-      "angle": "Investigating the repository's roast generation capabilities",
+      "bundle": "openclaw-parody-oneliner-v3-arena",
+      "runId": "openclaw-parody-oneliner-v3-luna__hard-callback__cycle-01",
+      "packetId": "packet-1",
+      "provider": "production",
+      "model": "openai/gpt-5.6-luna",
+      "profile": "master_comedy_arena",
+      "variant": "hard-callback",
+      "decision": "",
+      "rank": null,
+      "reason": "",
+      "notes": "",
+      "title": "Production comedy script",
+      "angle": "hard-callback",
       "metrics": {
         "candidateCount": 1,
         "passedCount": 1,
         "passRate": 1,
-        "meanWords": 93,
-        "meanSeconds": 38,
-        "sourcedLineRate": 0.333,
-        "perceptionLineRate": 0.333,
-        "distinctAngleRate": 1,
-        "gateIssueCount": 0
+        "meanWords": 29,
+        "meanSeconds": 12
+      }
+    },
+    {
+      "bundle": "openclaw-parody-oneliner-v3-arena",
+      "runId": "openclaw-parody-oneliner-v3-opus__hard-callback__cycle-01",
+      "packetId": "packet-1",
+      "provider": "openai-compatible",
+      "model": "anthropic/claude-opus-4.6",
+      "profile": "master_comedy_arena",
+      "variant": "hard-callback",
+      "decision": "",
+      "rank": null,
+      "reason": "",
+      "notes": "",
+      "title": "Production comedy script",
+      "angle": "hard-callback",
+      "metrics": {
+        "candidateCount": 1,
+        "passedCount": 1,
+        "passRate": 1,
+        "meanWords": 27,
+        "meanSeconds": 11
+      }
+    },
+    {
+      "bundle": "openclaw-parody-oneliner-v3-arena",
+      "runId": "openclaw-parody-oneliner-v3-opus__one-premise__cycle-01",
+      "packetId": "packet-1",
+      "provider": "openai-compatible",
+      "model": "anthropic/claude-opus-4.6",
+      "profile": "master_comedy_arena",
+      "variant": "one-premise",
+      "decision": "",
+      "rank": null,
+      "reason": "",
+      "notes": "",
+      "title": "Production comedy script",
+      "angle": "one-premise",
+      "metrics": {
+        "candidateCount": 1,
+        "passedCount": 1,
+        "passRate": 1,
+        "meanWords": 22,
+        "meanSeconds": 9
+      }
+    },
+    {
+      "bundle": "openclaw-parody-oneliner-v3-arena",
+      "runId": "openclaw-parody-oneliner-v3-venice__hard-callback__cycle-01",
+      "packetId": "packet-1",
+      "provider": "openai-compatible",
+      "model": "venice-uncensored",
+      "profile": "master_comedy_arena",
+      "variant": "hard-callback",
+      "decision": "",
+      "rank": null,
+      "reason": "",
+      "notes": "",
+      "title": "Production comedy script",
+      "angle": "hard-callback",
+      "metrics": {
+        "candidateCount": 1,
+        "passedCount": 1,
+        "passRate": 1,
+        "meanWords": 26,
+        "meanSeconds": 11
+      }
+    },
+    {
+      "bundle": "openclaw-parody-oneliner-v3-arena",
+      "runId": "openclaw-parody-oneliner-v3-opus__viewer-first__cycle-01",
+      "packetId": "packet-1",
+      "provider": "openai-compatible",
+      "model": "anthropic/claude-opus-4.6",
+      "profile": "master_comedy_arena",
+      "variant": "viewer-first",
+      "decision": "",
+      "rank": null,
+      "reason": "",
+      "notes": "",
+      "title": "Production comedy script",
+      "angle": "viewer-first",
+      "metrics": {
+        "candidateCount": 1,
+        "passedCount": 1,
+        "passRate": 1,
+        "meanWords": 25,
+        "meanSeconds": 10
+      }
+    },
+    {
+      "bundle": "openclaw-parody-oneliner-v3-arena",
+      "runId": "openclaw-parody-oneliner-v3-luna__viewer-first__cycle-01",
+      "packetId": "packet-1",
+      "provider": "production",
+      "model": "openai/gpt-5.6-luna",
+      "profile": "master_comedy_arena",
+      "variant": "viewer-first",
+      "decision": "",
+      "rank": null,
+      "reason": "",
+      "notes": "",
+      "title": "Production comedy script",
+      "angle": "viewer-first",
+      "metrics": {
+        "candidateCount": 1,
+        "passedCount": 1,
+        "passRate": 1,
+        "meanWords": 26,
+        "meanSeconds": 11
+      }
+    },
+    {
+      "bundle": "openclaw-parody-oneliner-v3-arena",
+      "runId": "openclaw-parody-oneliner-v3-luna__one-premise__cycle-01",
+      "packetId": "packet-1",
+      "provider": "production",
+      "model": "openai/gpt-5.6-luna",
+      "profile": "master_comedy_arena",
+      "variant": "one-premise",
+      "decision": "",
+      "rank": null,
+      "reason": "",
+      "notes": "",
+      "title": "Production comedy script",
+      "angle": "one-premise",
+      "metrics": {
+        "candidateCount": 1,
+        "passedCount": 1,
+        "passRate": 1,
+        "meanWords": 30,
+        "meanSeconds": 12
+      }
+    },
+    {
+      "bundle": "openclaw-parody-oneliner-v3-arena",
+      "runId": "openclaw-parody-oneliner-v3-luna__baseline__cycle-01",
+      "packetId": "packet-1",
+      "provider": "production",
+      "model": "openai/gpt-5.6-luna",
+      "profile": "master_comedy_arena",
+      "variant": "baseline",
+      "decision": "",
+      "rank": null,
+      "reason": "",
+      "notes": "",
+      "title": "Production comedy script",
+      "angle": "baseline",
+      "metrics": {
+        "candidateCount": 1,
+        "passedCount": 1,
+        "passRate": 1,
+        "meanWords": 29,
+        "meanSeconds": 12
+      }
+    },
+    {
+      "bundle": "openclaw-parody-oneliner-v3-arena",
+      "runId": "openclaw-parody-oneliner-v3-opus__discourse-compression__cycle-01",
+      "packetId": "packet-1",
+      "provider": "openai-compatible",
+      "model": "anthropic/claude-opus-4.6",
+      "profile": "master_comedy_arena",
+      "variant": "discourse-compression",
+      "decision": "",
+      "rank": null,
+      "reason": "",
+      "notes": "",
+      "title": "Production comedy script",
+      "angle": "discourse-compression",
+      "metrics": {
+        "candidateCount": 1,
+        "passedCount": 1,
+        "passRate": 1,
+        "meanWords": 24,
+        "meanSeconds": 10
+      }
+    },
+    {
+      "bundle": "openclaw-parody-oneliner-v3-arena",
+      "runId": "openclaw-parody-oneliner-v3-venice__discourse-compression__cycle-01",
+      "packetId": "packet-1",
+      "provider": "openai-compatible",
+      "model": "venice-uncensored",
+      "profile": "master_comedy_arena",
+      "variant": "discourse-compression",
+      "decision": "",
+      "rank": null,
+      "reason": "",
+      "notes": "",
+      "title": "Production comedy script",
+      "angle": "discourse-compression",
+      "metrics": {
+        "candidateCount": 1,
+        "passedCount": 1,
+        "passRate": 1,
+        "meanWords": 24,
+        "meanSeconds": 10
+      }
+    },
+    {
+      "bundle": "openclaw-parody-oneliner-v3-arena",
+      "runId": "openclaw-parody-oneliner-v3-opus__baseline__cycle-01",
+      "packetId": "packet-1",
+      "provider": "openai-compatible",
+      "model": "anthropic/claude-opus-4.6",
+      "profile": "master_comedy_arena",
+      "variant": "baseline",
+      "decision": "",
+      "rank": null,
+      "reason": "",
+      "notes": "",
+      "title": "Production comedy script",
+      "angle": "baseline",
+      "metrics": {
+        "candidateCount": 1,
+        "passedCount": 1,
+        "passRate": 1,
+        "meanWords": 27,
+        "meanSeconds": 11
+      }
+    },
+    {
+      "bundle": "openclaw-parody-oneliner-v3-arena",
+      "runId": "openclaw-parody-oneliner-v3-venice__viewer-first__cycle-01",
+      "packetId": "packet-1",
+      "provider": "openai-compatible",
+      "model": "venice-uncensored",
+      "profile": "master_comedy_arena",
+      "variant": "viewer-first",
+      "decision": "",
+      "rank": null,
+      "reason": "",
+      "notes": "",
+      "title": "Production comedy script",
+      "angle": "viewer-first",
+      "metrics": {
+        "candidateCount": 1,
+        "passedCount": 1,
+        "passRate": 1,
+        "meanWords": 18,
+        "meanSeconds": 8
+      }
+    },
+    {
+      "bundle": "openclaw-parody-oneliner-v3-arena",
+      "runId": "openclaw-parody-oneliner-v3-venice__baseline__cycle-01",
+      "packetId": "packet-1",
+      "provider": "openai-compatible",
+      "model": "venice-uncensored",
+      "profile": "master_comedy_arena",
+      "variant": "baseline",
+      "decision": "",
+      "rank": null,
+      "reason": "",
+      "notes": "",
+      "title": "Production comedy script",
+      "angle": "baseline",
+      "metrics": {
+        "candidateCount": 1,
+        "passedCount": 1,
+        "passRate": 1,
+        "meanWords": 22,
+        "meanSeconds": 9
       }
     }
   ],
-  "pairwiseComparisons": 6,
+  "pairwiseComparisons": 25,
+  "directPairwiseChoices": 25,
   "pairwiseStandings": [
     {
-      "key": "gpt__gpt-5.6-luna__repo_only",
-      "provider": "gpt",
-      "model": "gpt-5.6-luna",
-      "profile": "repo_only",
-      "wins": 1,
-      "losses": 1,
+      "key": "production__openai/gpt-5.6-luna__master_comedy_arena__discourse-compression",
+      "provider": "production",
+      "model": "openai/gpt-5.6-luna",
+      "profile": "master_comedy_arena",
+      "variant": "discourse-compression",
+      "wins": 2,
+      "losses": 3,
       "ties": 0,
-      "comparisons": 2,
-      "pairwiseScore": 50,
+      "comparisons": 5,
+      "pairwiseScore": 40,
       "interval95": {
-        "lower": 9.5,
-        "upper": 90.5
+        "lower": 11.8,
+        "upper": 76.9
       }
     },
     {
-      "key": "grok__x-ai/grok-4.6__repo_only",
-      "provider": "grok",
-      "model": "x-ai/grok-4.6",
-      "profile": "repo_only",
+      "key": "production__openai/gpt-5.6-luna__master_comedy_arena__hard-callback",
+      "provider": "production",
+      "model": "openai/gpt-5.6-luna",
+      "profile": "master_comedy_arena",
+      "variant": "hard-callback",
+      "wins": 2,
+      "losses": 2,
+      "ties": 0,
+      "comparisons": 4,
+      "pairwiseScore": 50,
+      "interval95": {
+        "lower": 15,
+        "upper": 85
+      }
+    },
+    {
+      "key": "openai-compatible__anthropic/claude-opus-4.6__master_comedy_arena__hard-callback",
+      "provider": "openai-compatible",
+      "model": "anthropic/claude-opus-4.6",
+      "profile": "master_comedy_arena",
+      "variant": "hard-callback",
+      "wins": 3,
+      "losses": 2,
+      "ties": 0,
+      "comparisons": 5,
+      "pairwiseScore": 60,
+      "interval95": {
+        "lower": 23.1,
+        "upper": 88.2
+      }
+    },
+    {
+      "key": "openai-compatible__anthropic/claude-opus-4.6__master_comedy_arena__one-premise",
+      "provider": "openai-compatible",
+      "model": "anthropic/claude-opus-4.6",
+      "profile": "master_comedy_arena",
+      "variant": "one-premise",
+      "wins": 2,
+      "losses": 1,
+      "ties": 0,
+      "comparisons": 3,
+      "pairwiseScore": 66.7,
+      "interval95": {
+        "lower": 20.8,
+        "upper": 93.9
+      }
+    },
+    {
+      "key": "openai-compatible__venice-uncensored__master_comedy_arena__hard-callback",
+      "provider": "openai-compatible",
+      "model": "venice-uncensored",
+      "profile": "master_comedy_arena",
+      "variant": "hard-callback",
+      "wins": 1,
+      "losses": 2,
+      "ties": 0,
+      "comparisons": 3,
+      "pairwiseScore": 33.3,
+      "interval95": {
+        "lower": 6.1,
+        "upper": 79.2
+      }
+    },
+    {
+      "key": "openai-compatible__anthropic/claude-opus-4.6__master_comedy_arena__viewer-first",
+      "provider": "openai-compatible",
+      "model": "anthropic/claude-opus-4.6",
+      "profile": "master_comedy_arena",
+      "variant": "viewer-first",
+      "wins": 1,
+      "losses": 2,
+      "ties": 0,
+      "comparisons": 3,
+      "pairwiseScore": 33.3,
+      "interval95": {
+        "lower": 6.1,
+        "upper": 79.2
+      }
+    },
+    {
+      "key": "production__openai/gpt-5.6-luna__master_comedy_arena__viewer-first",
+      "provider": "production",
+      "model": "openai/gpt-5.6-luna",
+      "profile": "master_comedy_arena",
+      "variant": "viewer-first",
+      "wins": 0,
+      "losses": 5,
+      "ties": 0,
+      "comparisons": 5,
+      "pairwiseScore": 0,
+      "interval95": {
+        "lower": 0,
+        "upper": 43.4
+      }
+    },
+    {
+      "key": "production__openai/gpt-5.6-luna__master_comedy_arena__one-premise",
+      "provider": "production",
+      "model": "openai/gpt-5.6-luna",
+      "profile": "master_comedy_arena",
+      "variant": "one-premise",
+      "wins": 2,
+      "losses": 1,
+      "ties": 0,
+      "comparisons": 3,
+      "pairwiseScore": 66.7,
+      "interval95": {
+        "lower": 20.8,
+        "upper": 93.9
+      }
+    },
+    {
+      "key": "production__openai/gpt-5.6-luna__master_comedy_arena__baseline",
+      "provider": "production",
+      "model": "openai/gpt-5.6-luna",
+      "profile": "master_comedy_arena",
+      "variant": "baseline",
+      "wins": 0,
+      "losses": 3,
+      "ties": 0,
+      "comparisons": 3,
+      "pairwiseScore": 0,
+      "interval95": {
+        "lower": 0,
+        "upper": 56.2
+      }
+    },
+    {
+      "key": "openai-compatible__anthropic/claude-opus-4.6__master_comedy_arena__discourse-compression",
+      "provider": "openai-compatible",
+      "model": "anthropic/claude-opus-4.6",
+      "profile": "master_comedy_arena",
+      "variant": "discourse-compression",
+      "wins": 2,
+      "losses": 1,
+      "ties": 0,
+      "comparisons": 3,
+      "pairwiseScore": 66.7,
+      "interval95": {
+        "lower": 20.8,
+        "upper": 93.9
+      }
+    },
+    {
+      "key": "openai-compatible__venice-uncensored__master_comedy_arena__discourse-compression",
+      "provider": "openai-compatible",
+      "model": "venice-uncensored",
+      "profile": "master_comedy_arena",
+      "variant": "discourse-compression",
+      "wins": 1,
+      "losses": 3,
+      "ties": 0,
+      "comparisons": 4,
+      "pairwiseScore": 25,
+      "interval95": {
+        "lower": 4.6,
+        "upper": 69.9
+      }
+    },
+    {
+      "key": "openai-compatible__anthropic/claude-opus-4.6__master_comedy_arena__baseline",
+      "provider": "openai-compatible",
+      "model": "anthropic/claude-opus-4.6",
+      "profile": "master_comedy_arena",
+      "variant": "baseline",
+      "wins": 5,
+      "losses": 0,
+      "ties": 0,
+      "comparisons": 5,
+      "pairwiseScore": 100,
+      "interval95": {
+        "lower": 56.6,
+        "upper": 100
+      }
+    },
+    {
+      "key": "openai-compatible__venice-uncensored__master_comedy_arena__viewer-first",
+      "provider": "openai-compatible",
+      "model": "venice-uncensored",
+      "profile": "master_comedy_arena",
+      "variant": "viewer-first",
       "wins": 2,
       "losses": 0,
       "ties": 0,
@@ -320,40 +790,11 @@
       }
     },
     {
-      "key": "openrouter:cognitivecomputations/dolphin-mistral-24b-venice-edition__cognitivecomputations/dolphin-mistral-24b-venice-edition__repo_only",
-      "provider": "openrouter:cognitivecomputations/dolphin-mistral-24b-venice-edition",
-      "model": "cognitivecomputations/dolphin-mistral-24b-venice-edition",
-      "profile": "repo_only",
-      "wins": 0,
-      "losses": 2,
-      "ties": 0,
-      "comparisons": 2,
-      "pairwiseScore": 0,
-      "interval95": {
-        "lower": 0,
-        "upper": 65.8
-      }
-    },
-    {
-      "key": "gpt__gpt-5.6-luna__repo_plus_reference_sources",
-      "provider": "gpt",
-      "model": "gpt-5.6-luna",
-      "profile": "repo_plus_reference_sources",
-      "wins": 1,
-      "losses": 1,
-      "ties": 0,
-      "comparisons": 2,
-      "pairwiseScore": 50,
-      "interval95": {
-        "lower": 9.5,
-        "upper": 90.5
-      }
-    },
-    {
-      "key": "grok__x-ai/grok-4.6__repo_plus_reference_sources",
-      "provider": "grok",
-      "model": "x-ai/grok-4.6",
-      "profile": "repo_plus_reference_sources",
+      "key": "openai-compatible__venice-uncensored__master_comedy_arena__baseline",
+      "provider": "openai-compatible",
+      "model": "venice-uncensored",
+      "profile": "master_comedy_arena",
+      "variant": "baseline",
       "wins": 2,
       "losses": 0,
       "ties": 0,
@@ -362,21 +803,6 @@
       "interval95": {
         "lower": 34.2,
         "upper": 100
-      }
-    },
-    {
-      "key": "openrouter:cognitivecomputations/dolphin-mistral-24b-venice-edition__cognitivecomputations/dolphin-mistral-24b-venice-edition__repo_plus_reference_sources",
-      "provider": "openrouter:cognitivecomputations/dolphin-mistral-24b-venice-edition",
-      "model": "cognitivecomputations/dolphin-mistral-24b-venice-edition",
-      "profile": "repo_plus_reference_sources",
-      "wins": 0,
-      "losses": 2,
-      "ties": 0,
-      "comparisons": 2,
-      "pairwiseScore": 0,
-      "interval95": {
-        "lower": 0,
-        "upper": 65.8
       }
     }
   ]
