@@ -2,11 +2,35 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  buildResearchBrief,
   buildRoastPlan,
   normalizeSubjectUrl,
   researchSubject,
   summarizeRepository,
 } from "../web/lib/mvp.mjs";
+
+test("buildResearchBrief returns one grounded Markdown brief with public themes", () => {
+  const summary = {
+    name: "AnalystTom/veed_hack",
+    url: "https://github.com/AnalystTom/veed_hack",
+    overview: "A research-led parody video experiment.",
+    evidence: [
+      { id: "activity", label: "Public repository facts", value: "4 stars and 1 fork.", sourceUrl: "https://github.com/AnalystTom/veed_hack" },
+      { id: "readme", label: "README excerpt", value: "Build real videos from researched evidence.", sourceUrl: "https://github.com/AnalystTom/veed_hack#readme" },
+    ],
+  };
+
+  const brief = buildResearchBrief(summary, {
+    answer: "Public discussion repeatedly questions whether research-heavy video tools create more workflow than they remove.",
+    results: [{ title: "Public discussion", url: "https://example.com/discussion", content: "Creators complain about workflow complexity." }],
+  });
+
+  assert.match(brief, /^# AnalystTom\/veed_hack/m);
+  assert.match(brief, /## Common themes and complaints/);
+  assert.match(brief, /workflow complexity/i);
+  assert.match(brief, /\[Public discussion\]\(https:\/\/example.com\/discussion\)/);
+  assert.doesNotMatch(brief, /undefined|null/);
+});
 
 test("normalizeSubjectUrl accepts public HTTPS GitHub repositories", () => {
   const subject = normalizeSubjectUrl("repository", "https://github.com/AnalystTom/veed_hack");

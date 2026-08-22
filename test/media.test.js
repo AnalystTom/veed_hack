@@ -8,12 +8,12 @@ test("generateApprovedVideo blocks unapproved or incomplete requests before prov
   const subscribe = async () => { calls += 1; };
 
   await assert.rejects(
-    generateApprovedVideo({ approved: false, script: "Hello", voiceReferenceUrl: "https://example.com/voice.wav", presenterImageUrl: "https://example.com/host.png" }, subscribe),
+    generateApprovedVideo({ approved: false, script: "Hello", templateId: "roast" }, { subscribe }),
     /approved/i,
   );
   await assert.rejects(
-    generateApprovedVideo({ approved: true, script: "Hello", voiceReferenceUrl: "", presenterImageUrl: "https://example.com/host.png" }, subscribe),
-    /voice reference/i,
+    generateApprovedVideo({ approved: true, script: "Hello", templateId: "unknown" }, { subscribe }),
+    /template/i,
   );
   assert.equal(calls, 0);
 });
@@ -22,7 +22,7 @@ test("generateApprovedVideo creates narration before the VEED presenter video", 
   const calls = [];
   const subscribe = async (model, options) => {
     calls.push({ model, input: options.input });
-    if (model === "fal-ai/chatterbox/text-to-speech") {
+    if (model === "fal-ai/elevenlabs/tts/eleven-v3") {
       return { data: { audio: { url: "https://media.example/narration.wav" } } };
     }
     return { data: { video: { url: "https://media.example/video.mp4" } } };
@@ -31,14 +31,23 @@ test("generateApprovedVideo creates narration before the VEED presenter video", 
   const result = await generateApprovedVideo({
     approved: true,
     script: "A short approved script.",
-    voiceReferenceUrl: "https://media.example/licensed-voice.wav",
-    presenterImageUrl: "https://media.example/licensed-presenter.png",
-  }, subscribe);
+    templateId: "roast",
+  }, {
+    subscribe,
+    uploadPresenter: async (template) => {
+      assert.equal(template.id, "roast");
+      return "https://media.example/licensed-presenter.png";
+    },
+  });
 
   assert.deepEqual(calls.map((call) => call.model), [
-    "fal-ai/chatterbox/text-to-speech",
+    "fal-ai/elevenlabs/tts/eleven-v3",
     "veed/fabric-1.0",
   ]);
+  assert.equal(calls[0].input.voice, "George");
   assert.equal(calls[1].input.audio_url, "https://media.example/narration.wav");
+  assert.equal(calls[1].input.image_url, "https://media.example/licensed-presenter.png");
+  assert.equal(calls[1].input.resolution, "480p");
   assert.equal(result.videoUrl, "https://media.example/video.mp4");
+  assert.equal(result.templateId, "roast");
 });

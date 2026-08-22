@@ -1,5 +1,13 @@
 import dns from "node:dns/promises";
 import net from "node:net";
+import path from "node:path";
+
+import { config } from "dotenv";
+
+const repositoryRoot = path.basename(process.cwd()) === "web"
+  ? path.resolve(process.cwd(), "..")
+  : process.cwd();
+config({ path: path.join(repositoryRoot, ".env"), override: false });
 
 const PRIVATE_HOSTS = new Set(["localhost", "localhost.localdomain"]);
 
@@ -251,6 +259,94 @@ export async function researchSubject(kind, rawUrl, fetchImpl = fetch) {
   return subject.kind === "repository"
     ? researchRepository(subject, fetchImpl)
     : researchProduct(subject, fetchImpl);
+}
+
+function cleanMarkdownText(value) {
+  return String(value || "").replace(/[\r\n]+/g, " ").replace(/\s+/g, " ").trim();
+}
+
+function markdownLink(label, url) {
+  const safeLabel = cleanMarkdownText(label).replace(/[\[\]]/g, "");
+  let safeUrl = "";
+  try {
+    const parsed = new URL(String(url || ""));
+    if (parsed.protocol === "https:") safeUrl = parsed.toString();
+  } catch {
+    safeUrl = "";
+  }
+  return safeUrl ? `[${safeLabel || safeUrl}](${safeUrl})` : safeLabel;
+}
+
+export function buildResearchBrief(summary, publicContext = {}) {
+  const evidence = Array.isArray(summary?.evidence) ? summary.evidence : [];
+  const results = Array.isArray(publicContext?.results) ? publicContext.results.slice(0, 6) : [];
+  const answer = cleanMarkdownText(publicContext?.answer);
+  const observableSignals = evidence.slice(0, 6).map((item) => `- **${cleanMarkdownText(item.label)}:** ${cleanMarkdownText(item.value)}`);
+  const publicThemes = results.slice(0, 3).map((result) => `- ${cleanMarkdownText(result.content)}`);
+  const sourceLinks = [
+    ...evidence.map((item) => ({ title: item.label, url: item.sourceUrl })),
+    ...results.map((result) => ({ title: result.title, url: result.url })),
+  ].filter((source, index, all) => source.url && all.findIndex((candidate) => candidate.url === source.url) === index);
+
+  return [
+    `# ${cleanMarkdownText(summary?.name) || "Research Brief"}`,
+    "",
+    cleanMarkdownText(summary?.overview) || "No public overview was returned.",
+    "",
+    "## Popular knowledge and drama",
+    "",
+    answer || "No wider public discussion was returned. The comedy should rely on the observable product or repository signals below.",
+    "",
+    "## Common themes and complaints",
+    "",
+    ...(publicThemes.length ? publicThemes : ["- No recurring public complaints were returned by the available research sources."]),
+    "",
+    "## Roastable signals",
+    "",
+    ...(observableSignals.length ? observableSignals : ["- No reliable observable signals were returned."]),
+    "",
+    "## Sources",
+    "",
+    ...(sourceLinks.length ? sourceLinks.map((source) => `- ${markdownLink(source.title, source.url)}`) : ["- No public sources were returned."]),
+  ].join("\n");
+}
+
+export async function searchPublicContext(summary, fetchImpl = fetch, apiKey = process.env.TAVILY_API_KEY) {
+  if (!apiKey?.trim()) {
+    return { answer: "", results: [], mode: "direct-public-data", warning: "Tavily is not configured; showing direct public data only." };
+  }
+  const response = await fetchImpl("https://api.tavily.com/search", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey.trim()}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      query: `${summary.name} ${summary.url} creator traction drama recurring user complaints criticism popular knowledge`,
+      search_depth: "advanced",
+      chunks_per_source: 2,
+      max_results: 8,
+      topic: "general",
+      include_answer: "advanced",
+      include_raw_content: false,
+      include_images: false,
+      include_usage: true,
+    }),
+    signal: AbortSignal.timeout(30_000),
+  });
+  if (!response.ok) throw new Error(`Tavily research failed with status ${response.status}.`);
+  const payload = await response.json();
+  return {
+    answer: cleanMarkdownText(payload.answer),
+    results: (Array.isArray(payload.results) ? payload.results : []).map((result) => ({
+      title: cleanMarkdownText(result.title) || "Public source",
+      url: result.url,
+      content: cleanMarkdownText(result.content),
+    })).filter((result) => result.url && result.content),
+    mode: "tavily-and-direct-public-data",
+    requestId: payload.request_id || null,
+    warning: "",
+  };
 }
 
 export function buildRoastPlan({ subjectName, subjectUrl, persona, customInstructions, evidence }) {
