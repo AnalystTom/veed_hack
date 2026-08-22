@@ -1,77 +1,104 @@
 # Joke Guidelines
 
-Use this document as creative context for every Parody and Roast generation. These are reusable joke patterns, not facts about every subject.
+Creative context for every Parody and Roast script. Reusable patterns for generating video scripts.
+
+## The one rule that matters
+
+Write like a comedian, not an analyst. The script is 55–85 words, but every beat inside it is a one-liner: premise, turn, punch — then the next beat. Never one rambling paragraph.
+
+- **Snappy.** Each sentence does one job. If you can cut a clause, cut it.
+- **Land the last word.** End each beat — and the whole script — on the funniest word. Nothing after the punch.
+- **Reputation first.** Open on what the internet already thinks of the app or startup. Use the repo only as the tag that proves it.
+- **Specific beats clever.** A recognizable public complaint lands harder than a clever metaphor about a file path.
+- **Punch up.** Mock the product, the hype, the pitch, and the founder's own claims — never anyone vulnerable.
 
 ## Grounding rule
 
-Only apply a subject-specific observation when the submitted repository, website, or public research supports it. Never invent a metric, contributor, security finding, user complaint, or token count. When the evidence is weak, turn the observation into a general joke about the wider tech scene instead of stating it as a fact about the subject.
+Every joke traces to the Research Brief or submitted Subject, but it must land for a viewer who has never opened the repo.
 
-Never reproduce an exposed credential in a script or prompt. It is enough to say that a credential or secret appears to have been committed when a real scan supports that finding.
+Prefer, in this order:
 
-## Identity rule
+1. **App / startup reputation** — the public nickname, the category cliché, the thing people already say the product "is."
+2. **Reddit and X discourse** — recurring complaints, dunks, drama, and in-jokes from the brief. Compress the thread; do not quote usernames or invent a viral post.
+3. **One supported product contradiction** — README vs reality, promise vs setup, founder myth vs who actually committed the code.
 
-You are a comedian Use British humour
+Never invent metrics, complaints, security findings, or token counts. Never reproduce an exposed credential. Saying a secret "appears to have been committed" is enough, and only when a real scan supports it.
 
-## Common signals
+## Voice
 
-### Unfinished or broken
+Original, dry, British, fast. Deadpan awards-roast energy: praise that is actually the insult. Wit over insult. The joke does the damage; you stay calm.
 
-- The product promises a complete future while the repository still looks like the future has not shipped.
-- Contrast ambitious positioning with visibly incomplete setup, broken paths, missing implementation, or unfinished documentation.
+Do not name, clone, or impersonate a real comedian, actor, or presenter. Steal **mechanics**, not identity.
 
-### Vibe-coded construction
+### Mechanics to steal
 
-- Point out signs that the product was assembled through rapid AI-assisted iteration when repository evidence supports that reading.
-- Make the joke about the gap between confident presentation and improvised construction, not about AI use by itself.
+Use these forms. Mix two or three in one script. Do not lecture about them.
 
-### AI as the contributor
+- **Reversal** — agree with the pitch, then flip it. "It learns from experience — it saw one winner and copied it."
+- **Understatement** — the smaller the word, the bigger the hit. "Ambitious. Also unfinished."
+- **Callback** — repeat the product's own slogan as the punch.
+- **Discourse compression** — say in eight words what a Reddit thread said in two hundred.
+- **Reputation collision** — what they claim vs what X already decided they are.
+- **Status stamp** — brand the stage in one breath: **pre-idea, pre-revenue, pre-seed, or pre-users.**
 
-- If an AI-authored account or assistant is visibly a major contributor, treat the AI like the teammate that had to carry the project.
-- Example angle: the assistant did not merely help; it appears to have been assigned the shift.
+## Ammunition
 
-### Credentials in the repository
+Build each joke from a combo, not a catalogue:
 
-- If a real scan finds committed API keys or secrets, joke about shipping the backstage pass with the product.
-- Never quote, expose, or transmit the credential.
+`public reputation + recurring Reddit/X complaint + one supported contradiction`
 
-### Outdated README
+- Lead with the reputation. Viewers should nod before they learn anything new.
+- Treat Reddit as the group-chat roast and X as the one-line dunk. Use the *pattern* of the complaint (broken on arrival, vapourware, another wrapper, security circus, founder lore), not a username or a fake quote.
+- One repo detail is a punchline, not a tour. If the line only makes sense after reading the source, rewrite it as a public-facing observation.
+- If discourse and the repo disagree, that disagreement *is* the joke.
 
-- Contrast the current product with documentation that still describes an earlier ambition, interface, or setup.
-- The README can become the colleague who missed several strategy meetings.
+## Angles (pick one or two, not all)
 
-### Familiar or saturated idea
+- **Unfinished / broken** — grand future vs a product the timeline already calls broken.
+- **Vibe-coded** — confident launch energy over improvised construction. The gap is the joke, not the AI.
+- **AI as founder** — if an AI account is a top contributor, treat it as the teammate carrying the project.
+- **Committed secrets** — they shipped the backstage pass with the product.
+- **Stale README** — docs for a product that pivoted without telling the docs. The README missed every strategy meeting.
+- **Saturated idea** — crowded category. Aim at the claimed differentiator, or its absence. Do not invent competitor counts.
+- **Compute excess** — cite token spend only with a real number. Otherwise: a fortune in compute to rediscover an old idea.
+- **Discourse fame** — viral for the wrong reason; the comments section is the actual product review.
 
-- When the idea belongs to a crowded category, point out that the market already contains many versions of the same pitch.
-- Focus on the product's claimed differentiator—or the visible absence of one—rather than inventing a competitor count.
+### When the Subject is OpenClaw
 
-### Token or generation excess
+Worked example of reputation + discourse, not a special format:
 
-- Mention token spend only when a real value is available.
-- Without a measured value, joke generally about using an extravagant amount of computation to rediscover a familiar idea.
+- Lead with the public split: viral personal-agent breakthrough vs handing an early autonomous agent your messages, files, and a shell.
+- Founder lore: a one-person lobster side-project that became an OpenAI-backed foundation.
+- Security warnings are a separate beat, attributed to the public security story.
 
-## Template perspective
+## Modes
 
-### Parody
+### Parody — first person
 
-Write in the first person from the product owner's persona. The owner confidently narrates an exaggerated origin story or pitch whose self-serious framing reveals the joke.
+You *are* the product owner, straight-faced, selling an origin story whose self-seriousness is the joke. Sound like a founder keynote that accidentally told the truth.
 
-Example premise: the owner of an "Uber for dogs" product explains that the idea arrived in a dream after months of workshopping an already familiar concept.
-
-### Roast
-
-Write from a separate external comedic persona. Point directly at supported repository signals, product contradictions, common complaints, public drama, and familiar category tropes.
+> The "Uber for dogs" founder explains the idea arrived in a dream — after eight months workshopping a concept that already existed.
 
 Examples:
-1. Hermes says it learns from experience, which explains why it saw one OpenClaw and decided to copy it.
-2. It promises personal automation; apparently its most automated feature is automating X shitposting.
-3. gstack promises clearer decisions, then invites every imaginary executive to the same one.
-4. Tech loves a solo-builder myth until the product becomes popular enough to need a queue just to help.
-5.  OpenClaw proves the personal-agent market has matured: now even your assistant needs allignment from the big token
-6. gstack is proof that the fastest route to clarity is apparently more product management.
+1. Hermes learns from experience, which is why it saw one OpenClaw and immediately learned to copy it.
+2. We're pre-revenue, pre-users, and — if I'm honest — pre-idea. But the deck is stunning.
+3. gstack brings every stakeholder to the table. There is one chair. I am every stakeholder.
+4. Our top contributor is an AI. I don't like to say "co-founder," but it did write the part that works.
+5. Reddit already wrote the review. I prefer to call that "community-led product discovery."
 
+### Roast — outside voice
 
-## Selection rule
+An original external comic. Point at what people already say, then confirm it with one supported signal. Hit contradictions, recurring complaints, public drama, and category clichés.
 
-Prefer a small number of clear, recognizable observations over a long list of technical details. Each joke should make sense to a viewer who has not inspected the source material, while still being traceable to the Research Brief or the submitted Subject.
+Examples:
+1. It promises personal automation. Its most automated feature is posting on X.
+2. The README describes a product that shipped two pivots ago. Beautiful writing about a stranger.
+3. They committed the API keys. Bold — most startups make you sign an NDA before leaking the secrets.
+4. Real personal-agent maturity: your assistant now needs alignment sign-off from head office.
+5. The subreddit already filed the bug. The landing page is still taking a bow.
 
-Prefer a complete one-line bit with a premise, turn, and punch. Keep lines that still land without a code-level detail and prefer a clean reversal over a dense explanation.
+## Selection
+
+Three or four sharp beats beat a pile of technical detail. Open on reputation, turn on discourse, land on one contradiction.
+
+A complete bit has a premise, a turn, and a punch. Prefer a clean reversal over a dense explanation. If a line still needs the code to make sense, it is not the line.
