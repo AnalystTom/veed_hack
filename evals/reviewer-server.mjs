@@ -1,4 +1,5 @@
 import { createServer } from "node:http";
+import { createHash } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
@@ -77,14 +78,35 @@ export function reviewCsv(reviews, count) {
   return `${header}\n${rows.join("\n")}\n`;
 }
 
+function visibleCandidates(results) {
+  return results.filter((result) => !result.failed && !result.skipped && result.script).map((result, index) => ({
+    id: `candidate-${candidateLabel(index)}`,
+    script: result.script,
+  }));
+}
+
+function stableHash(value) {
+  return createHash("sha256").update(value).digest("hex");
+}
+
+export function buildPairs(candidates) {
+  const pairs = [];
+  for (let leftIndex = 0; leftIndex < candidates.length; leftIndex += 1) {
+    for (let rightIndex = leftIndex + 1; rightIndex < candidates.length; rightIndex += 1) {
+      const first = candidates[leftIndex];
+      const second = candidates[rightIndex];
+      const id = `${first.id}__${second.id}`;
+      const flipped = Number.parseInt(stableHash(id).slice(0, 2), 16) % 2 === 1;
+      pairs.push({ id, left: flipped ? second : first, right: flipped ? first : second });
+    }
+  }
+  return pairs.sort((left, right) => stableHash(left.id).localeCompare(stableHash(right.id)));
+}
+
 function page() {
-  return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FunnyBench reviewer</title><style>
-*{box-sizing:border-box}body{margin:0;background:#0d0e12;color:#f5f4ef;font:15px/1.55 ui-sans-serif,system-ui,sans-serif}.shell{max-width:980px;margin:auto;padding:28px 18px 90px}header{position:sticky;top:0;background:#0d0e12eF;backdrop-filter:blur(10px);padding:4px 0 18px;border-bottom:1px solid #282b34;z-index:2}h1{margin:0;font-size:26px;letter-spacing:-.7px}.sub{color:#aeb4c2;margin:4px 0 0}.status{float:right;color:#8fd6a6;font-size:13px}.card,.guidelines{background:#171920;border:1px solid #2c303b;border-radius:14px;margin:22px 0;padding:22px;box-shadow:0 8px 28px #0002}.guidelines summary{cursor:pointer;font-weight:750}.guidelines textarea{width:100%;min-height:330px;margin-top:14px;border-radius:9px;border:1px solid #3a3e4c;background:#101217;color:#f5f4ef;padding:12px;font:13px/1.55 ui-monospace,monospace;resize:vertical}.guideline-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:12px}.label{font:700 12px/1.2 ui-monospace,monospace;letter-spacing:1.2px;color:#8da0ff}.script{font:18px/1.65 Georgia,serif;white-space:pre-wrap;margin:13px 0 18px}.controls{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.decision{border:1px solid #3a3e4c;background:#20232c;color:#e8e9ee;border-radius:9px;padding:9px;cursor:pointer;font-weight:650}.decision[data-active=true]{border-color:#91b7ff;background:#23375e;color:#fff}.fields{display:grid;grid-template-columns:80px 1fr 1fr;gap:10px;margin-top:12px}.fields input,.fields textarea{width:100%;border-radius:8px;border:1px solid #3a3e4c;background:#101217;color:#f5f4ef;padding:9px;font:inherit}.fields textarea{min-height:42px;resize:vertical}.tags{margin-top:11px;display:flex;gap:7px;flex-wrap:wrap}.tag{background:#252933;border:1px solid #3b4150;border-radius:999px;padding:5px 9px;cursor:pointer;font-size:12px}.tag[data-active=true]{background:#304a70;border-color:#8eaff1}footer{position:fixed;bottom:0;left:0;right:0;background:#11131aeF;border-top:1px solid #303542;padding:12px}.bar{max-width:980px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:12px}.save{border:0;background:#b3f09d;color:#102112;border-radius:9px;padding:10px 16px;font-weight:800;cursor:pointer}.hint{color:#aeb4c2;font-size:13px}@media(max-width:650px){.fields{grid-template-columns:1fr}.controls{grid-template-columns:1fr}.status{float:none;display:block;margin-top:8px}}</style></head><body><main class="shell"><header><span class="status" id="status">Loading…</span><h1>FunnyBench review room</h1><p class="sub">Read, react, rank. Providers and prompts remain hidden until after review.</p></header><details class="guidelines"><summary>Joke guidelines — main system prompt</summary><textarea id="guidelines" spellcheck="false" placeholder="Loading guidelines…"></textarea><div class="guideline-actions"><span class="hint">Saving changes future generations only; this arena stays frozen.</span><button class="save" id="save-guidelines">Save guidelines</button></div></details><section id="cards"></section></main><footer><div class="bar"><span class="hint">Rank 1 is best. Label the mechanics that made it work—or fail.</span><button class="save" id="save">Save review</button></div></footer><script>
-const mechanics=['specificity','mismatch','escalation','misdirection','callback','grounded','generic','repetitive'];let state={};
-function esc(s){return String(s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
-function render(data){state=data.reviews||{};document.querySelector('#status').textContent=data.candidates.length+' candidates';document.querySelector('#cards').innerHTML=data.candidates.map(c=>{const r=state[c.id]||{};const active=v=>r.decision===v;const tags=(r.mechanics||'').split('|');return '<article class="card" data-id="'+c.id+'"><div class="label">'+c.label+'</div><div class="script">'+esc(c.script)+'</div><div class="controls">'+['keep','revise','reject'].map(v=>'<button class="decision" data-value="'+v+'" data-active="'+active(v)+'">'+v+'</button>').join('')+'</div><div class="fields"><input class="rank" type="number" min="1" max="'+data.candidates.length+'" placeholder="Rank" value="'+esc(r.rank)+'"><textarea class="reason" placeholder="Why did it land or fail?">'+esc(r.reason)+'</textarea><textarea class="notes" placeholder="What to preserve or change">'+esc(r.notes)+'</textarea></div><div class="tags">'+mechanics.map(t=>'<button class="tag" data-tag="'+t+'" data-active="'+tags.includes(t)+'">'+t+'</button>').join('')+'</div></article>'}).join('');}
-function collect(){const reviews={};document.querySelectorAll('.card').forEach(card=>{const id=card.dataset.id;const tags=[...card.querySelectorAll('.tag[data-active="true"]')].map(x=>x.dataset.tag);reviews[id]={decision:card.querySelector('.decision[data-active="true"]')?.dataset.value||'',rank:card.querySelector('.rank').value,reason:card.querySelector('.reason').value,notes:card.querySelector('.notes').value,mechanics:tags.join('|'),tone:'',grounding:tags.includes('grounded')?'high':''};});return reviews;}
-document.addEventListener('click',e=>{if(e.target.classList.contains('decision')){const card=e.target.closest('.card');card.querySelectorAll('.decision').forEach(x=>x.dataset.active=String(x===e.target));}if(e.target.classList.contains('tag'))e.target.dataset.active=String(e.target.dataset.active!=='true');});document.querySelector('#save').onclick=async()=>{const b=document.querySelector('#save');b.textContent='Saving…';const res=await fetch('/api/reviews',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({reviews:collect()})});b.textContent=res.ok?'Saved ✓':'Save failed';setTimeout(()=>b.textContent='Save review',1500)};document.querySelector('#save-guidelines').onclick=async()=>{const b=document.querySelector('#save-guidelines');b.textContent='Saving…';const res=await fetch('/api/guidelines',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({guidelines:document.querySelector('#guidelines').value})});b.textContent=res.ok?'Saved ✓':'Save failed';setTimeout(()=>b.textContent='Save guidelines',1500)};Promise.all([fetch('/api/arena').then(r=>r.json()),fetch('/api/guidelines').then(r=>r.json())]).then(([arena,guidelines])=>{render(arena);document.querySelector('#guidelines').value=guidelines.guidelines||''}).catch(()=>document.querySelector('#status').textContent='Could not load arena');
+  return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FunnyBench pair review</title><style>
+*{box-sizing:border-box}body{margin:0;background:#0d0e12;color:#f5f4ef;font:15px/1.55 ui-sans-serif,system-ui,sans-serif}.shell{max-width:1200px;margin:auto;padding:28px 18px 90px}header{display:flex;justify-content:space-between;align-items:start;gap:16px;border-bottom:1px solid #282b34;padding-bottom:18px}h1{margin:0;font-size:27px;letter-spacing:-.7px}.sub,.hint{color:#aeb4c2;margin:4px 0}.status{color:#8fd6a6;font-size:13px;white-space:nowrap}.guidelines,.option{background:#171920;border:1px solid #2c303b;border-radius:14px;padding:22px;box-shadow:0 8px 28px #0002}.guidelines{margin:20px 0}.guidelines summary{cursor:pointer;font-weight:750}.guidelines textarea{width:100%;min-height:330px;margin-top:14px;border-radius:9px;border:1px solid #3a3e4c;background:#101217;color:#f5f4ef;padding:12px;font:13px/1.55 ui-monospace,monospace;resize:vertical}.guideline-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:12px}.pair-meta{text-align:center;margin:30px 0 16px;color:#aeb4c2;font-weight:700}.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}.option{min-height:380px;display:flex;flex-direction:column}.option-label{font:700 12px/1.2 ui-monospace,monospace;letter-spacing:1.2px;color:#8da0ff}.script{font:19px/1.72 Georgia,serif;white-space:pre-wrap;flex:1;margin:13px 0 22px}.choice{border:1px solid #4e628d;background:#253a61;color:white;border-radius:10px;padding:12px;font-weight:800;cursor:pointer;font-size:15px}.tie{display:block;margin:14px auto;border:1px solid #3d4351;background:#20232c;color:#e8e9ee;border-radius:9px;padding:9px 18px;cursor:pointer}.done{text-align:center;padding:80px 10px;font-size:20px}.save{border:0;background:#b3f09d;color:#102112;border-radius:9px;padding:10px 16px;font-weight:800;cursor:pointer}.keys{text-align:center;color:#888f9f;font-size:13px}@media(max-width:720px){header{display:block}.status{margin-top:8px}.pair{grid-template-columns:1fr}.option{min-height:auto}.script{font-size:17px}}</style></head><body><main class="shell"><header><div><h1>FunnyBench pair review</h1><p class="sub">Which script lands better? Providers, prompts, and candidate IDs stay hidden.</p></div><span class="status" id="status">Loading…</span></header><details class="guidelines"><summary>Joke guidelines — main system prompt</summary><textarea id="guidelines" spellcheck="false" placeholder="Loading guidelines…"></textarea><div class="guideline-actions"><span class="hint">Save a revision, then create a fresh arena. This current arena stays frozen.</span><button class="save" id="save-guidelines">Save guidelines</button></div></details><section id="pair"></section></main><script>
+let data,answers={},index=0;function esc(s){return String(s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}function nextIndex(){const open=data.pairs.findIndex(p=>!answers[p.id]);return open<0?data.pairs.length:open}function render(){index=nextIndex();const root=document.querySelector('#pair');document.querySelector('#status').textContent=Object.keys(answers).length+' / '+data.pairs.length+' comparisons';if(index>=data.pairs.length){root.innerHTML='<div class="done">All comparisons labelled. Nice. Your pairwise preferences are saved.</div>';return}const p=data.pairs[index];root.innerHTML='<div class="pair-meta">Comparison '+(index+1)+' of '+data.pairs.length+'</div><div class="pair"><article class="option"><div class="option-label">OPTION A</div><div class="script">'+esc(p.left.script)+'</div><button class="choice" data-choice="left">← Option A is better</button></article><article class="option"><div class="option-label">OPTION B</div><div class="script">'+esc(p.right.script)+'</div><button class="choice" data-choice="right">Option B is better →</button></article></div><button class="tie" data-choice="tie">About equal</button><p class="keys">Keyboard: ← A wins · → B wins · = tie</p>';document.querySelectorAll('[data-choice]').forEach(b=>b.onclick=()=>choose(b.dataset.choice));}async function choose(choice){const p=data.pairs[index];answers[p.id]={choice,reviewedAt:new Date().toISOString()};render();await fetch('/api/pairs',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({answers})});}document.addEventListener('keydown',e=>{if(e.target.tagName==='TEXTAREA')return;if(e.key==='ArrowLeft')choose('left');if(e.key==='ArrowRight')choose('right');if(e.key==='=')choose('tie');});document.querySelector('#save-guidelines').onclick=async()=>{const b=document.querySelector('#save-guidelines');b.textContent='Saving…';const res=await fetch('/api/guidelines',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({guidelines:document.querySelector('#guidelines').value})});b.textContent=res.ok?'Saved ✓':'Save failed';setTimeout(()=>b.textContent='Save guidelines',1500)};Promise.all([fetch('/api/pairs').then(r=>r.json()),fetch('/api/guidelines').then(r=>r.json())]).then(([pairs,guidelines])=>{data=pairs;answers=pairs.answers||{};document.querySelector('#guidelines').value=guidelines.guidelines||'';render()}).catch(()=>document.querySelector('#status').textContent='Could not load arena');
 </script></body></html>`;
 }
 
@@ -95,13 +117,14 @@ async function main() {
   if (!arena.startsWith(`${sharedRoot}${path.sep}`)) throw new Error("Arena must be beneath evals/shared-runs.");
   const resultsPath = path.join(arena, "results.json");
   const reviewPath = path.join(arena, "review.csv");
+  const pairwisePath = path.join(arena, "pairwise-review.json");
   const server = createServer(async (request, response) => {
     try {
       if (request.method === "GET" && request.url === "/") { response.writeHead(200, { "content-type": "text/html; charset=utf-8" }); response.end(page()); return; }
-      if (request.method === "GET" && request.url === "/api/arena") {
-        const [results, csv] = await Promise.all([readFile(resultsPath, "utf8").then(JSON.parse), readFile(reviewPath, "utf8")]);
-        const visible = results.filter((result) => !result.failed && !result.skipped && result.script).map((result, index) => ({ id: `candidate-${candidateLabel(index)}`, label: `Candidate ${candidateLabel(index).toUpperCase()}`, script: result.script }));
-        response.writeHead(200, { "content-type": "application/json" }); response.end(JSON.stringify({ candidates: visible, reviews: parseCsv(csv) })); return;
+      if (request.method === "GET" && request.url === "/api/pairs") {
+        const results = JSON.parse(await readFile(resultsPath, "utf8"));
+        const saved = await readFile(pairwisePath, "utf8").then(JSON.parse).catch(() => ({ answers: {} }));
+        response.writeHead(200, { "content-type": "application/json" }); response.end(JSON.stringify({ pairs: buildPairs(visibleCandidates(results)), answers: saved.answers || {} })); return;
       }
       if (request.method === "GET" && request.url === "/api/guidelines") {
         response.writeHead(200, { "content-type": "application/json" }); response.end(JSON.stringify({ guidelines: await readFile(guidelinesPath, "utf8") })); return;
@@ -114,13 +137,14 @@ async function main() {
         await writeFile(guidelinesPath, `${guidelines}\n`);
         response.writeHead(204); response.end(); return;
       }
-      if (request.method === "POST" && request.url === "/api/reviews") {
+      if (request.method === "POST" && request.url === "/api/pairs") {
         let body = "";
-        for await (const chunk of request) { body += chunk; if (body.length > 1_000_000) throw new Error("Review payload is too large."); }
-        const submitted = JSON.parse(body).reviews || {};
+        for await (const chunk of request) { body += chunk; if (body.length > 1_000_000) throw new Error("Pairwise review payload is too large."); }
+        const submitted = JSON.parse(body).answers || {};
         const results = JSON.parse(await readFile(resultsPath, "utf8"));
-        const count = results.filter((result) => !result.failed && !result.skipped && result.script).length;
-        await writeFile(reviewPath, reviewCsv(submitted, count));
+        const allowed = new Set(buildPairs(visibleCandidates(results)).map((pair) => pair.id));
+        const answers = Object.fromEntries(Object.entries(submitted).filter(([id, value]) => allowed.has(id) && ["left", "right", "tie"].includes(value?.choice)).map(([id, value]) => [id, { choice: value.choice, reviewedAt: value.reviewedAt || new Date().toISOString() }]));
+        await writeFile(pairwisePath, `${JSON.stringify({ updatedAt: new Date().toISOString(), answers }, null, 2)}\n`);
         response.writeHead(204); response.end(); return;
       }
       response.writeHead(404); response.end();
