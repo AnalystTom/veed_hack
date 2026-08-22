@@ -1,7 +1,1 @@
 run_id,packet_id,decision,rank,reason,notes
-repo_only__gpt,packet-1,keep,2,"Funny, specific, and escalating; the 512-by-512 closer lands.","Preserve: 'one emotional support .env file.'"
-repo_only__grok,packet-1,keep,1,"Best hook-to-escalation structure; the technical details consistently become punchlines.","Preserve: 'Cinematic, if your cinema is a postage stamp that gave up early.'"
-repo_only__openrouter:cognitivecomputations/dolphin-mistral-24b-venice-edition,packet-1,reject,6,"Mostly generic stage patter with no substantive repository-specific joke.","Rewrite from grounded repo details; remove the 'Ladies and gentlemen' setup."
-repo_plus_reference_sources__gpt,packet-1,revise,4,"Clear premise, but it repeats the roast-of-the-roast idea instead of adding fresh turns.","Keep: 'so even the insult arrives with compliance documentation'; add a different technical angle."
-repo_plus_reference_sources__grok,packet-1,revise,3,"Several sharp details land, but it runs long and revisits the same review-board premise.","Preserve: 'Two libraries and a review board. That is not a product. That is a group project that unionized.'"
-repo_plus_reference_sources__openrouter:cognitivecomputations/dolphin-mistral-24b-venice-edition,packet-1,reject,5,"Grounded details are merely listed; the final line is generic and does not form a joke.","Build one specific premise from the file mix instead of summarizing repository metadata."
