@@ -1,0 +1,18 @@
+[
+  {
+    "runId": "baseline__cycle-01",
+    "provider": "openai-compatible",
+    "model": "anthropic/claude-opus-4.6",
+    "profile": "production_comedy",
+    "variant": "baseline",
+    "title": "Production comedy script",
+    "script": "We started as Warelay. Then Clawdbot. Then Moltbot. Then OpenClaw. That's not indecision — that's a pivot so fast even the domain registrar needed therapy.\n\nOur promise is simple: your assistant, on your devices, in your chats. All you need is an Android phone, an iPhone, a self-hosted deployment, three config files, and a casual disregard for your API bill.\n\nThree hundred and eighty-seven thousand stars. And every single one of them opened an issue about setup complexity.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 78,
+      "meanSeconds": 32
+    }
+  }
+]

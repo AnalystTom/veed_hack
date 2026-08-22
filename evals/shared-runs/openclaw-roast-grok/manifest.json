@@ -1,0 +1,25 @@
+{
+  "generatedAt": "2026-08-22T15:10:47.350Z",
+  "options": {
+    "kind": "repository",
+    "templateId": "roast",
+    "cycles": 1,
+    "directions": [
+      "baseline"
+    ],
+    "outputRoot": "data/production-comedy-runs",
+    "provider": "openai-compatible",
+    "baseUrl": "https://openrouter.ai/api/v1",
+    "model": "x-ai/grok-4.6",
+    "apiKeyEnv": "OPENROUTER_API_KEY",
+    "timeoutMs": 120000,
+    "subjectUrl": "https://github.com/openclaw/openclaw"
+  },
+  "subject": {
+    "name": "openclaw/openclaw",
+    "url": "https://github.com/openclaw/openclaw"
+  },
+  "researchMode": "tavily-and-direct-public-data+gpt-5.6-luna-synthesis",
+  "researchWarning": "X API is not configured. Reddit API is not configured.",
+  "referenceSignals": {}
+}

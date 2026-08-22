@@ -88,17 +88,20 @@ test("callers cannot replace the mandatory shared joke guidelines", async () => 
 
 test("generateComedyScript retries truncated narration instead of returning it to video generation", async () => {
   let calls = 0;
+  let retryPrompt = "";
   const result = await generateComedyScript({
     subjectName: "Demo",
     researchBrief: "# Demo\n\nA public demo.",
     customInstructions: "Keep it dry.",
     templateId: "roast",
-  }, async () => {
+  }, async ({ user }) => {
     calls += 1;
+    if (calls === 2) retryPrompt = user;
     return calls === 1 ? "Good evening, and welcome to the unfinished" : validScript;
   });
   assert.equal(calls, 2);
   assert.equal(result.script, validScript);
+  assert.match(retryPrompt, /55 to 85 words/i);
 });
 
 test("generateComedyScript retries a transient provider failure", async () => {

@@ -1,0 +1,18 @@
+[
+  {
+    "runId": "baseline__cycle-01",
+    "provider": "openai-compatible",
+    "model": "x-ai/grok-4.6",
+    "profile": "production_comedy",
+    "variant": "baseline",
+    "title": "Production comedy script",
+    "script": "I built OpenClaw as a lobster side-project. Warelay, Clawdbot, Moltbot. Rebrands aren't chaos. They're a trust workshop.\nYour assistant, on your devices. Any OS. Any platform. Setup is an escape room. Less technical users are having a wonderful time finding the door.\nThree hundred and eighty-seven thousand stars. Thirty public contributors. Celebrity crustacean. Quiet kitchen.\nIt reads messages, files, and a shell. Bring rate limits. I call that intimacy.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 69,
+      "meanSeconds": 28
+    }
+  }
+]

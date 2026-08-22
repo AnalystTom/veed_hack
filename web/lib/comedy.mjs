@@ -77,7 +77,11 @@ export async function generateComedyScript(input, chat = defaultChat) {
   let lastError = "Script generation failed.";
   for (let attempt = 0; attempt < 2; attempt += 1) {
     try {
-      const script = cleanComedyScript(await chat(prompt));
+      const retryPrompt = attempt === 0 ? prompt : {
+        ...prompt,
+        user: `${prompt.user}\n\nYour previous draft failed this hard delivery requirement: ${lastError}\nReturn a fresh, complete spoken narration that satisfies it. Return narration only.`,
+      };
+      const script = cleanComedyScript(await chat(retryPrompt));
       const validationError = validateComedyScript(script);
       if (!validationError) {
         return {

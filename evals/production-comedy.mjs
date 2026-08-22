@@ -17,7 +17,7 @@ function compatibleUrl(baseUrl) {
   return `${clean}/chat/completions`;
 }
 
-export function createCompatibleChat({ baseUrl, model, apiKey = "local", fetchImpl = fetch }) {
+export function createCompatibleChat({ baseUrl, model, apiKey = "local", timeoutMs = 90_000, fetchImpl = fetch }) {
   const endpoint = compatibleUrl(baseUrl);
   const selectedModel = String(model || "").trim();
   if (!selectedModel) throw new Error("--model is required for --provider openai-compatible.");
@@ -26,7 +26,7 @@ export function createCompatibleChat({ baseUrl, model, apiKey = "local", fetchIm
       method: "POST",
       headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
       body: JSON.stringify({ model: selectedModel, messages: [{ role: "system", content: system }, { role: "user", content: user }], temperature: 0.8, max_tokens: 320 }),
-      signal: AbortSignal.timeout(90_000),
+      signal: AbortSignal.timeout(timeoutMs),
     });
     if (!response.ok) {
       const detail = (await response.text().catch(() => "")).slice(0, 500);
@@ -68,7 +68,7 @@ export function productionBlindReviewMarkdown(candidates) {
 }
 
 function parseArgs(args) {
-  const options = { kind: "repository", templateId: "roast", cycles: 3, directions: ["baseline", "one-premise", "viewer-first"], outputRoot: "data/production-comedy-runs", provider: "production", baseUrl: "", model: "", apiKeyEnv: "" };
+  const options = { kind: "repository", templateId: "roast", cycles: 3, directions: ["baseline", "one-premise", "viewer-first"], outputRoot: "data/production-comedy-runs", provider: "production", baseUrl: "", model: "", apiKeyEnv: "", timeoutMs: 90_000 };
   for (let index = 0; index < args.length; index += 1) {
     const value = args[index];
     const next = () => args[++index] || "";
@@ -81,6 +81,7 @@ function parseArgs(args) {
     else if (value === "--base-url") options.baseUrl = next();
     else if (value === "--model") options.model = next();
     else if (value === "--api-key-env") options.apiKeyEnv = next();
+    else if (value === "--timeout-ms") options.timeoutMs = Math.min(Math.max(Number(next()) || 90_000, 5_000), 120_000);
     else if (value === "--out") options.outputRoot = next();
     else if (value === "--help") options.help = true;
     else throw new Error(`Unknown argument: ${value}`);
@@ -137,7 +138,7 @@ export async function runProductionComedyBaseline(options, dependencies = {}) {
   const research = await (dependencies.productionResearch || productionResearch)(options.kind, options.subjectUrl);
   const generate = dependencies.generateComedyScript || generateComedyScript;
   const chat = options.provider === "openai-compatible"
-    ? (dependencies.createCompatibleChat || createCompatibleChat)({ baseUrl: options.baseUrl, model: options.model, apiKey: options.apiKeyEnv ? process.env[options.apiKeyEnv].trim() : "local", fetchImpl: dependencies.fetchImpl || fetch })
+    ? (dependencies.createCompatibleChat || createCompatibleChat)({ baseUrl: options.baseUrl, model: options.model, apiKey: options.apiKeyEnv ? process.env[options.apiKeyEnv].trim() : "local", timeoutMs: options.timeoutMs, fetchImpl: dependencies.fetchImpl || fetch })
     : null;
   const provider = options.provider || "production";
   const model = provider === "openai-compatible" ? options.model : "openai/gpt-5.6-luna";

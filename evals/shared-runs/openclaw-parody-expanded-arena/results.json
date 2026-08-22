@@ -1,0 +1,121 @@
+[
+  {
+    "runId": "openclaw-parody-opus__baseline__cycle-01",
+    "provider": "openai-compatible",
+    "model": "anthropic/claude-opus-4.6",
+    "profile": "master_comedy_arena",
+    "variant": "baseline",
+    "title": "Production comedy script",
+    "script": "We started as Warelay. Then Clawdbot. Then Moltbot. Then OpenClaw. That's not indecision — that's a pivot so fast even the domain registrar needed therapy.\n\nOur promise is simple: your assistant, on your devices, in your chats. All you need is an Android phone, an iPhone, a self-hosted deployment, three config files, and a casual disregard for your API bill.\n\nThree hundred and eighty-seven thousand stars. And every single one of them opened an issue about setup complexity.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 78,
+      "meanSeconds": 32
+    },
+    "sourceBundle": "openclaw-parody-opus"
+  },
+  {
+    "runId": "openclaw-parody-venice__viewer-first__cycle-01",
+    "provider": "openai-compatible",
+    "model": "venice-uncensored",
+    "profile": "master_comedy_arena",
+    "variant": "viewer-first",
+    "title": "Production comedy script",
+    "script": "I invented OpenClaw in my garage with just a lobster pot and a dream. The name changed a few times, but the vision never wavered. We're all about personal automation, though the token bills can be a bit scary. But don't worry, with our simple assistant, you'll have a personal AI that runs on your devices and in your chats. Well, after you figure out the Docker commands, that is.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 70,
+      "meanSeconds": 28
+    },
+    "sourceBundle": "openclaw-parody-venice"
+  },
+  {
+    "runId": "openclaw-parody-luna__baseline__cycle-01",
+    "provider": "production",
+    "model": "openai/gpt-5.6-luna",
+    "profile": "master_comedy_arena",
+    "variant": "baseline",
+    "title": "Production comedy script",
+    "script": "I built OpenClaw to be your personal assistant, on every device and in every chat. Naturally, setup begins with enough configuration to qualify as a minor pilgrimage. It handles messages, email, and travel, then sends the API bill like a tiny financial adviser. We began as Warelay, became ClawdBot, became Moltbot, and finally OpenClaw — because the assistant needed more identity development than its users. Now thirty contributors maintain a very large lobster. Perfectly normal.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 75,
+      "meanSeconds": 30
+    },
+    "sourceBundle": "openclaw-parody-luna"
+  },
+  {
+    "runId": "openclaw-parody-luna__viewer-first__cycle-01",
+    "provider": "production",
+    "model": "openai/gpt-5.6-luna",
+    "profile": "master_comedy_arena",
+    "variant": "viewer-first",
+    "title": "Production comedy script",
+    "script": "I built OpenClaw to be your personal assistant, everywhere: messages, email, travel, the lot. It started as Warelay, became Clawdbot, then Moltbot, and finally settled on OpenClaw — because apparently even the name needed an onboarding journey.\n\nIt runs across devices and chats, with Android, iOS, plugins, skills, and configuration layers. Simple setup, in the same way assembling a lobster is simple.\n\nThe codebase is 90% TypeScript, so naturally the remaining 10% handles the emotional support. I call that personal automation.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 81,
+      "meanSeconds": 33
+    },
+    "sourceBundle": "openclaw-parody-luna"
+  },
+  {
+    "runId": "openclaw-parody-venice__one-premise__cycle-01",
+    "provider": "openai-compatible",
+    "model": "venice-uncensored",
+    "profile": "master_comedy_arena",
+    "variant": "one-premise",
+    "title": "Production comedy script",
+    "script": "I dreamed of a small, personal AI that could sit on your shoulder and help with everything. That dream became OpenClaw. It’s like having a lobster whispering wisdom into your ear, except it’s open-source and runs across all your devices. You can chat with it, deploy it, and even extend its skills. It’s the ultimate personal assistant, just make sure it doesn’t run up your API bill!",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 67,
+      "meanSeconds": 27
+    },
+    "sourceBundle": "openclaw-parody-venice"
+  },
+  {
+    "runId": "openclaw-parody-luna__one-premise__cycle-01",
+    "provider": "production",
+    "model": "openai/gpt-5.6-luna",
+    "profile": "master_comedy_arena",
+    "variant": "one-premise",
+    "title": "Production comedy script",
+    "script": "I built OpenClaw because I wanted a personal assistant on my devices and in my chats. Then I gave it access to messages, email, travel, and every configuration layer known to modern civilisation. People said setup was intimidating, so we simplified it by adding more platforms. People feared the bill, so we made the assistant work harder. Now one lobster-sized project has hundreds of thousands of admirers and thirty contributors. Personal assistant, apparently. Personal staffing crisis.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 76,
+      "meanSeconds": 31
+    },
+    "sourceBundle": "openclaw-parody-luna"
+  },
+  {
+    "runId": "openclaw-parody-grok__baseline__cycle-01",
+    "provider": "openai-compatible",
+    "model": "x-ai/grok-4.6",
+    "profile": "master_comedy_arena",
+    "variant": "baseline",
+    "title": "Production comedy script",
+    "script": "I built OpenClaw as a lobster side-project. Warelay, Clawdbot, Moltbot. Rebrands aren't chaos. They're a trust workshop.\nYour assistant, on your devices. Any OS. Any platform. Setup is an escape room. Less technical users are having a wonderful time finding the door.\nThree hundred and eighty-seven thousand stars. Thirty public contributors. Celebrity crustacean. Quiet kitchen.\nIt reads messages, files, and a shell. Bring rate limits. I call that intimacy.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 69,
+      "meanSeconds": 28
+    },
+    "sourceBundle": "openclaw-parody-grok"
+  }
+]

@@ -1,0 +1,9 @@
+run_id,packet_id,decision,rank,reason,notes,mechanics,tone,grounding
+candidate-a,packet-1,,,,,,,
+candidate-b,packet-1,,,,,,,
+candidate-c,packet-1,,,,,,,
+candidate-d,packet-1,,,,,,,
+candidate-e,packet-1,,,,,,,
+candidate-f,packet-1,,,,,,,
+candidate-g,packet-1,,,,,,,
+candidate-h,packet-1,,,,,,,

@@ -80,6 +80,8 @@ For an OpenRouter challenger, keep the key in the environment and refer to its v
 GITHUB_TOKEN="$(gh auth token)" npm run evals:production -- --subject https://github.com/openclaw/openclaw --template roast --cycles 1 --provider openai-compatible --base-url https://openrouter.ai/api/v1 --api-key-env OPENROUTER_API_KEY --model x-ai/grok-4.6
 ```
 
+Use `--timeout-ms 30000` for an interactive challenger smoke test; default runs allow 90 seconds per attempt.
+
 ## Master blind arena
 
 After publishing fresh production, Qwen, and Venice runs generated under the same current `joke_guidelines.md`, combine them into one shuffled scorecard:
