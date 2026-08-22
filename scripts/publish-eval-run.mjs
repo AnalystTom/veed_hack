@@ -31,6 +31,33 @@ function sanitiseManifest(manifest) {
   return { ...manifest, referenceSignals };
 }
 
+function candidateLabel(index) {
+  let value = index + 1;
+  let label = "";
+  while (value > 0) {
+    value -= 1;
+    label = String.fromCharCode(65 + (value % 26)) + label;
+    value = Math.floor(value / 26);
+  }
+  return label.toLowerCase();
+}
+
+function reviewCsv(results, header) {
+  const visible = results.filter((result) => !result.failed && !result.skipped);
+  const rows = visible.map((_, index) => [
+    `candidate-${candidateLabel(index)}`,
+    "packet-1",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+  ].join(","));
+  return `${header.trim()}\n${rows.join("\n")}${rows.length ? "\n" : ""}`;
+}
+
 async function main() {
   const options = parseArgs(process.argv.slice(2));
   const source = path.resolve(workspace, options.source);
@@ -38,16 +65,17 @@ async function main() {
   const id = safeId(options.id || path.basename(source));
   const destination = path.resolve(sharedRoot, id);
   if (!destination.startsWith(`${sharedRoot}${path.sep}`)) throw new Error("Invalid shared run id.");
-  const [manifest, results] = await Promise.all([
+  const [manifest, results, reviewTemplate] = await Promise.all([
     readFile(path.join(source, "manifest.json"), "utf8").then(JSON.parse),
     readFile(path.join(source, "results.json"), "utf8").then(JSON.parse),
+    readFile(path.join(workspace, "evals/review-template.csv"), "utf8"),
   ]);
   await mkdir(destination, { recursive: true });
   await Promise.all([
     writeFile(path.join(destination, "manifest.json"), `${JSON.stringify(sanitiseManifest(manifest), null, 2)}\n`),
     writeFile(path.join(destination, "results.json"), `${JSON.stringify(results, null, 2)}\n`),
     cp(path.join(source, "blind-review.md"), path.join(destination, "blind-review.md")),
-    cp(path.join(workspace, "evals/review-template.csv"), path.join(destination, "review.csv")),
+    writeFile(path.join(destination, "review.csv"), reviewCsv(results, reviewTemplate)),
   ]);
   console.log(`Published shared eval run: ${path.relative(workspace, destination)}`);
 }
