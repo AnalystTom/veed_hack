@@ -3,8 +3,8 @@ import Link from 'next/link';
 import VideoLibrary, { type ReviewVideo } from './components/VideoLibrary';
 import styles from './LandingPage.module.css';
 
-// The MVP does not persist generated media yet. Keeping this collection empty
-// makes the product state explicit instead of promoting prototype templates.
+// The production collection starts empty and is hydrated from genuine outputs
+// saved by the generation flow. Prototype templates never enter this route.
 const approvedVideos: ReviewVideo[] = [];
 
 export default function LandingPage() {
@@ -12,30 +12,30 @@ export default function LandingPage() {
     <main className={styles.page}>
       <nav className={styles.nav}>
         <strong>Roastr</strong>
-        <Link href="/create" className={styles.navCta}>Create a roast</Link>
+        <div>
+          <Link href="/create" className={styles.login}>Log in</Link>
+          <Link href="/create" className={`${styles.pill} ${styles.navCta}`}>Roast my repo</Link>
+        </div>
       </nav>
 
       <section className={styles.hero}>
         <div className={styles.neutralBackdrop} aria-hidden="true" />
-        <div className={styles.heroCopy}>
-          <p className={styles.kicker}>Research-led parody videos</p>
-          <h1>Your repo has <em>notes</em><br />for you.</h1>
-          <p className={styles.subhead}>
-            Start with a public repository or product page. Review the evidence,
-            approve the script, then decide what gets rendered.
-          </p>
-          <Link href="/create" className={styles.primaryCta}>Roast a subject <span>→</span></Link>
-          <small>Nothing is generated before the approval checkpoint.</small>
+        <div className={styles.scrim} aria-hidden="true" />
+        <h1>Your repo has <em>notes</em><br />for you.</h1>
+        <p className={styles.subhead}>
+          Paste a GitHub URL. We read the code, issues and repository evidence,
+          then turn the approved facts into a presenter-led roast.
+        </p>
+        <div className={styles.heroCta}>
+          <Link href="/create" className={styles.pill}>Roast my repo <span>→</span></Link>
+          <small>Free preview · you approve the script before anything renders</small>
         </div>
       </section>
 
       <section className={styles.librarySection} aria-labelledby="approved-roasts-heading">
         <header>
-          <div>
-            <p className={styles.kicker}>Review room</p>
-            <h2 id="approved-roasts-heading">Approved <em>videos</em></h2>
-          </div>
-          <span>{approvedVideos.length} available</span>
+          <h2 id="approved-roasts-heading">Your approved <em>videos</em>.</h2>
+          <span>Real generated media · click to review</span>
         </header>
         <VideoLibrary videos={approvedVideos} />
       </section>

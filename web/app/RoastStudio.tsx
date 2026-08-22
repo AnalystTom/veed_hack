@@ -1,6 +1,7 @@
 'use client';
 
 import { FormEvent, useMemo, useState } from 'react';
+import { REVIEW_LIBRARY_KEY, type ReviewVideo } from './components/VideoLibrary';
 
 type SubjectKind = 'repository' | 'product';
 type Evidence = { id: string; label: string; value: string; sourceUrl: string };
@@ -145,6 +146,22 @@ export default function RoastStudio() {
       const payload = await response.json();
       if (!response.ok) throw new Error(payload.error || 'Media generation failed.');
       setMediaResult(payload.result);
+      if (summary && plan) {
+        const video: ReviewVideo = {
+          id: crypto.randomUUID(),
+          title: plan.title,
+          videoUrl: payload.result.videoUrl,
+          subjectName: summary.name,
+          treatment: plan.treatment,
+          sourceUrl: summary.url,
+        };
+        try {
+          const existing = JSON.parse(localStorage.getItem(REVIEW_LIBRARY_KEY) || '[]');
+          localStorage.setItem(REVIEW_LIBRARY_KEY, JSON.stringify([video, ...(Array.isArray(existing) ? existing : [])].slice(0, 20)));
+        } catch {
+          // The generated result remains visible in this session if storage is unavailable.
+        }
+      }
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : 'Media generation failed.');
     } finally {

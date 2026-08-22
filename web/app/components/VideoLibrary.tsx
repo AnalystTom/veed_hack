@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import styles from './VideoLibrary.module.css';
 
@@ -13,10 +13,35 @@ export type ReviewVideo = {
   sourceUrl: string;
 };
 
+export const REVIEW_LIBRARY_KEY = 'roastr:approved-videos';
+
 export default function VideoLibrary({ videos }: { videos: ReviewVideo[] }) {
+  const [availableVideos, setAvailableVideos] = useState(videos);
+  const [loaded, setLoaded] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
-  if (!videos.length) {
+  useEffect(() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem(REVIEW_LIBRARY_KEY) || '[]');
+      const realVideos = Array.isArray(stored)
+        ? stored.filter((item): item is ReviewVideo =>
+            item && typeof item.id === 'string' && typeof item.title === 'string' &&
+            typeof item.videoUrl === 'string' && item.videoUrl.startsWith('https://') &&
+            typeof item.sourceUrl === 'string' && item.sourceUrl.startsWith('https://'))
+        : [];
+      setAvailableVideos([...realVideos, ...videos.filter((video) => !realVideos.some((storedVideo) => storedVideo.id === video.id))]);
+    } catch {
+      setAvailableVideos(videos);
+    } finally {
+      setLoaded(true);
+    }
+  }, [videos]);
+
+  if (!loaded) {
+    return <div className={styles.empty}><span>LOADING REVIEW LIBRARY</span></div>;
+  }
+
+  if (!availableVideos.length) {
     return (
       <div className={styles.empty}>
         <span>NO APPROVED MEDIA</span>
@@ -29,7 +54,7 @@ export default function VideoLibrary({ videos }: { videos: ReviewVideo[] }) {
   return (
     <>
       <div className={styles.grid}>
-        {videos.map((video, index) => (
+        {availableVideos.map((video, index) => (
           <button key={video.id} className={styles.videoCard} onClick={() => setSelectedIndex(index)}>
             <video src={video.videoUrl} preload="metadata" aria-hidden="true" />
             <span><strong>{video.title}</strong><small>{video.subjectName} · {video.treatment}</small></span>
@@ -37,7 +62,7 @@ export default function VideoLibrary({ videos }: { videos: ReviewVideo[] }) {
         ))}
       </div>
       {selectedIndex !== null && (
-        <VideoReviewer videos={videos} index={selectedIndex} onIndexChange={setSelectedIndex} onClose={() => setSelectedIndex(null)} />
+        <VideoReviewer videos={availableVideos} index={selectedIndex} onIndexChange={setSelectedIndex} onClose={() => setSelectedIndex(null)} />
       )}
     </>
   );

@@ -4,6 +4,7 @@ import test from "node:test";
 import {
   buildRoastPlan,
   normalizeSubjectUrl,
+  researchSubject,
   summarizeRepository,
 } from "../web/lib/mvp.mjs";
 
@@ -23,6 +24,33 @@ test("normalizeSubjectUrl rejects credentials and local targets", () => {
   );
   assert.throws(() => normalizeSubjectUrl("product", "https://localhost:3000"), /public/i);
   assert.throws(() => normalizeSubjectUrl("product", "http://example.com"), /HTTPS/i);
+});
+
+test("researchSubject reads GitHub credentials from the environment", async () => {
+  const previousToken = process.env.GITHUB_TOKEN;
+  process.env.GITHUB_TOKEN = "test-token";
+  const authorizationHeaders = [];
+  const responses = [
+    { html_url: "https://github.com/owner/repo", full_name: "owner/repo", description: "Real description", stargazers_count: 1, forks_count: 0, default_branch: "main", license: null },
+    {},
+    [],
+    { content: Buffer.from("# Real README").toString("base64"), encoding: "base64" },
+    { content: Buffer.from(JSON.stringify({ scripts: { test: "node --test" } })).toString("base64"), encoding: "base64" },
+  ];
+  let index = 0;
+
+  try {
+    await researchSubject("repository", "https://github.com/owner/repo", async (_url, options) => {
+      authorizationHeaders.push(options.headers.Authorization);
+      return { ok: true, json: async () => responses[index++] };
+    });
+  } finally {
+    if (previousToken === undefined) delete process.env.GITHUB_TOKEN;
+    else process.env.GITHUB_TOKEN = previousToken;
+  }
+
+  assert.equal(authorizationHeaders.length, 5);
+  assert.equal(authorizationHeaders.every((value) => value === "Bearer test-token"), true);
 });
 
 test("summarizeRepository only exposes evidence returned by GitHub", () => {
@@ -107,5 +135,5 @@ test("buildRoastPlan changes delivery and jokes with the selected original perso
 
   assert.notEqual(deadpan.script, awards.script);
   assert.match(awards.script, /awards/i);
-  assert.match(awards.script, /architecture central/i);
+  assert.match(awards.script, /architecture evidence leads/i);
 });

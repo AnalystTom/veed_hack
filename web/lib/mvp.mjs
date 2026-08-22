@@ -70,17 +70,19 @@ async function assertPublicDns(hostname) {
 }
 
 async function fetchJson(url, fetchImpl) {
+  const githubToken = process.env.GITHUB_TOKEN?.trim();
   const response = await fetchImpl(url, {
     headers: {
       Accept: "application/vnd.github+json",
       "User-Agent": "Roastr-MVP",
       "X-GitHub-Api-Version": "2022-11-28",
+      ...(githubToken ? { Authorization: `Bearer ${githubToken}` } : {}),
     },
     signal: AbortSignal.timeout(10_000),
   });
   if (!response.ok) {
     if (response.status === 404) throw new Error("That public GitHub repository was not found.");
-    if (response.status === 403) throw new Error("GitHub rate-limited this request. Try again shortly.");
+    if (response.status === 403) throw new Error("GitHub rate-limited this request. Add GITHUB_TOKEN to the server environment or try again shortly.");
     throw new Error(`GitHub research failed with status ${response.status}.`);
   }
   return response.json();
@@ -128,11 +130,11 @@ export function summarizeRepository(repository, languages, rootEntries, readme, 
     evidence.push({ id: "readme", label: "README excerpt", value: readme, sourceUrl });
   }
   if (packageManifest && typeof packageManifest === "object") {
-    const scripts = Object.keys(packageManifest.scripts || {}).slice(0, 10);
+    const scripts = Object.entries(packageManifest.scripts || {}).slice(0, 8);
     const dependencies = Object.keys(packageManifest.dependencies || {}).slice(0, 12);
     const architectureFacts = [
       packageManifest.type ? `Module type: ${packageManifest.type}.` : null,
-      scripts.length ? `Scripts: ${scripts.join(", ")}.` : null,
+      scripts.length ? `Scripts: ${scripts.map(([name, command]) => `${name} → ${String(command).slice(0, 90)}`).join("; ")}.` : null,
       dependencies.length ? `Runtime dependencies: ${dependencies.join(", ")}.` : null,
     ].filter(Boolean);
     if (architectureFacts.length) {
@@ -258,12 +260,21 @@ export function buildRoastPlan({ subjectName, subjectUrl, persona, customInstruc
     },
   };
   const profile = profiles[safePersona] || profiles["Deadpan tech correspondent"];
+  const instruction = customInstructions?.trim() || "";
+  const instructionLower = instruction.toLowerCase();
   const selected = evidence.slice(0, 4);
+  if (/architect|dependenc|entry.?point|code/.test(instructionLower)) {
+    selected.sort((a, b) => Number(/architect|dependenc|structure|runtime/.test(b.label.toLowerCase())) - Number(/architect|dependenc|structure|runtime/.test(a.label.toLowerCase())));
+  }
   const first = selected[0];
   const second = selected[1] || first;
   const third = selected[2] || second;
-  const instructionNote = customInstructions?.trim()
-    ? `Creator direction applied: ${customInstructions.trim()}`
+  const appliedDirections = [];
+  if (/architect|dependenc|entry.?point|code/.test(instructionLower)) appliedDirections.push("architecture evidence leads the narrative");
+  if (/concise|short|tight/.test(instructionLower)) appliedDirections.push("pacing stays concise");
+  if (/gentle|kind|soft/.test(instructionLower)) appliedDirections.push("the roast stays gentle");
+  const instructionNote = instruction
+    ? `Creator direction applied: ${appliedDirections.length ? appliedDirections.join("; ") : instruction}`
     : "No additional creator direction was supplied.";
 
   return {
