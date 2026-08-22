@@ -49,12 +49,12 @@ async function defaultUploadScene(template, input) {
       subjectVisual = null;
     }
   }
-  const subjectName = escapeSvg(String(input.subjectName || "Submitted subject").slice(0, 55));
-  const header = Buffer.from(`<svg width="480" height="246" xmlns="http://www.w3.org/2000/svg"><rect width="480" height="246" fill="#111114"/><rect x="12" y="12" width="456" height="222" rx="18" fill="#18181d" stroke="#9f8cff" stroke-width="2"/><text x="30" y="43" fill="#a99bff" font-family="Arial" font-size="13" font-weight="700" letter-spacing="2">TONIGHT'S SUBJECT</text><text x="30" y="216" fill="white" font-family="Arial" font-size="22" font-weight="700">${subjectName}</text></svg>`);
-  const composites = [{ input: header, top: 0, left: 0 }];
+  const subjectName = escapeSvg(String(input.subjectName).slice(0, 55));
+  const header = Buffer.from(`<svg width="480" height="246" xmlns="http://www.w3.org/2000/svg"><rect width="480" height="246" fill="#111114" fill-opacity="0.96"/><rect x="12" y="12" width="456" height="222" rx="18" fill="#18181d" stroke="#9f8cff" stroke-width="2"/><text x="30" y="43" fill="#a99bff" font-family="Arial" font-size="13" font-weight="700" letter-spacing="2">TONIGHT'S SUBJECT</text><text x="30" y="216" fill="white" font-family="Arial" font-size="22" font-weight="700">${subjectName}</text></svg>`);
+  const composites = [{ input: header, top: 618, left: 0 }];
   if (subjectVisual) {
     const visual = await sharp(subjectVisual).resize(420, 142, { fit: "cover" }).png().toBuffer();
-    composites.push({ input: visual, top: 58, left: 30 });
+    composites.push({ input: visual, top: 676, left: 30 });
   }
   const scene = await sharp(presenter).composite(composites).png().toBuffer();
   return fal.storage.upload(new Blob([scene], { type: "image/png" }));
@@ -83,6 +83,7 @@ export async function generateNarration(input, subscribe = defaultSubscribe) {
 
 export async function generatePresenterVideo(input, adapters = {}) {
   if (!input?.approved) throw new Error("The creative package must be approved before generation.");
+  if (!String(input.subjectName || "").trim()) throw new Error("A researched subject name is required for the generated scene.");
   const template = getVideoTemplate(input.templateId);
   const audioUrl = requireHttpsUrl(input.audioUrl, "The generated narration");
   const uploadScene = adapters.uploadScene || adapters.uploadPresenter || defaultUploadScene;
@@ -98,6 +99,9 @@ export async function generatePresenterVideo(input, adapters = {}) {
 }
 
 export async function generateApprovedVideo(input, adapters = {}) {
+  if (!input?.approved) throw new Error("The creative package must be approved before generation.");
+  getVideoTemplate(input.templateId);
+  if (!String(input.subjectName || "").trim()) throw new Error("A researched subject name is required for the generated scene.");
   const subscribe = adapters.subscribe || defaultSubscribe;
   const narration = await generateNarration(input, subscribe);
   const video = await generatePresenterVideo({ ...input, audioUrl: narration.audioUrl }, {

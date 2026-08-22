@@ -1,17 +1,12 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 
-import { config } from "dotenv";
-
 import { getVideoTemplate } from "./templates.mjs";
+import { generateLunaText } from "./llm.mjs";
 
 const repositoryRoot = path.basename(process.cwd()) === "web"
   ? path.resolve(process.cwd(), "..")
   : process.cwd();
-config({ path: path.join(repositoryRoot, ".env"), override: false });
-
-const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
-const DEFAULT_MODEL = "x-ai/grok-4.6";
 
 const KNOWN_PERFORMER_PATTERN = /\b(?:ricky\s+gervais|snl|saturday\s+night\s+live)\b/i;
 const IMITATION_PATTERN = /\b(?:clone|impersonat(?:e|ion)|imitat(?:e|ion)|sound\s+(?:exactly\s+)?like|voice\s+of|in\s+the\s+style\s+of)\b/i;
@@ -53,31 +48,7 @@ export function buildComedyPrompt({ subjectName, researchBrief, customInstructio
 }
 
 async function defaultChat({ system, user }) {
-  const apiKey = process.env.OPENROUTER_API_KEY?.trim();
-  if (!apiKey) throw new Error("OPENROUTER_API_KEY is missing from the server environment.");
-  const response = await fetch(OPENROUTER_URL, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: process.env.OPENROUTER_MODEL?.trim() || DEFAULT_MODEL,
-      messages: [
-        { role: "system", content: system },
-        { role: "user", content: user },
-      ],
-      temperature: 0.8,
-      max_tokens: 320,
-    }),
-    signal: AbortSignal.timeout(60_000),
-  });
-  if (!response.ok) {
-    const detail = (await response.text().catch(() => "")).slice(0, 500);
-    throw new Error(`Script generation failed (${response.status}): ${detail || response.statusText}`);
-  }
-  const payload = await response.json();
-  return payload?.choices?.[0]?.message?.content || "";
+  return generateLunaText({ system, user, temperature: 0.8, maxTokens: 320 });
 }
 
 export async function generateComedyScript(input, chat = defaultChat) {

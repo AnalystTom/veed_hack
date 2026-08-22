@@ -7,6 +7,7 @@ import {
   normalizeSubjectUrl,
   researchSubject,
   summarizeRepository,
+  synthesizeResearchBrief,
 } from "../web/lib/mvp.mjs";
 
 test("buildResearchBrief returns one grounded Markdown brief with public themes", () => {
@@ -46,6 +47,26 @@ test("buildResearchBrief condenses long source excerpts into top-level findings"
   assert.match(brief, /complicated setup process/i);
   assert.ok(brief.length < 1_500);
   assert.doesNotMatch(brief, /Raw source detail Raw source detail Raw source detail Raw source detail Raw source detail/);
+});
+
+test("synthesizeResearchBrief gives Luna all evidence and appends deterministic sources", async () => {
+  let prompt = "";
+  const brief = await synthesizeResearchBrief({
+    name: "Example",
+    url: "https://example.com",
+    overview: "An example product.",
+    evidence: [{ label: "Homepage", value: "The product promises one-click video.", sourceUrl: "https://example.com" }],
+  }, {
+    answer: "Public discussion focuses on setup friction.",
+    results: [{ title: "Review", url: "https://reviews.example/example", content: "Several reviewers mention setup friction." }],
+  }, async ({ user }) => {
+    prompt = user;
+    return "# Example\n\n## Popular knowledge and drama\n\n- Ambitious one-click promise.\n\n## Common themes and complaints\n\n- Setup friction recurs across public discussion.\n\n## Roastable signals\n\n- The promise and setup tension create the angle.";
+  });
+  assert.match(prompt, /Several reviewers mention setup friction/);
+  assert.match(brief, /Setup friction recurs/);
+  assert.match(brief, /## Sources/);
+  assert.match(brief, /https:\/\/reviews\.example\/example/);
 });
 
 test("normalizeSubjectUrl accepts public HTTPS GitHub repositories", () => {

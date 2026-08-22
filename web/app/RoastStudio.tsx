@@ -219,7 +219,7 @@ export default function RoastStudio() {
             <StepLabel number="02">Research Brief</StepLabel>
             <div className={styles.researchCard}>
               <div className={styles.researchMeta}>
-                <small>{summary.researchMode === 'tavily-and-direct-public-data' ? 'TAVILY + DIRECT PUBLIC DATA' : 'DIRECT PUBLIC DATA'}</small>
+                <small>{summary.researchMode.includes('tavily') ? 'TAVILY + DIRECT PUBLIC DATA + GPT-5.6 LUNA' : summary.researchMode.includes('gpt-5.6-luna') ? 'DIRECT PUBLIC DATA + GPT-5.6 LUNA' : 'DIRECT PUBLIC DATA'}</small>
                 <a href={summary.url} target="_blank" rel="noreferrer">Open subject ↗</a>
               </div>
               <div id="research-title"><MarkdownBrief>{summary.researchBrief}</MarkdownBrief></div>

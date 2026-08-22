@@ -1,4 +1,4 @@
-import { buildResearchBrief, researchSubject, searchPublicContext } from '../../../lib/mvp.mjs';
+import { buildResearchBrief, researchSubject, searchPublicContext, synthesizeResearchBrief } from '../../../lib/mvp.mjs';
 
 export const runtime = 'nodejs';
 
@@ -17,9 +17,15 @@ export async function POST(request) {
         warning: error instanceof Error ? `${error.message} Showing direct public data only.` : 'Showing direct public data only.',
       };
     }
-    summary.researchBrief = buildResearchBrief(summary, publicContext);
-    summary.researchMode = publicContext.mode;
-    summary.researchWarning = publicContext.warning;
+    try {
+      summary.researchBrief = await synthesizeResearchBrief(summary, publicContext);
+      summary.researchMode = `${publicContext.mode}+gpt-5.6-luna-synthesis`;
+      summary.researchWarning = publicContext.warning;
+    } catch (error) {
+      summary.researchBrief = buildResearchBrief(summary, publicContext);
+      summary.researchMode = publicContext.mode;
+      summary.researchWarning = [publicContext.warning, error instanceof Error ? `${error.message} Showing condensed direct findings instead.` : 'Showing condensed direct findings instead.'].filter(Boolean).join(' ');
+    }
     return Response.json({ summary });
   } catch (error) {
     return Response.json(
