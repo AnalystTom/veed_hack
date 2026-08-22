@@ -1,3 +1,15 @@
+import path from "node:path";
+
+import { config } from "dotenv";
+
+const repositoryRoot = path.basename(process.cwd()) === "web"
+  ? path.resolve(process.cwd(), "..")
+  : process.cwd();
+// This module is also imported directly by Next route handlers, so it loads
+// the root server-only environment rather than relying on another module's
+// import side effect.
+config({ path: path.join(repositoryRoot, ".env"), override: false });
+
 function searchTerm(value) {
   return String(value || "")
     .replace(/[^\p{L}\p{N} ._-]/gu, " ")
@@ -45,6 +57,23 @@ async function searchX(subjectName, fetchImpl, token) {
     }).filter((result) => result.content),
     warning: "",
   };
+}
+
+async function xBearerToken(fetchImpl, credentials) {
+  if (credentials.bearerToken?.trim()) return credentials.bearerToken.trim();
+  if (!credentials.consumerKey?.trim() || !credentials.consumerSecret?.trim()) return "";
+  const response = await fetchImpl("https://api.x.com/oauth2/token", {
+    method: "POST",
+    headers: {
+      Authorization: `Basic ${Buffer.from(`${credentials.consumerKey}:${credentials.consumerSecret}`).toString("base64")}`,
+      "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+    },
+    body: "grant_type=client_credentials",
+    signal: AbortSignal.timeout(20_000),
+  });
+  if (!response.ok) throw new Error(`X token request failed (${response.status}).`);
+  const payload = await response.json();
+  return String(payload.access_token || "").trim();
 }
 
 async function redditToken(fetchImpl, credentials) {
@@ -99,8 +128,17 @@ export async function searchOfficialSocialContext(summary, fetchImpl = fetch, en
     clientSecret: env.REDDIT_CLIENT_SECRET,
     userAgent: env.REDDIT_USER_AGENT?.trim() || "Roastr/0.1 (public-discourse research)",
   };
+  const xCredentials = {
+    bearerToken: env.X_BEARER_TOKEN,
+    consumerKey: env.X_CONSUMER_KEY,
+    consumerSecret: env.X_CONSUMER_SECRET,
+  };
+  const xSearch = (async () => {
+    try { return await searchX(summary?.name, fetchImpl, await xBearerToken(fetchImpl, xCredentials)); }
+    catch (error) { return { results: [], warning: error.message }; }
+  })();
   const [x, reddit] = await Promise.all([
-    searchX(summary?.name, fetchImpl, env.X_BEARER_TOKEN),
+    xSearch,
     searchReddit(summary?.name, fetchImpl, credentials),
   ]);
   const results = [...x.results, ...reddit.results];

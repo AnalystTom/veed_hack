@@ -49,6 +49,16 @@ function MarkdownBrief({ children }: { children: string }) {
   return <div className={styles.markdown}>{children.split('\n').map((line, index) => <MarkdownLine line={line} index={index} key={index} />)}</div>;
 }
 
+function researchSourceLabel(mode: string) {
+  const hasOfficialSocialApis = mode.includes('official-x-reddit-api');
+  const hasTavily = mode.includes('tavily');
+  if (hasOfficialSocialApis && hasTavily) return 'X API + REDDIT API + TAVILY + DIRECT PUBLIC DATA + GPT-5.6 LUNA';
+  if (hasOfficialSocialApis) return 'X API + REDDIT API + DIRECT PUBLIC DATA + GPT-5.6 LUNA';
+  if (hasTavily) return 'TAVILY + DIRECT PUBLIC DATA + GPT-5.6 LUNA';
+  if (mode.includes('gpt-5.6-luna')) return 'DIRECT PUBLIC DATA + GPT-5.6 LUNA';
+  return 'DIRECT PUBLIC DATA';
+}
+
 async function postJson<T>(url: string, body: unknown): Promise<T> {
   const response = await fetch(url, {
     method: 'POST',
@@ -239,7 +249,7 @@ export default function RoastStudio() {
             <StepLabel number="02">Research Brief</StepLabel>
             <div className={styles.researchCard}>
               <div className={styles.researchMeta}>
-                <small>{summary.researchMode.includes('tavily') ? 'TAVILY + DIRECT PUBLIC DATA + GPT-5.6 LUNA' : summary.researchMode.includes('gpt-5.6-luna') ? 'DIRECT PUBLIC DATA + GPT-5.6 LUNA' : 'DIRECT PUBLIC DATA'}</small>
+                <small>{researchSourceLabel(summary.researchMode)}</small>
                 <a href={summary.url} target="_blank" rel="noreferrer">Open subject ↗</a>
               </div>
               <div id="research-title"><MarkdownBrief>{summary.researchBrief}</MarkdownBrief></div>
