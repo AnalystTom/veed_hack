@@ -1,7 +1,7 @@
 import { fal } from "@fal-ai/client";
 import { config } from "dotenv";
 import { readFile } from "node:fs/promises";
-import opentype from "opentype.js";
+import { parse as parseFont } from "opentype.js/dist/opentype.mjs";
 import path from "node:path";
 import sharp from "sharp";
 
@@ -34,7 +34,7 @@ export function buildSubjectCardSvg(subjectName, fontBytes) {
   const cleanName = String(subjectName).slice(0, 55);
   const bytes = Buffer.from(fontBytes);
   const arrayBuffer = bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength);
-  const font = opentype.parse(arrayBuffer);
+  const font = parseFont(arrayBuffer);
   const labelPath = font.getPath("TONIGHT'S SUBJECT", 30, 43, 13).toPathData(2);
   const subjectPath = font.getPath(cleanName, 30, 216, 22).toPathData(2);
   return Buffer.from(`<svg width="480" height="246" xmlns="http://www.w3.org/2000/svg"><rect width="480" height="246" fill="#111114" fill-opacity="0.96"/><rect x="12" y="12" width="456" height="222" rx="18" fill="#18181d" stroke="#9f8cff" stroke-width="2"/><path d="${labelPath}" fill="#a99bff"/><path d="${subjectPath}" fill="white"/></svg>`);
