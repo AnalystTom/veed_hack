@@ -10,7 +10,10 @@ const nextConfig: NextConfig = {
   // one source of truth for local and deployed generation.
   outputFileTracingRoot: path.join(__dirname, '..'),
   outputFileTracingIncludes: {
-    '/*': ['../joke_guidelines.md'],
+    '/*': [
+      '../joke_guidelines.md',
+      'node_modules/next/dist/compiled/@vercel/og/Geist-Regular.ttf',
+    ],
   },
   // The 127.0.0.1:3101 preview runs `next start` alongside `next dev`; they
   // cannot share one build directory, so that server sets NEXT_DIST_DIR.

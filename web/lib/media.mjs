@@ -33,12 +33,19 @@ function escapeSvg(value) {
   return String(value || "").replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&apos;" })[character]);
 }
 
+export function buildSubjectCardSvg(subjectName, fontBytes) {
+  const escapedName = escapeSvg(String(subjectName).slice(0, 55));
+  const fontData = Buffer.from(fontBytes).toString("base64");
+  return Buffer.from(`<svg width="480" height="246" xmlns="http://www.w3.org/2000/svg"><style>@font-face{font-family:Geist;src:url(data:font/ttf;base64,${fontData}) format('truetype')}text{font-family:Geist,sans-serif}</style><rect width="480" height="246" fill="#111114" fill-opacity="0.96"/><rect x="12" y="12" width="456" height="222" rx="18" fill="#18181d" stroke="#9f8cff" stroke-width="2"/><text x="30" y="43" fill="#a99bff" font-size="13" font-weight="700" letter-spacing="2">TONIGHT'S SUBJECT</text><text x="30" y="216" fill="white" font-size="22" font-weight="700">${escapedName}</text></svg>`);
+}
+
 async function defaultUploadScene(template, input) {
   if (!process.env.FAL_KEY) throw new Error("FAL_KEY is missing from the server environment.");
   const publicDirectory = path.basename(process.cwd()) === "web"
     ? path.resolve(process.cwd(), "public")
     : path.resolve(process.cwd(), "web/public");
   const presenterBytes = await readFile(path.join(publicDirectory, "templates", template.imageFileName));
+  const fontBytes = await readFile(path.resolve(publicDirectory, "../node_modules/next/dist/compiled/@vercel/og/Geist-Regular.ttf"));
   const presenter = await sharp(presenterBytes).resize(480, 864, { fit: "cover" }).png().toBuffer();
   let subjectVisual = null;
   if (input.subjectVisualUrl) {
@@ -50,8 +57,7 @@ async function defaultUploadScene(template, input) {
       throw new Error(error instanceof Error ? `The subject visual could not be loaded: ${error.message}` : "The subject visual could not be loaded.");
     }
   }
-  const subjectName = escapeSvg(String(input.subjectName).slice(0, 55));
-  const header = Buffer.from(`<svg width="480" height="246" xmlns="http://www.w3.org/2000/svg"><rect width="480" height="246" fill="#111114" fill-opacity="0.96"/><rect x="12" y="12" width="456" height="222" rx="18" fill="#18181d" stroke="#9f8cff" stroke-width="2"/><text x="30" y="43" fill="#a99bff" font-family="Arial" font-size="13" font-weight="700" letter-spacing="2">TONIGHT'S SUBJECT</text><text x="30" y="216" fill="white" font-family="Arial" font-size="22" font-weight="700">${subjectName}</text></svg>`);
+  const header = buildSubjectCardSvg(input.subjectName, fontBytes);
   const composites = [{ input: header, top: 618, left: 0 }];
   if (subjectVisual) {
     const visual = await sharp(subjectVisual).resize(420, 142, { fit: "cover" }).png().toBuffer();

@@ -1,7 +1,15 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { generateApprovedVideo } from "../web/lib/media.mjs";
+import { buildSubjectCardSvg, generateApprovedVideo } from "../web/lib/media.mjs";
+
+test("subject card embeds a portable font instead of relying on server fonts", () => {
+  const svg = buildSubjectCardSvg("AnalystTom/veed_hack", Buffer.from("font-bytes")).toString("utf8");
+  assert.match(svg, /@font-face/);
+  assert.match(svg, /data:font\/ttf;base64/);
+  assert.match(svg, /AnalystTom\/veed_hack/);
+  assert.doesNotMatch(svg, /Arial/);
+});
 
 test("generateApprovedVideo blocks unapproved or incomplete requests before provider calls", async () => {
   let calls = 0;
