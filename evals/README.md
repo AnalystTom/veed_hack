@@ -46,4 +46,6 @@ Artifacts are written under the gitignored `data/eval-runs/` directory. The sour
 
 Use `--reference-strength light` (default, three evenly sampled sources), `medium` (six), or `strong` (the whole corpus). Compare it directly with `repo_only` and `repo_plus_reference_signals`; do not assume stronger anchoring makes the jokes better.
 
-The auto-scores measure mechanical quality, not whether a joke is funny. Use `blind-review.md` for human pairwise choices, then attach keep/revise/reject reasons to the winning packet IDs in a future ranking dataset.
+## Human comedy review
+
+The auto-scores measure mechanical quality, not whether a joke is funny. Give the reviewer only `blind-review.md` first, then record outcomes in a copy of `review-template.csv` using `keep`, `revise`, or `reject`, a rank, and one concrete reason. Reveal `results.json` after the ranking to compare provider, source mix, duration, and grounding failures. This is the seed dataset for the future preference ranker.
