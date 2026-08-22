@@ -91,3 +91,5 @@ npm run evals:reviewer -- --arena evals/shared-runs/current-guidelines-arena
 ```
 
 Open `http://127.0.0.1:4174`. It saves labels directly to that arena's `review.csv`: keep/revise/reject, rank, rationale, notes, and comedy-mechanic tags. It exposes no provider, model, or direction labels.
+
+The expandable **Joke guidelines** editor writes the real root `joke_guidelines.md`, which is the production comedy system prompt. Save a revision, create a fresh master arena, and review it separately—never overwrite the arena you are currently judging.
