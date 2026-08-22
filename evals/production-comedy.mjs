@@ -6,10 +6,10 @@ import { buildResearchBrief, researchSubject, searchPublicContext, synthesizeRes
 import { searchOfficialSocialContext } from "../web/lib/social-api.mjs";
 
 export const DIRECTION_VARIANTS = Object.freeze({
-  baseline: "Open with a joke, not context. Target 60 to 72 words and cut every sentence that merely explains the product.",
+  baseline: "Open with a joke, not context. Cut every clause that merely explains the product.",
   "one-premise": "Use one supported premise only. Build three fresh turns from it and end on a clean final callback. Do not list repository facts.",
   "discourse-compression": "Open on the recurring public reputation or discourse from the brief. Compress the thread into one sharp line, then prove it with one supported contradiction.",
-  "hard-callback": "Write exactly four sentences. Sentence one is a cold-open joke. Each later sentence must change the angle. Sentence four calls back to sentence one and stops on the punch.",
+  "hard-callback": "Open with a cold joke, change the angle, then call back to the opening phrase on the punch. In one-sentence mode, use the final clause as the callback.",
   "viewer-first": "Use one supported technical detail that a non-engineer can follow. State the contradiction plainly, with no hedge, scene-setting, or explanatory closer.",
 });
 
@@ -70,13 +70,14 @@ export function productionBlindReviewMarkdown(candidates) {
 }
 
 function parseArgs(args) {
-  const options = { kind: "repository", templateId: "roast", cycles: 1, directions: Object.keys(DIRECTION_VARIANTS), outputRoot: "data/production-comedy-runs", provider: "production", baseUrl: "", model: "", apiKeyEnv: "", timeoutMs: 90_000 };
+  const options = { kind: "repository", templateId: "roast", scriptFormat: "one-liner", cycles: 1, directions: Object.keys(DIRECTION_VARIANTS), outputRoot: "data/production-comedy-runs", provider: "production", baseUrl: "", model: "", apiKeyEnv: "", timeoutMs: 90_000 };
   for (let index = 0; index < args.length; index += 1) {
     const value = args[index];
     const next = () => args[++index] || "";
     if (value === "--subject") options.subjectUrl = next();
     else if (value === "--kind") options.kind = next();
     else if (value === "--template") options.templateId = next();
+    else if (value === "--format") options.scriptFormat = next();
     else if (value === "--cycles") options.cycles = Math.min(Math.max(Number(next()) || 3, 1), 10);
     else if (value === "--directions") options.directions = next().split(",").filter(Boolean);
     else if (value === "--provider") options.provider = next();
@@ -93,6 +94,7 @@ function parseArgs(args) {
     throw new Error(`--directions must use: ${Object.keys(DIRECTION_VARIANTS).join(", ")}`);
   }
   if (!["repository", "product"].includes(options.kind)) throw new Error("--kind must be repository or product.");
+  if (!["narration", "one-liner"].includes(options.scriptFormat)) throw new Error("--format must be narration or one-liner.");
   if (!["production", "openai-compatible"].includes(options.provider)) throw new Error("--provider must be production or openai-compatible.");
   if (options.provider === "openai-compatible") {
     compatibleUrl(options.baseUrl);
@@ -153,9 +155,12 @@ export async function runProductionComedyBaseline(options, dependencies = {}) {
           researchBrief: research.researchBrief,
           customInstructions: DIRECTION_VARIANTS[variant],
           templateId: options.templateId,
+          scriptFormat: options.scriptFormat,
         };
         const output = chat ? await generate(input, chat) : await generate(input);
         const words = wordCount(output.script);
+        const minimumWords = options.scriptFormat === "one-liner" ? 18 : 55;
+        const maximumWords = options.scriptFormat === "one-liner" ? 32 : 85;
         candidates.push({
           runId: `${variant}__cycle-${String(cycle).padStart(2, "0")}`,
           provider,
@@ -164,7 +169,7 @@ export async function runProductionComedyBaseline(options, dependencies = {}) {
           variant,
           title: "Production comedy script",
           script: output.script,
-          metrics: { candidateCount: 1, passedCount: words >= 55 && words <= 85 ? 1 : 0, passRate: words >= 55 && words <= 85 ? 1 : 0, meanWords: words, meanSeconds: Math.ceil((words / 150) * 60) },
+          metrics: { candidateCount: 1, passedCount: words >= minimumWords && words <= maximumWords ? 1 : 0, passRate: words >= minimumWords && words <= maximumWords ? 1 : 0, meanWords: words, meanSeconds: Math.ceil((words / 150) * 60) },
         });
       } catch (error) {
         candidates.push({ runId: `${variant}__cycle-${String(cycle).padStart(2, "0")}`, provider, model, profile: "production_comedy", variant, failed: error instanceof Error ? error.message : "Production generation failed." });

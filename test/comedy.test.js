@@ -80,6 +80,12 @@ test("validateComedyScript rejects host filler and stock AI slang", () => {
   assert.equal(validateComedyScript("The README arrived dressed for a launch party, but the repository brought a folding chair and a dependency warning. It promises effortless momentum, then asks every feature to attend three meetings and a retrospective. The architecture is not unfinished; it is simply committed to an extended period of dramatic ambiguity. Still, credit where it is due: few products can turn a missing setup instruction into a live demonstration of their own roadmap."), null);
 });
 
+test("validateComedyScript gives the eval bench a single-sentence contract", () => {
+  const oneLiner = "OpenClaw offers personal automation, so naturally the beta needs your messages, files, and shell before it can automate your peace of mind.";
+  assert.equal(validateComedyScript(oneLiner, { scriptFormat: "one-liner" }), null);
+  assert.match(validateComedyScript("OpenClaw needs your messages, files, and shell before it can automate your peace of mind. That feels extremely personal.", { scriptFormat: "one-liner" }), /exactly one sentence/i);
+});
+
 test("generateComedyScript retries banned filler instead of returning it", async () => {
   let calls = 0;
   const result = await generateComedyScript({

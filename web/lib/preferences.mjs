@@ -54,7 +54,7 @@ export async function loadComedyCorpus({ root = repositoryRoot } = {}) {
   }
 }
 
-export function formatCorpusBlock(corpus) {
+export function formatCorpusBlock(corpus, { oneLiner = false } = {}) {
   const mechanics = Array.isArray(corpus?.mechanics)
     ? corpus.mechanics.map((item) => String(item || "").trim()).filter(Boolean)
     : [];
@@ -63,8 +63,10 @@ export function formatCorpusBlock(corpus) {
   return [
     "Authorised comedy-corpus mechanics. These are original production notes, not lines to copy:",
     ...mechanics.map((item) => `- ${item}`),
-    recipe.targetWords ? `Target ${recipe.targetWords} words while still obeying the 55-85 word contract.` : "",
-    recipe.shape ? `Structure: ${recipe.shape}` : "",
+    oneLiner
+      ? "For this benchmark, compress the setup, turn, and punch into exactly one sentence of 18-32 words."
+      : recipe.targetWords ? `Target ${recipe.targetWords} words while still obeying the 55-85 word contract.` : "",
+    oneLiner ? "Structure: one sentence only; use the final clause as the callback or hardest hit." : recipe.shape ? `Structure: ${recipe.shape}` : "",
     recipe.voice ? `Voice: ${recipe.voice}` : "",
   ].filter(Boolean).join("\n");
 }
