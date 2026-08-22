@@ -1,0 +1,42 @@
+[
+  {
+    "runId": "baseline__cycle-01",
+    "provider": "openai-compatible",
+    "model": "venice-uncensored",
+    "profile": "production_comedy",
+    "variant": "baseline",
+    "title": "Production comedy script",
+    "script": "Welcome to the RoastBench, where you can generate evidence packs, perception research, and tech-roast scripts from public GitHub repositories. With zero stars, zero forks, and one contributor, it's not exactly a community—more like a very determined group chat. It supports checks, evaluations, arenas, publishing, image generation, and Grok, but what it doesn't have is a plainly documented \"what does this actually do?\" button.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 63,
+      "meanSeconds": 26
+    }
+  },
+  {
+    "runId": "one-premise__cycle-01",
+    "provider": "openai-compatible",
+    "model": "venice-uncensored",
+    "profile": "production_comedy",
+    "variant": "one-premise",
+    "title": "Production comedy script",
+    "script": "Alright, listen up! We've got a tool here, RoastBench, that's so prototype-heavy, it's got more experimental features than a mad scientist's workshop! But don't worry, it's not a community yet, it's more like a determined group chat with just one contributor. And the best part? It's got everything you need except a 'what does this actually do?' button. Isn't that just delightful?",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 62,
+      "meanSeconds": 25
+    }
+  },
+  {
+    "runId": "viewer-first__cycle-01",
+    "provider": "openai-compatible",
+    "model": "venice-uncensored",
+    "profile": "production_comedy",
+    "variant": "viewer-first",
+    "failed": "Production narration did not meet the script contract after two attempts: Generated narration must be 55 to 85 words; received 53."
+  }
+]

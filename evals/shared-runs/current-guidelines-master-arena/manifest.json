@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-08-22T14:47:44.647Z",
+  "kind": "master_comedy_arena",
+  "sourceRuns": [
+    "current-guidelines-luna",
+    "current-guidelines-venice"
+  ],
+  "candidateCount": 5,
+  "jokeGuidelinesSha256": "e1ee79afe4d0f9a354ec24c040d64f1121d850c4524c9de6fe2907ffeb12b7db"
+}
