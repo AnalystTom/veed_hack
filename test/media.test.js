@@ -1,14 +1,14 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 
 import { buildSubjectCardSvg, generateApprovedVideo } from "../web/lib/media.mjs";
 
 test("subject card embeds a portable font instead of relying on server fonts", () => {
-  const svg = buildSubjectCardSvg("AnalystTom/veed_hack", Buffer.from("font-bytes")).toString("utf8");
-  assert.match(svg, /@font-face/);
-  assert.match(svg, /data:font\/ttf;base64/);
-  assert.match(svg, /AnalystTom\/veed_hack/);
-  assert.doesNotMatch(svg, /Arial/);
+  const font = readFileSync(new URL("../web/node_modules/next/dist/compiled/@vercel/og/Geist-Regular.ttf", import.meta.url));
+  const svg = buildSubjectCardSvg("AnalystTom/veed_hack", font).toString("utf8");
+  assert.match(svg, /<path d="M/);
+  assert.doesNotMatch(svg, /<text|font-family|Arial/);
 });
 
 test("generateApprovedVideo blocks unapproved or incomplete requests before provider calls", async () => {

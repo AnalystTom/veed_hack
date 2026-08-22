@@ -1,6 +1,7 @@
 import { fal } from "@fal-ai/client";
 import { config } from "dotenv";
 import { readFile } from "node:fs/promises";
+import opentype from "opentype.js";
 import path from "node:path";
 import sharp from "sharp";
 
@@ -29,14 +30,14 @@ async function defaultSubscribe(model, options) {
   return fal.subscribe(model, options);
 }
 
-function escapeSvg(value) {
-  return String(value || "").replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&apos;" })[character]);
-}
-
 export function buildSubjectCardSvg(subjectName, fontBytes) {
-  const escapedName = escapeSvg(String(subjectName).slice(0, 55));
-  const fontData = Buffer.from(fontBytes).toString("base64");
-  return Buffer.from(`<svg width="480" height="246" xmlns="http://www.w3.org/2000/svg"><style>@font-face{font-family:Geist;src:url(data:font/ttf;base64,${fontData}) format('truetype')}text{font-family:Geist,sans-serif}</style><rect width="480" height="246" fill="#111114" fill-opacity="0.96"/><rect x="12" y="12" width="456" height="222" rx="18" fill="#18181d" stroke="#9f8cff" stroke-width="2"/><text x="30" y="43" fill="#a99bff" font-size="13" font-weight="700" letter-spacing="2">TONIGHT'S SUBJECT</text><text x="30" y="216" fill="white" font-size="22" font-weight="700">${escapedName}</text></svg>`);
+  const cleanName = String(subjectName).slice(0, 55);
+  const bytes = Buffer.from(fontBytes);
+  const arrayBuffer = bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength);
+  const font = opentype.parse(arrayBuffer);
+  const labelPath = font.getPath("TONIGHT'S SUBJECT", 30, 43, 13).toPathData(2);
+  const subjectPath = font.getPath(cleanName, 30, 216, 22).toPathData(2);
+  return Buffer.from(`<svg width="480" height="246" xmlns="http://www.w3.org/2000/svg"><rect width="480" height="246" fill="#111114" fill-opacity="0.96"/><rect x="12" y="12" width="456" height="222" rx="18" fill="#18181d" stroke="#9f8cff" stroke-width="2"/><path d="${labelPath}" fill="#a99bff"/><path d="${subjectPath}" fill="white"/></svg>`);
 }
 
 async function defaultUploadScene(template, input) {
