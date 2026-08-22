@@ -22,11 +22,14 @@ function isPrivateAddress(address) {
 export function normalizeSubjectUrl(kind, rawUrl) {
   let parsed;
   try {
-    parsed = new URL(String(rawUrl ?? "").trim());
+    const input = String(rawUrl ?? "").trim();
+    const candidate = /^[a-z][a-z\d+.-]*:\/\//i.test(input) ? input : `https://${input}`;
+    parsed = new URL(candidate);
   } catch {
     throw new Error("Enter a valid public HTTPS URL.");
   }
 
+  if (parsed.protocol === "http:") parsed.protocol = "https:";
   if (parsed.protocol !== "https:") throw new Error("The subject must use HTTPS.");
   if (parsed.username || parsed.password) throw new Error("URLs containing credentials are not allowed.");
   if (
@@ -216,19 +219,31 @@ export function summarizeProduct(subject, html) {
 }
 
 async function researchProduct(subject, fetchImpl) {
-  await assertPublicDns(subject.hostname);
-  const response = await fetchImpl(subject.url, {
-    headers: { Accept: "text/html,application/xhtml+xml", "User-Agent": "Roastr-MVP/0.1" },
-    redirect: "error",
-    signal: AbortSignal.timeout(10_000),
-  });
-  if (!response.ok) throw new Error(`The product page returned status ${response.status}.`);
-  const contentType = response.headers.get("content-type") || "";
-  if (!contentType.includes("text/html") && !contentType.includes("application/xhtml+xml")) {
-    throw new Error("The product URL must return an HTML page.");
+  let currentUrl = subject.url;
+  for (let redirectCount = 0; redirectCount <= 3; redirectCount += 1) {
+    const current = new URL(currentUrl);
+    if (current.protocol !== "https:") throw new Error("The subject must use HTTPS.");
+    await assertPublicDns(current.hostname);
+    const response = await fetchImpl(currentUrl, {
+      headers: { Accept: "text/html,application/xhtml+xml", "User-Agent": "Roastr-MVP/0.1" },
+      redirect: "manual",
+      signal: AbortSignal.timeout(10_000),
+    });
+    if (response.status >= 300 && response.status < 400) {
+      const location = response.headers.get("location");
+      if (!location) throw new Error("The product URL returned an incomplete redirect.");
+      currentUrl = new URL(location, currentUrl).toString();
+      continue;
+    }
+    if (!response.ok) throw new Error(`The product page returned status ${response.status}.`);
+    const contentType = response.headers.get("content-type") || "";
+    if (!contentType.includes("text/html") && !contentType.includes("application/xhtml+xml")) {
+      throw new Error("The product URL must return an HTML page.");
+    }
+    const html = (await response.text()).slice(0, 1_000_000);
+    return summarizeProduct({ ...subject, url: currentUrl, hostname: current.hostname }, html);
   }
-  const html = (await response.text()).slice(0, 1_000_000);
-  return summarizeProduct(subject, html);
+  throw new Error("The product URL redirected too many times.");
 }
 
 export async function researchSubject(kind, rawUrl, fetchImpl = fetch) {

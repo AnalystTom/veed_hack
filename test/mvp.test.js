@@ -20,6 +20,9 @@ test("normalizeSubjectUrl accepts public HTTPS GitHub repositories", () => {
 test("normalizeSubjectUrl infers repository or product from one URL input", () => {
   assert.equal(normalizeSubjectUrl(undefined, "https://github.com/AnalystTom/veed_hack").kind, "repository");
   assert.equal(normalizeSubjectUrl(undefined, "https://example.com").kind, "product");
+  assert.equal(normalizeSubjectUrl(undefined, "clawbench.com").url, "https://clawbench.com/");
+  assert.equal(normalizeSubjectUrl(undefined, "www.clawbench.com").url, "https://www.clawbench.com/");
+  assert.equal(normalizeSubjectUrl(undefined, "http://clawbench.com").url, "https://clawbench.com/");
 });
 
 test("normalizeSubjectUrl rejects credentials and local targets", () => {
@@ -28,7 +31,7 @@ test("normalizeSubjectUrl rejects credentials and local targets", () => {
     /credentials/i,
   );
   assert.throws(() => normalizeSubjectUrl("product", "https://localhost:3000"), /public/i);
-  assert.throws(() => normalizeSubjectUrl("product", "http://example.com"), /HTTPS/i);
+  assert.throws(() => normalizeSubjectUrl("product", "ftp://example.com"), /HTTPS/i);
 });
 
 test("researchSubject reads GitHub credentials from the environment", async () => {

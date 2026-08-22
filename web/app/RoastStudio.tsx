@@ -65,7 +65,9 @@ export default function RoastStudio() {
             <input
               required
               disabled={busy}
-              type="url"
+              type="text"
+              inputMode="url"
+              autoComplete="url"
               value={url}
               onChange={(event) => {
                 setUrl(event.target.value);
