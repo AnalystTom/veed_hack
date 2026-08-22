@@ -19,6 +19,10 @@ test("generateApprovedVideo blocks unapproved or incomplete requests before prov
     generateApprovedVideo({ approved: true, script: "Hello", templateId: "roast" }, { subscribe }),
     /subject name/i,
   );
+  await assert.rejects(
+    generateApprovedVideo({ approved: true, script: "Hello", templateId: "roast", subjectName: "Demo" }, { subscribe }),
+    /subject visual/i,
+  );
   assert.equal(calls, 0);
 });
 

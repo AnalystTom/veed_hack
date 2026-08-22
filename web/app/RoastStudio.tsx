@@ -17,6 +17,8 @@ type Summary = {
   researchMode: string;
   researchWarning?: string;
   visualUrl?: string;
+  subjectVisualMode?: 'image' | 'text-card';
+  subjectVisualWarning?: string;
 };
 type ComedyScript = { script: string; templateId: string; subjectName: string };
 type GenerationStage = 'idle' | 'planning' | 'narrating' | 'animating' | 'complete' | 'failed';
@@ -158,6 +160,7 @@ export default function RoastStudio() {
         templateId,
         subjectName: summary.name,
         subjectVisualUrl: summary.visualUrl,
+        subjectVisualMode: summary.subjectVisualMode,
       });
       setVideoUrl(payload.result.videoUrl);
       setGenerationStage('complete');
@@ -224,6 +227,7 @@ export default function RoastStudio() {
               </div>
               <div id="research-title"><MarkdownBrief>{summary.researchBrief}</MarkdownBrief></div>
               {summary.researchWarning && <p className={styles.warning}>{summary.researchWarning}</p>}
+              {summary.subjectVisualWarning && <p className={styles.warning}>{summary.subjectVisualWarning}</p>}
               {!proceeded && <button className={styles.primary} type="button" onClick={() => setProceeded(true)}>Proceed →</button>}
             </div>
           </section>

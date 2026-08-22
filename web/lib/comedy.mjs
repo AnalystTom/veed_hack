@@ -22,6 +22,8 @@ export function assertOriginalPersonaDirection(value) {
 
 export function buildComedyPrompt({ subjectName, researchBrief, customInstructions, templateId, guidelines }) {
   const template = getVideoTemplate(templateId);
+  const cleanSubjectName = String(subjectName || "").trim();
+  if (!cleanSubjectName) throw new Error("A researched subject name is required before script generation.");
   const cleanBrief = String(researchBrief || "").trim();
   if (!cleanBrief) throw new Error("A Research Brief is required before script generation.");
   const direction = String(customInstructions || "").trim() || "No additional creator direction.";
@@ -37,7 +39,7 @@ export function buildComedyPrompt({ subjectName, researchBrief, customInstructio
       String(guidelines || "").trim(),
     ].join("\n\n"),
     user: [
-      `Subject: ${String(subjectName || "the product").trim()}`,
+      `Subject: ${cleanSubjectName}`,
       `Template: ${template.name}`,
       `Perspective: ${template.perspective}`,
       `Custom instructions: ${direction}`,

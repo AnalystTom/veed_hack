@@ -20,6 +20,15 @@ test("buildComedyPrompt gives every generation the shared joke guidelines", () =
   assert.match(prompt.user, /Keep it dry/);
 });
 
+test("buildComedyPrompt requires the researched subject name", () => {
+  assert.throws(() => buildComedyPrompt({
+    subjectName: "",
+    researchBrief: "# Demo\n\nA public demo.",
+    templateId: "roast",
+    guidelines,
+  }), /subject name/i);
+});
+
 test("buildComedyPrompt gives Parody the product-owner point of view", () => {
   const prompt = buildComedyPrompt({
     subjectName: "Uber for dogs",

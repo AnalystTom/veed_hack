@@ -190,6 +190,8 @@ export function summarizeRepository(repository, languages, rootEntries, readme, 
     overview: `${repository.full_name}: ${description}`,
     architecture: { directories, files, languages: languageNames },
     visualUrl: `https://opengraph.githubassets.com/roastr/${repository.full_name}`,
+    subjectVisualMode: "image",
+    subjectVisualWarning: "",
     evidence,
     researchedAt: new Date().toISOString(),
   };
@@ -258,6 +260,8 @@ export function summarizeProduct(subject, html) {
     overview: description || `The public page identifies itself as “${title}”.`,
     architecture: null,
     visualUrl,
+    subjectVisualMode: visualUrl ? "image" : "text-card",
+    subjectVisualWarning: visualUrl ? "" : "No public preview image was found. The generated video will use a text subject card built from the researched page title.",
     evidence,
     researchedAt: new Date().toISOString(),
   };

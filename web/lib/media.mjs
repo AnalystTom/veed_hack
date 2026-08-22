@@ -44,9 +44,10 @@ async function defaultUploadScene(template, input) {
   if (input.subjectVisualUrl) {
     try {
       const response = await fetch(requireHttpsUrl(input.subjectVisualUrl, "The subject visual"), { signal: AbortSignal.timeout(15_000) });
-      if (response.ok) subjectVisual = Buffer.from(await response.arrayBuffer());
-    } catch {
-      subjectVisual = null;
+      if (!response.ok) throw new Error(`The subject visual returned status ${response.status}.`);
+      subjectVisual = Buffer.from(await response.arrayBuffer());
+    } catch (error) {
+      throw new Error(error instanceof Error ? `The subject visual could not be loaded: ${error.message}` : "The subject visual could not be loaded.");
     }
   }
   const subjectName = escapeSvg(String(input.subjectName).slice(0, 55));
@@ -84,6 +85,9 @@ export async function generateNarration(input, subscribe = defaultSubscribe) {
 export async function generatePresenterVideo(input, adapters = {}) {
   if (!input?.approved) throw new Error("The creative package must be approved before generation.");
   if (!String(input.subjectName || "").trim()) throw new Error("A researched subject name is required for the generated scene.");
+  if (!input.subjectVisualUrl && input.subjectVisualMode !== "text-card") {
+    throw new Error("A researched subject visual or an explicitly approved text-only subject card is required for the generated scene.");
+  }
   const template = getVideoTemplate(input.templateId);
   const audioUrl = requireHttpsUrl(input.audioUrl, "The generated narration");
   const uploadScene = adapters.uploadScene || adapters.uploadPresenter || defaultUploadScene;
@@ -102,6 +106,9 @@ export async function generateApprovedVideo(input, adapters = {}) {
   if (!input?.approved) throw new Error("The creative package must be approved before generation.");
   getVideoTemplate(input.templateId);
   if (!String(input.subjectName || "").trim()) throw new Error("A researched subject name is required for the generated scene.");
+  if (!input.subjectVisualUrl && input.subjectVisualMode !== "text-card") {
+    throw new Error("A researched subject visual or an explicitly approved text-only subject card is required for the generated scene.");
+  }
   const subscribe = adapters.subscribe || defaultSubscribe;
   const narration = await generateNarration(input, subscribe);
   const video = await generatePresenterVideo({ ...input, audioUrl: narration.audioUrl }, {
