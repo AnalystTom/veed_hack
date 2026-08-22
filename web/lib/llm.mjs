@@ -10,10 +10,21 @@ config({ path: path.join(repositoryRoot, ".env"), override: false });
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 export const LUNA_MODEL = "openai/gpt-5.6-luna";
 
-export async function generateLunaText({ system, user, temperature = 0.3, maxTokens = 900 }) {
+function completionText(content) {
+  if (typeof content === "string") return content.trim();
+  if (!Array.isArray(content)) return "";
+  return content.map((part) => {
+    if (typeof part === "string") return part;
+    if (typeof part?.text === "string") return part.text;
+    if (typeof part?.content === "string") return part.content;
+    return "";
+  }).join("").trim();
+}
+
+export async function generateLunaText({ system, user, temperature = 0.3, maxTokens = 900 }, fetchImpl = fetch) {
   const apiKey = process.env.OPENROUTER_API_KEY?.trim();
   if (!apiKey) throw new Error("OPENROUTER_API_KEY is missing from the server environment.");
-  const response = await fetch(OPENROUTER_URL, {
+  const response = await fetchImpl(OPENROUTER_URL, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${apiKey}`,
@@ -27,6 +38,9 @@ export async function generateLunaText({ system, user, temperature = 0.3, maxTok
       ],
       temperature,
       max_tokens: maxTokens,
+      // Luna otherwise may spend the entire short comedy budget on reasoning
+      // and return an empty narration.
+      reasoning: { effort: "none" },
     }),
     signal: AbortSignal.timeout(60_000),
   });
@@ -35,7 +49,8 @@ export async function generateLunaText({ system, user, temperature = 0.3, maxTok
     throw new Error(`GPT-5.6 Luna generation failed (${response.status}): ${detail || response.statusText}`);
   }
   const payload = await response.json();
-  const text = payload?.choices?.[0]?.message?.content;
-  if (!String(text || "").trim()) throw new Error("GPT-5.6 Luna returned no text.");
-  return String(text).trim();
+  const choice = payload?.choices?.[0];
+  const text = completionText(choice?.message?.content);
+  if (!text) throw new Error(`GPT-5.6 Luna returned no text${choice?.finish_reason ? ` (finished: ${choice.finish_reason})` : ""}.`);
+  return text;
 }
