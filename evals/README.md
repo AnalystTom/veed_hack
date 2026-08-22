@@ -92,6 +92,6 @@ Run the local reviewer against a master arena:
 npm run evals:reviewer -- --arena evals/shared-runs/current-guidelines-arena
 ```
 
-Open `http://127.0.0.1:4174`. It shows two anonymous scripts at a time; choose left, right, or tie. Arrow-left, arrow-right, and `=` work as shortcuts. Choices are automatically saved to the arena's `pairwise-review.json`, without exposing provider, model, direction, or candidate identity.
+Open `http://127.0.0.1:4174`. It shows two anonymous scripts at a time; choose left, right, or tie, add an optional note, then explicitly save. Arrow-left, arrow-right, and `=` select a choice but do not advance. Previous/Next lets reviewers revisit and overwrite any comparison before saving it to the arena's `pairwise-review.json`, without exposing provider, model, direction, or candidate identity.
 
 The expandable **Joke guidelines** editor writes the real root `joke_guidelines.md`, which is the production comedy system prompt. Save a revision, create a fresh master arena, and review it separately—never overwrite the arena you are currently judging.
