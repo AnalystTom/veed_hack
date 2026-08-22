@@ -7,7 +7,7 @@ const repositoryRoot = path.basename(process.cwd()) === "web"
 
 const EXAMPLES_FILENAME = "comedy_examples.json";
 const CORPUS_FILENAME = "comedy_corpus.json";
-const DEFAULT_LIMIT = 4;
+const DEFAULT_LIMIT = 5;
 
 // Pure selector so the curation contract is unit-testable without the filesystem.
 export function selectCuratedExamples(data, templateId, limit = DEFAULT_LIMIT) {

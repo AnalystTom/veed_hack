@@ -177,3 +177,85 @@ test("OpenAI-compatible production challenger preserves the production chat shap
   assert.equal(request.url, "http://gateway.test/v1/chat/completions");
   assert.equal(JSON.parse(request.options.body).model, "qwen9b-heretic");
 });
+
+const secondValidScript = "Their onboarding promises a calm five minute setup, then hands you a terminal, three tokens, and a stern warning about permissions. The demo runs beautifully on stage and nervously everywhere else. Support says the fix shipped last week, which is also what they said last week. Somewhere a roadmap is very proud of itself, and completely alone.";
+
+test("generateComedyScript injects curated preferred examples into the prompt", async () => {
+  let systemPrompt = "";
+  await generateComedyScript({
+    subjectName: "Demo",
+    researchBrief: "# Demo\n\nA public demo.",
+    customInstructions: "Keep it dry.",
+    templateId: "roast",
+  }, async ({ system }) => {
+    systemPrompt = system;
+    return validScript;
+  });
+  assert.match(systemPrompt, /Preferred lines/);
+});
+
+test("judgeComedyScripts returns the index the judge selects and sees the curated examples", async () => {
+  let judgeSystem = "";
+  const index = await judgeComedyScripts({
+    subjectName: "Demo",
+    templateId: "roast",
+    candidates: [{ script: "A" }, { script: "B" }, { script: "C" }],
+    examples: ["Land the last word."],
+    guidelines,
+  }, async ({ system }) => {
+    judgeSystem = system;
+    return "2";
+  });
+  assert.equal(index, 1);
+  assert.match(judgeSystem, /Land the last word/);
+});
+
+test("judgeComedyScripts falls back to the first candidate on a bad verdict", async () => {
+  const candidates = [{ script: "A" }, { script: "B" }];
+  assert.equal(await judgeComedyScripts({ templateId: "roast", candidates }, async () => "nonsense"), 0);
+  assert.equal(await judgeComedyScripts({ templateId: "roast", candidates }, async () => "9"), 0);
+  assert.equal(await judgeComedyScripts({ templateId: "roast", candidates }, async () => { throw new Error("judge down"); }), 0);
+});
+
+test("generateBestComedyScript generates several candidates and keeps the judged winner", async () => {
+  let generations = 0;
+  const scripts = [validScript, secondValidScript];
+  const result = await generateBestComedyScript({
+    subjectName: "Demo",
+    researchBrief: "# Demo\n\nA public demo.",
+    customInstructions: "Keep it dry.",
+    templateId: "roast",
+  }, {
+    chat: async () => {
+      const script = scripts[generations % scripts.length];
+      generations += 1;
+      return script;
+    },
+    judge: async () => "2",
+    candidateCount: 2,
+  });
+  assert.equal(generations, 2);
+  assert.equal(result.candidates.length, 2);
+  assert.equal(result.chosenIndex, 1);
+  assert.equal(result.script, result.candidates[1].script);
+});
+
+test("generateBestComedyScript skips the judge when only one candidate survives", async () => {
+  let judged = 0;
+  const result = await generateBestComedyScript({
+    subjectName: "Demo",
+    researchBrief: "# Demo\n\nA public demo.",
+    customInstructions: "Keep it dry.",
+    templateId: "roast",
+  }, {
+    chat: async () => validScript,
+    judge: async () => {
+      judged += 1;
+      return "1";
+    },
+    candidateCount: 1,
+  });
+  assert.equal(judged, 0);
+  assert.equal(result.chosenIndex, 0);
+  assert.equal(result.script, validScript);
+});
