@@ -64,6 +64,8 @@ GITHUB_TOKEN="$(gh auth token)" npm run evals:production -- --subject https://gi
 
 That creates nine candidates: three each for the no-extra-direction baseline, a one-premise direction, and a viewer-first direction. First rank `blind-review.md`; then fill `review.csv` with `candidate-a`, `candidate-b`, etc. This is a baseline for choosing the studio default, not a claim that any prompt direction is universally funniest.
 
+Production runs now merge configured official X/Reddit research with Tavily context before building the same research brief used by the app. If those official credentials are absent, the run continues with the available public sources and records the warning in its manifest.
+
 Run a local or gateway model against the same production prompt with its OpenAI-compatible endpoint:
 
 ```sh

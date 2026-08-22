@@ -3,6 +3,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { generateComedyScript } from "../web/lib/comedy.mjs";
 import { buildResearchBrief, researchSubject, searchPublicContext, synthesizeResearchBrief } from "../web/lib/mvp.mjs";
+import { searchOfficialSocialContext } from "../web/lib/social-api.mjs";
 
 export const DIRECTION_VARIANTS = Object.freeze({
   baseline: "",
@@ -98,12 +99,25 @@ function parseArgs(args) {
 
 async function productionResearch(kind, subjectUrl) {
   const summary = await researchSubject(kind, subjectUrl);
+  const officialContext = await searchOfficialSocialContext(summary).catch((error) => ({
+    answer: "",
+    results: [],
+    mode: "direct-public-data",
+    warning: error instanceof Error ? error.message : "Official social research unavailable.",
+  }));
   let publicContext;
   try {
     publicContext = await searchPublicContext(summary);
   } catch (error) {
-    publicContext = { answer: "", results: [], mode: "direct-public-data", warning: error instanceof Error ? error.message : "Public research unavailable." };
+      publicContext = { answer: "", results: [], mode: "direct-public-data", warning: error instanceof Error ? error.message : "Public research unavailable." };
   }
+  const results = [...officialContext.results, ...publicContext.results];
+  publicContext = {
+    ...publicContext,
+    results: results.filter((source, index) => source.url && results.findIndex((candidate) => candidate.url === source.url) === index),
+    mode: officialContext.results.length ? `${officialContext.mode}+${publicContext.mode}` : publicContext.mode,
+    warning: [officialContext.warning, publicContext.warning].filter(Boolean).join(" "),
+  };
   try {
     const researchBrief = await synthesizeResearchBrief(summary, publicContext);
     return { summary, researchBrief, researchMode: `${publicContext.mode}+gpt-5.6-luna-synthesis`, researchWarning: publicContext.warning };
