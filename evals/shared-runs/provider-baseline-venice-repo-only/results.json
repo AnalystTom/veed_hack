@@ -1,0 +1,80 @@
+[
+  {
+    "runId": "repo_only__openrouter:cognitivecomputations/dolphin-mistral-24b-venice-edition",
+    "profile": "repo_only",
+    "provider": "openrouter:cognitivecomputations/dolphin-mistral-24b-venice-edition",
+    "model": "cognitivecomputations/dolphin-mistral-24b-venice-edition",
+    "mode": "grok",
+    "usage": {
+      "prompt_tokens": 7987,
+      "completion_tokens": 248,
+      "total_tokens": 8235,
+      "cost": 0.0018206,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0018206,
+        "upstream_inference_prompt_cost": 0.0015974,
+        "upstream_inference_completions_cost": 0.0002232
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    },
+    "sourceMix": {
+      "repositoryEvidence": 26,
+      "perceptionEvidence": 0,
+      "referenceSignals": null,
+      "referenceSources": [],
+      "referenceStrength": null
+    },
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 0,
+      "passRate": 0,
+      "meanWords": 52,
+      "meanSeconds": 21,
+      "sourcedLineRate": 0.333,
+      "perceptionLineRate": 0,
+      "distinctAngleRate": 1,
+      "gateIssueCount": 1
+    },
+    "packets": [
+      {
+        "id": "roast-packet-001",
+        "title": "Ollama's Laughable Lullaby",
+        "angle": "Tech Tool's Comedy Routine",
+        "treatment": "Funny / Roast",
+        "narratorDirection": "Imagine a world where AI needs a laugh track. Introducing Ollama, the tech tool that takes its comedy cues from the universal language of laughter.",
+        "lines": [
+          {
+            "text": "Ollama, the AI that generates laughs faster than a stand-up comedian can say 'you'll believe a man can fly'!",
+            "type": "comedic_invention",
+            "evidenceIds": []
+          },
+          {
+            "text": "Why did Ollama bring a ladder to the comedy club? Because it wants to take its act to new heights!",
+            "type": "comedic_invention",
+            "evidenceIds": []
+          },
+          {
+            "text": "Ollama's jokes may be machine-made, but the laughter they generate is completely human.",
+            "type": "sourced_observation",
+            "evidenceIds": [
+              "repo:evals/ollama.mjs"
+            ]
+          }
+        ],
+        "visualEvidenceIds": [],
+        "riskNote": "This packet contains comedic inventions and sourced observations. No potential offenses identified."
+      }
+    ]
+  }
+]
