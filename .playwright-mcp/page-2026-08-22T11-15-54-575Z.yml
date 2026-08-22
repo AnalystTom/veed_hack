@@ -1,0 +1,46 @@
+- generic [active] [ref=f10e1]:
+  - main [ref=f10e2]:
+    - navigation [ref=f10e3]:
+      - strong [ref=f10e4]:
+        - link "Roastr" [ref=f10e5] [cursor=pointer]:
+          - /url: /
+      - link "Back home" [ref=f10e6] [cursor=pointer]:
+        - /url: /
+    - region [ref=f10e9]:
+      - generic [ref=f10e10]:
+        - generic [ref=f10e11]: "01"
+        - text: Subject
+      - generic [ref=f10e12]:
+        - generic [ref=f10e13]:
+          - paragraph [ref=f10e14]: Research-led video brief
+          - heading [level=1] [ref=f10e15]:
+            - text: Give us a subject.
+            - emphasis [ref=f10e16]: We’ll bring receipts.
+          - generic [ref=f10e17]: Paste one public GitHub repository or website URL. We detect the source and ingest its available public evidence together.
+        - generic [ref=f10e18]:
+          - generic [ref=f10e19]: Public GitHub repository or website URL
+          - textbox "Public GitHub repository or website URL" [ref=f10e20]:
+            - /placeholder: https://github.com/owner/repository or https://yourproduct.com
+            - text: https://example.com
+        - region "Research result" [ref=f10e23]:
+          - generic [ref=f10e24]: INGESTION COMPLETE · LIVE PUBLIC DATA
+          - strong [ref=f10e25]: Example Domain
+          - paragraph [ref=f10e26]: The public page identifies itself as “Example Domain”.
+          - generic [ref=f10e27]:
+            - generic [ref=f10e28]: 2 source items found
+            - link "Open source ↗" [ref=f10e29] [cursor=pointer]:
+              - /url: https://example.com/
+          - list [ref=f10e30]:
+            - listitem [ref=f10e31]:
+              - strong [ref=f10e32]: Page title
+              - generic [ref=f10e33]: Example Domain
+              - link "Source ↗" [ref=f10e34] [cursor=pointer]:
+                - /url: https://example.com/
+            - listitem [ref=f10e35]:
+              - strong [ref=f10e36]: Visible page headings
+              - generic [ref=f10e37]: Example Domain
+              - link "Source ↗" [ref=f10e38] [cursor=pointer]:
+                - /url: https://example.com/
+        - button "Ingest URL →" [ref=f10e21] [cursor=pointer]
+        - text: No billable VEED or fal.ai call occurs here.
+  - alert [ref=f10e22]

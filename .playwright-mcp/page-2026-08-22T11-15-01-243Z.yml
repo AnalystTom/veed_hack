@@ -1,0 +1,125 @@
+- generic [active] [ref=f7e1]:
+  - generic [ref=f7e3]:
+    - navigation [ref=f7e4]:
+      - generic [ref=f7e5]: Roastr
+      - generic [ref=f7e6]:
+        - text: Log In
+        - link "Roast my repo" [ref=f7e7] [cursor=pointer]:
+          - /url: /create
+    - generic [ref=f7e8]:
+      - heading [level=1] [ref=f7e20]:
+        - text: Your repo has
+        - emphasis [ref=f7e21]: notes
+        - text: for you.
+      - paragraph [ref=f7e22]: Paste a GitHub URL. We read the issues, the commits and the comment section, then hand it all to someone with a microphone and no manners.
+      - generic [ref=f7e23]:
+        - link "Roast my repo →" [ref=f7e24] [cursor=pointer]:
+          - /url: /create
+          - text: Roast my repo
+          - generic [ref=f7e25]: →
+        - generic [ref=f7e26]: Free preview · you approve the script before anything renders
+    - generic [ref=f7e27]:
+      - generic [ref=f7e28]:
+        - heading [level=2] [ref=f7e29]:
+          - text: Pick a
+          - emphasis [ref=f7e30]: format
+          - text: . We'll cast the rest.
+        - generic [ref=f7e31]: 16 templates · scroll →
+      - generic [ref=f7e32]:
+        - button "placeholder ▶ CI Eulogy Talking head + b-roll · 0:32" [ref=f7e33] [cursor=pointer]:
+          - generic [ref=f7e34]:
+            - generic [ref=f7e35]: placeholder
+            - generic [ref=f7e36]: ▶
+          - generic [ref=f7e38]: CI Eulogy
+          - generic [ref=f7e39]: Talking head + b-roll · 0:32
+        - button "placeholder ▶ The README Oath Courtroom parody · 0:45" [ref=f7e40] [cursor=pointer]:
+          - generic [ref=f7e41]:
+            - generic [ref=f7e42]: placeholder
+            - generic [ref=f7e43]: ▶
+          - generic [ref=f7e45]: The README Oath
+          - generic [ref=f7e46]: Courtroom parody · 0:45
+        - button "placeholder ▶ Dependency Hoarder Reality TV · 1:02" [ref=f7e47] [cursor=pointer]:
+          - generic [ref=f7e48]:
+            - generic [ref=f7e49]: placeholder
+            - generic [ref=f7e50]: ▶
+          - generic [ref=f7e52]: Dependency Hoarder
+          - generic [ref=f7e53]: Reality TV · 1:02
+        - button "placeholder ▶ Ghosted Issues Montage · 0:38" [ref=f7e54] [cursor=pointer]:
+          - generic [ref=f7e55]:
+            - generic [ref=f7e56]: placeholder
+            - generic [ref=f7e57]: ▶
+          - generic [ref=f7e59]: Ghosted Issues
+          - generic [ref=f7e60]: Montage · 0:38
+        - button "placeholder ▶ Launch Day Hype Man Sports commentary · 0:50" [ref=f7e61] [cursor=pointer]:
+          - generic [ref=f7e62]:
+            - generic [ref=f7e63]: placeholder
+            - generic [ref=f7e64]: ▶
+          - generic [ref=f7e66]: Launch Day Hype Man
+          - generic [ref=f7e67]: Sports commentary · 0:50
+        - button "placeholder ▶ The Pricing Page Trial Interrogation · 0:41" [ref=f7e68] [cursor=pointer]:
+          - generic [ref=f7e69]:
+            - generic [ref=f7e70]: placeholder
+            - generic [ref=f7e71]: ▶
+          - generic [ref=f7e73]: The Pricing Page Trial
+          - generic [ref=f7e74]: Interrogation · 0:41
+        - button "placeholder ▶ Commit Message Diary Audiobook · 0:35" [ref=f7e75] [cursor=pointer]:
+          - generic [ref=f7e76]:
+            - generic [ref=f7e77]: placeholder
+            - generic [ref=f7e78]: ▶
+          - generic [ref=f7e80]: Commit Message Diary
+          - generic [ref=f7e81]: Audiobook · 0:35
+        - button "placeholder ▶ Onboarding Maze Screen capture · 1:10" [ref=f7e82] [cursor=pointer]:
+          - generic [ref=f7e83]:
+            - generic [ref=f7e84]: placeholder
+            - generic [ref=f7e85]: ▶
+          - generic [ref=f7e87]: Onboarding Maze
+          - generic [ref=f7e88]: Screen capture · 1:10
+        - button "placeholder ▶ The HN Chorus Musical · 0:48" [ref=f7e89] [cursor=pointer]:
+          - generic [ref=f7e90]:
+            - generic [ref=f7e91]: placeholder
+            - generic [ref=f7e92]: ▶
+          - generic [ref=f7e94]: The HN Chorus
+          - generic [ref=f7e95]: Musical · 0:48
+        - button "placeholder ▶ Roadmap Psychic Fortune teller · 0:36" [ref=f7e96] [cursor=pointer]:
+          - generic [ref=f7e97]:
+            - generic [ref=f7e98]: placeholder
+            - generic [ref=f7e99]: ▶
+          - generic [ref=f7e101]: Roadmap Psychic
+          - generic [ref=f7e102]: Fortune teller · 0:36
+        - button "placeholder ▶ Coverage Confession Monologue · 0:29" [ref=f7e103] [cursor=pointer]:
+          - generic [ref=f7e104]:
+            - generic [ref=f7e105]: placeholder
+            - generic [ref=f7e106]: ▶
+          - generic [ref=f7e108]: Coverage Confession
+          - generic [ref=f7e109]: Monologue · 0:29
+        - button "placeholder ▶ Just an API Wrapper Nature doc · 0:55" [ref=f7e110] [cursor=pointer]:
+          - generic [ref=f7e111]:
+            - generic [ref=f7e112]: placeholder
+            - generic [ref=f7e113]: ▶
+          - generic [ref=f7e115]: Just an API Wrapper
+          - generic [ref=f7e116]: Nature doc · 0:55
+        - button "placeholder ▶ Branch Archaeology Nature doc · 0:44" [ref=f7e117] [cursor=pointer]:
+          - generic [ref=f7e118]:
+            - generic [ref=f7e119]: placeholder
+            - generic [ref=f7e120]: ▶
+          - generic [ref=f7e122]: Branch Archaeology
+          - generic [ref=f7e123]: Nature doc · 0:44
+        - button "placeholder ▶ Discord Lore Dump Stage play · 0:52" [ref=f7e124] [cursor=pointer]:
+          - generic [ref=f7e125]:
+            - generic [ref=f7e126]: placeholder
+            - generic [ref=f7e127]: ▶
+          - generic [ref=f7e129]: Discord Lore Dump
+          - generic [ref=f7e130]: Stage play · 0:52
+        - button "placeholder ▶ Star History Sermon Sermon · 0:33" [ref=f7e131] [cursor=pointer]:
+          - generic [ref=f7e132]:
+            - generic [ref=f7e133]: placeholder
+            - generic [ref=f7e134]: ▶
+          - generic [ref=f7e136]: Star History Sermon
+          - generic [ref=f7e137]: Sermon · 0:33
+        - button "placeholder ▶ Competitor Roll Call Line-up · 0:47" [ref=f7e138] [cursor=pointer]:
+          - generic [ref=f7e139]:
+            - generic [ref=f7e140]: placeholder
+            - generic [ref=f7e141]: ▶
+          - generic [ref=f7e143]: Competitor Roll Call
+          - generic [ref=f7e144]: Line-up · 0:47
+  - alert [ref=f7e145]

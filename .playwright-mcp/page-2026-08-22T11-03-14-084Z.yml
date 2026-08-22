@@ -1,0 +1,33 @@
+- generic [active] [ref=f4e1]:
+  - main [ref=f4e2]:
+    - navigation [ref=f4e3]:
+      - strong [ref=f4e4]: Roastr
+      - generic [ref=f4e5]:
+        - link "Log in" [ref=f4e6] [cursor=pointer]:
+          - /url: /create
+        - link "Roast my repo" [ref=f4e7] [cursor=pointer]:
+          - /url: /create
+    - generic [ref=f4e8]:
+      - heading [level=1] [ref=f4e11]:
+        - text: Your repo has
+        - emphasis [ref=f4e12]: notes
+        - text: for you.
+      - paragraph [ref=f4e13]: Paste a GitHub URL. We read the code, issues and repository evidence, then turn the approved facts into a presenter-led roast.
+      - generic [ref=f4e14]:
+        - link "Roast my repo →" [ref=f4e15] [cursor=pointer]:
+          - /url: /create
+          - text: Roast my repo
+          - generic [ref=f4e16]: →
+        - generic [ref=f4e17]: Free preview · you approve the script before anything renders
+    - region [ref=f4e18]:
+      - generic [ref=f4e19]:
+        - heading [level=2] [ref=f4e20]:
+          - text: Your approved
+          - emphasis [ref=f4e21]: videos
+          - text: .
+        - generic [ref=f4e22]: Real generated media · click to review
+      - generic [ref=f4e23]:
+        - text: NO APPROVED MEDIA
+        - heading "Your first finished roast will appear here." [level=3] [ref=f4e24]
+        - paragraph [ref=f4e25]: The B-style click-through reviewer stays unavailable until a real generated video exists.
+  - alert [ref=f4e26]

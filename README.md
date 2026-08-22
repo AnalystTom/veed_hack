@@ -1,6 +1,6 @@
 # Fal + VEED API starter
 
-This is a server-side Node.js starter for Fal image generation and VEED video APIs.
+This is a server-side Node.js starter for Fal image generation and VEED video APIs. Image generation defaults to `fal-ai/flux/schnell` at 512×512, one image, and one inference step to minimize cost.
 
 ## Set up the key
 
@@ -19,7 +19,7 @@ npm run veed:fabric -- https://example.com/character.png https://example.com/voi
 npm run veed:lipsync -- https://example.com/source.mp4 https://example.com/replacement.mp3
 ```
 
-These commands make billable API calls. The media URLs must be publicly accessible HTTPS URLs.
+These commands make billable API calls. The default Fal image request is billed at the model's lowest listed rate of $0.003 per megapixel, rounded up to one megapixel. The media URLs must be publicly accessible HTTPS URLs.
 
 ## Verify locally
 

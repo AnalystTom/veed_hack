@@ -1,0 +1,26 @@
+- generic [active] [ref=f8e1]:
+  - main [ref=f8e2]:
+    - navigation [ref=f8e3]:
+      - strong [ref=f8e4]:
+        - link "Roastr" [ref=f8e5] [cursor=pointer]:
+          - /url: /
+      - link "Back home" [ref=f8e6] [cursor=pointer]:
+        - /url: /
+    - region [ref=f8e9]:
+      - generic [ref=f8e10]:
+        - generic [ref=f8e11]: "01"
+        - text: Subject
+      - generic [ref=f8e12]:
+        - generic [ref=f8e13]:
+          - paragraph [ref=f8e14]: Research-led video brief
+          - heading [level=1] [ref=f8e15]:
+            - text: Give us a subject.
+            - emphasis [ref=f8e16]: We’ll bring receipts.
+          - generic [ref=f8e17]: Paste one public GitHub repository or website URL. We detect the source and ingest its available public evidence together.
+        - generic [ref=f8e18]:
+          - generic [ref=f8e19]: Public GitHub repository or website URL
+          - textbox "Public GitHub repository or website URL" [ref=f8e20]:
+            - /placeholder: https://github.com/owner/repository or https://yourproduct.com
+        - button "Ingest URL →" [ref=f8e21] [cursor=pointer]
+        - text: No billable VEED or fal.ai call occurs here.
+  - alert [ref=f8e22]

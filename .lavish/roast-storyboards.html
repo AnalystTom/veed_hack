@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Roastr · Storyboard Review — gstack & openclaw</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#171714; --paper:#f3f0e9; --muted:#77746c; --line:#d8d3c8;
+    --acid:#dfff4f; --red:#ff583d; --dark:#20201c; --card:#fffdf7;
+    --grounded:#688120; --grounded-bg:#eef4d8;
+    --invention:#8a4d21; --invention-bg:#f6e6d6;
+    --creator:#3a5a8a; --creator-bg:#e0e8f4;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Manrope',Arial,sans-serif; -webkit-font-smoothing:antialiased;}
+  a{color:inherit;}
+  .mono{font-family:'DM Mono',monospace;}
+  h1,h2,h3{letter-spacing:-.03em; line-height:1;}
+  em.serif{font-family:'Playfair Display',Georgia,serif; font-style:italic; font-weight:700; color:var(--red);}
+
+  /* top bar */
+  .topbar{height:66px; padding:0 5vw; display:flex; align-items:center; justify-content:space-between;
+    border-bottom:1px solid var(--line); background:rgba(243,240,233,.94); position:sticky; top:0; z-index:30; backdrop-filter:blur(14px);}
+  .brand{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.15em; font-size:13px; text-decoration:none;}
+  .brand-mark{width:32px; height:32px; display:grid; place-items:center; color:var(--paper); background:var(--ink);
+    border-radius:50%; font-family:'Playfair Display',Georgia,serif; font-style:italic; font-size:18px;}
+  .safety-badge{font:500 10px/1 'DM Mono',monospace; letter-spacing:.09em; text-transform:uppercase; display:flex; align-items:center; gap:9px; color:var(--ink);}
+  .safety-badge span{width:7px; height:7px; border-radius:50%; background:#58b75f; box-shadow:0 0 0 4px rgba(88,183,95,.12);}
+
+  .wrap{max-width:1120px; margin:0 auto; padding:0 5vw;}
+
+  /* hero */
+  .hero{padding:64px 0 40px; border-bottom:1px solid var(--line);}
+  .eyebrow{margin:0 0 18px; font:500 10px/1.3 'DM Mono',monospace; letter-spacing:.14em; text-transform:uppercase; color:var(--muted);}
+  .hero h1{margin:0 0 20px; font-size:clamp(38px,6vw,68px); font-weight:800;}
+  .hero p{margin:0; max-width:640px; font-size:15px; line-height:1.7; color:var(--muted);}
+  .hero .subjects{display:flex; gap:12px; flex-wrap:wrap; margin-top:28px;}
+  .chip{border:1px solid var(--ink); background:var(--card); padding:10px 14px; font:500 11px 'DM Mono',monospace;
+    box-shadow:3px 3px 0 var(--ink); display:flex; align-items:center; gap:9px;}
+  .chip b{font-weight:700;} .chip .star{color:var(--red);}
+
+  /* section scaffold */
+  section{padding:56px 0; border-bottom:1px solid var(--line);}
+  .sec-head{display:flex; align-items:baseline; gap:16px; margin-bottom:8px;}
+  .sec-num{font:500 11px 'DM Mono',monospace; color:var(--red); letter-spacing:.1em;}
+  h2{font-size:clamp(26px,3.4vw,38px); font-weight:800; margin:0;}
+  .sec-lede{margin:14px 0 34px; max-width:680px; font-size:14px; line-height:1.7; color:var(--muted);}
+
+  /* claim tokens */
+  .claim{display:inline-flex; align-items:center; gap:6px; font:500 8.5px 'DM Mono',monospace;
+    letter-spacing:.06em; text-transform:uppercase; padding:4px 8px; border:1px solid; white-space:nowrap;}
+  .claim.grounded{color:var(--grounded); background:var(--grounded-bg); border-color:var(--grounded);}
+  .claim.invention{color:var(--invention); background:var(--invention-bg); border-color:var(--invention);}
+  .claim.creator{color:var(--creator); background:var(--creator-bg); border-color:var(--creator);}
+  .claim .dot{width:5px; height:5px; border-radius:50%; background:currentColor;}
+
+  /* intake template table */
+  .tpl{border:1px solid var(--ink); background:var(--card); box-shadow:6px 6px 0 var(--ink);}
+  .tpl-row{display:grid; grid-template-columns:190px 1fr 120px; gap:0; border-top:1px solid var(--line);}
+  .tpl-row:first-child{border-top:0;}
+  .tpl-row > div{padding:15px 16px; min-width:0;}
+  .tpl-row .k{font:600 11px 'DM Mono',monospace; border-right:1px solid var(--line); background:#ebe7dd;}
+  .tpl-row .v{font-size:13px; line-height:1.55; color:#3a3833;}
+  .tpl-row .v .opts{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;}
+  .tpl-row .v .opt{font:500 10px 'DM Mono',monospace; padding:3px 8px; border:1px solid var(--line); background:var(--paper);}
+  .tpl-row .s{border-left:1px solid var(--line); display:flex; align-items:center; justify-content:center;}
+  .tag-live{font:500 8.5px 'DM Mono',monospace; text-transform:uppercase; letter-spacing:.06em; padding:4px 8px; border:1px solid var(--grounded); color:var(--grounded); background:var(--grounded-bg);}
+  .tag-new{font:500 8.5px 'DM Mono',monospace; text-transform:uppercase; letter-spacing:.06em; padding:4px 8px; border:1px solid var(--ink); color:var(--ink); background:var(--acid);}
+
+  /* funnybench rubric */
+  .rubric{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px;}
+  .r-card{border:1px solid var(--line); background:var(--card); padding:18px;}
+  .r-card h4{margin:0 0 7px; font-size:14px;}
+  .r-card p{margin:0; font-size:12px; line-height:1.6; color:var(--muted);}
+  .r-card .metric{margin-top:11px; font:500 9px 'DM Mono',monospace; text-transform:uppercase; color:var(--red); letter-spacing:.05em;}
+  .refcard{margin-top:26px; border:1px dashed var(--ink); background:#ebe7dd; padding:20px 22px;}
+  .refcard h4{margin:0 0 12px; font-size:13px; font-family:'DM Mono',monospace; text-transform:uppercase; letter-spacing:.08em;}
+  .refcard ul{margin:0; padding-left:18px;}
+  .refcard li{font-size:12.5px; line-height:1.8; color:#3a3833;}
+  .refcard li b{font-weight:700;}
+
+  /* storyboards */
+  .subject-band{margin:8px 0 22px; display:flex; align-items:center; gap:14px; flex-wrap:wrap;}
+  .subject-band h3{font-size:22px; margin:0;}
+  .subject-band a{font:500 9px 'DM Mono',monospace; text-transform:uppercase; color:var(--muted); text-decoration:none; border-bottom:1px solid var(--line);}
+  .board-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:20px;}
+  .board{border:1px solid var(--ink); background:var(--card); box-shadow:6px 6px 0 var(--ink); display:flex; flex-direction:column; min-width:0;}
+  .board.pick{box-shadow:6px 6px 0 var(--acid);}
+  .board-top{padding:18px 20px; border-bottom:1px solid var(--line); background:var(--dark); color:#f6f2e8;}
+  .board-top .fmt{font:500 9px 'DM Mono',monospace; color:var(--acid); text-transform:uppercase; letter-spacing:.08em;}
+  .board-top h4{margin:9px 0 6px; font-size:19px; color:#fff;}
+  .board-top .persona{font-size:11.5px; color:#bdb9af;}
+  .board-top .meta{margin-top:12px; display:flex; gap:8px; flex-wrap:wrap;}
+  .board-top .meta span{font:500 8.5px 'DM Mono',monospace; padding:3px 7px; border:1px solid #4a4840; color:#d8d3c8;}
+  .board-top .lead{margin-left:auto; font:600 8px 'DM Mono',monospace; color:var(--ink); background:var(--acid); padding:3px 7px;}
+  .beats{padding:6px 20px 4px; flex:1;}
+  .beat{display:grid; grid-template-columns:26px 1fr; gap:12px; padding:15px 0; border-bottom:1px solid var(--line);}
+  .beat:last-child{border-bottom:0;}
+  .beat .n{font:600 11px 'DM Mono',monospace; color:var(--muted);}
+  .beat .role{font:500 8.5px 'DM Mono',monospace; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:6px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+  .beat .line{font-size:13px; line-height:1.55;}
+  .beat .ev{margin-top:8px; font:500 9.5px 'DM Mono',monospace;}
+  .beat .ev a{color:var(--grounded);}
+  .beat.invent .line{color:#5a4326;}
+  .why{padding:16px 20px; border-top:1px solid var(--ink); background:#ebe7dd;}
+  .why h5{margin:0 0 9px; font:600 9px 'DM Mono',monospace; text-transform:uppercase; letter-spacing:.08em; color:var(--invention);}
+  .why dl{margin:0; display:grid; grid-template-columns:96px 1fr; gap:6px 10px;}
+  .why dt{font:500 9px 'DM Mono',monospace; text-transform:uppercase; color:var(--muted);}
+  .why dd{margin:0; font-size:11.5px; line-height:1.5;}
+  .why .avoid{margin-top:10px; font-size:11px; line-height:1.5; color:var(--invention);}
+
+  /* selection controls */
+  .pick-bar{padding:14px 20px; border-top:1px solid var(--ink); display:flex; align-items:center; gap:12px; background:var(--card);}
+  .pick-bar label{display:flex; align-items:center; gap:9px; cursor:pointer; font:600 11px 'DM Mono',monospace;}
+  .pick-bar input{width:20px; height:20px; accent-color:var(--red);}
+  .pick-bar .hint{margin-left:auto; font:500 9px 'DM Mono',monospace; color:var(--muted);}
+
+  /* decision / gate */
+  .gate{border:1px solid var(--ink); background:var(--dark); color:#f6f2e8; padding:26px 28px; box-shadow:6px 6px 0 var(--red);}
+  .gate h3{margin:0 0 10px; color:#fff; font-size:20px;}
+  .gate p{margin:0 0 16px; font-size:13px; line-height:1.7; color:#bdb9af; max-width:720px;}
+  .gate .needs{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-top:6px;}
+  .gate .need{border:1px solid #4a4840; padding:14px; background:#26261f;}
+  .gate .need b{display:block; font-size:12px; color:#fff; margin-bottom:5px;}
+  .gate .need small{font-size:11px; line-height:1.5; color:#a9a59b;}
+  .gate .need .req{display:inline-block; margin-top:8px; font:500 8px 'DM Mono',monospace; text-transform:uppercase; color:var(--acid);}
+
+  /* submit dock */
+  .dock{position:sticky; bottom:0; z-index:20; margin-top:44px; border-top:1px solid var(--ink);
+    background:rgba(243,240,233,.96); backdrop-filter:blur(10px); padding:16px 5vw;}
+  .dock-inner{max-width:1120px; margin:0 auto; display:flex; align-items:center; gap:16px; flex-wrap:wrap;}
+  .dock .summary{font:500 11px 'DM Mono',monospace; color:var(--muted);}
+  .dock .summary b{color:var(--ink);}
+  .btn{min-height:48px; padding:0 22px; border:1px solid var(--ink); cursor:pointer; font-weight:700; font-size:12px; font-family:'Manrope',sans-serif;}
+  .btn.primary{background:var(--ink); color:var(--paper); box-shadow:3px 3px 0 var(--acid); margin-left:auto;}
+  .btn.primary:hover{transform:translate(-1px,-1px); box-shadow:5px 5px 0 var(--acid);}
+  .btn.ghost{background:transparent;}
+  .foot{padding:40px 0 60px; color:var(--muted); font-size:12px; line-height:1.7;}
+
+  @media(max-width:620px){
+    .tpl-row{grid-template-columns:1fr;}
+    .tpl-row .k{border-right:0; border-bottom:1px solid var(--line);}
+    .tpl-row .s{border-left:0; border-top:1px solid var(--line); justify-content:flex-start;}
+    .why dl{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a class="brand" href="#top"><span class="brand-mark">R</span>ROASTR</a>
+  <div class="safety-badge"><span></span> 0 frames before approval</div>
+</div>
+
+<div class="wrap" id="top">
+  <div class="hero">
+    <p class="eyebrow">Storyboard review · pre-generation gate · issues #1 #2 #3 #4</p>
+    <h1>Two subjects. Four storyboards.<br><em class="serif">Pick what gets a camera.</em></h1>
+    <p>Everything below is built from <b>real GitHub evidence</b> pulled through the same research path the app uses. Facts link to source; every joke is labelled as invention. Nothing renders until you choose — this page <em>is</em> the approval step. Select the boards to shoot and the template fields worth keeping, then send it back.</p>
+    <div class="subjects">
+      <div class="chip"><b>garrytan/gstack</b> <span class="star">★129,137</span> · 790 open issues · TypeScript · MIT</div>
+      <div class="chip"><b>openclaw/openclaw</b> <span class="star">★387,094</span> · 6,065 open issues · 15 languages · 🦞</div>
+    </div>
+  </div>
+
+  <!-- ============ SECTION 1: INTAKE TEMPLATE ============ -->
+  <section id="template">
+    <div class="sec-head"><span class="sec-num">01</span><h2>What we ask the creator</h2></div>
+    <p class="sec-lede">The live intake at <span class="mono">127.0.0.1:3101</span> collects five things. Issues #3 and #4 imply four more we should add before this scales — each turns a vague "make it funny" into a reviewable, gate-able choice. <span class="tag-live">live now</span> = already in the app · <span class="tag-new">proposed</span> = add as a saved template field.</p>
+    <div class="tpl">
+      <div class="tpl-row"><div class="k">Subject kind + URL</div><div class="v">Public GitHub repo or product page. Validated, HTTPS-only, no private hosts.<div class="opts"><span class="opt">repository</span><span class="opt">product</span></div></div><div class="s"><span class="tag-live">live now</span></div></div>
+      <div class="tpl-row"><div class="k">Treatment</div><div class="v">The comedic frame. Currently one option; the 16 formats below become this menu.<div class="opts"><span class="opt">Funny / Roast</span></div></div><div class="s"><span class="tag-live">live now</span></div></div>
+      <div class="tpl-row"><div class="k">Persona direction</div><div class="v">Original disclosed presenter voice — never a named comedian.<div class="opts"><span class="opt">Deadpan correspondent</span><span class="opt">Dry awards host</span><span class="opt">Overcaffeinated founder</span></div></div><div class="s"><span class="tag-live">live now</span></div></div>
+      <div class="tpl-row"><div class="k">Custom instructions</div><div class="v">Free-text topics to include / avoid / keep gentle.</div><div class="s"><span class="tag-live">live now</span></div></div>
+      <div class="tpl-row"><div class="k">Creator relationship</div><div class="v">Owner/maintainer unlocks self-roast framing (issue #3, job 1); observer restricts to public decisions only.<div class="opts"><span class="opt">owner / maintainer</span><span class="opt">observer</span></div></div><div class="s"><span class="tag-new">proposed</span></div></div>
+      <div class="tpl-row"><div class="k">Sharpness</div><div class="v">Explicit heat dial so "too mean" is a setting, not an accident (issue #3, job 2).<div class="opts"><span class="opt">gentle</span><span class="opt">sharp</span><span class="opt">scorched — not personal</span></div></div><div class="s"><span class="tag-new">proposed</span></div></div>
+      <div class="tpl-row"><div class="k">Exclusions</div><div class="v">Named off-limits topics — personal traits, private drama, health/family, unverified allegations. Enforced before scripting.</div><div class="s"><span class="tag-new">proposed</span></div></div>
+      <div class="tpl-row"><div class="k">Reference clip <span class="mono">+ permission</span></div><div class="v">Optional. Analysed for <b>structure only</b> (cadence, beat order); dialogue, face, voice never copied. UI shows <span class="mono">Reference analysed: structure only</span>.</div><div class="s"><span class="tag-new">proposed</span></div></div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 2: FUNNYBENCH ============ -->
+  <section id="funnybench">
+    <div class="sec-head"><span class="sec-num">02</span><h2>What we score as <em class="serif">funny</em></h2></div>
+    <p class="sec-lede">FunnyBench (issue #4) refuses to trust one LLM prompt to be the last word on comedy. Instead: generate 10–20 candidates, gate them on facts first, then let the creator pick winners in blind pairwise comparisons. These are the axes each candidate is judged on — the same ones annotated on every storyboard below.</p>
+    <div class="rubric">
+      <div class="r-card"><h4>Specificity</h4><p>The joke depends on a real, technical detail of <em>this</em> repo. Swap the subject and the line dies.</p><div class="metric">evidence linkage · technical recognisability</div></div>
+      <div class="r-card"><h4>Surprise / reversal</h4><p>Setup points one way; the reveal turns. No line the audience could finish for you.</p><div class="metric">distinctness across batch</div></div>
+      <div class="r-card"><h4>Escalation</h4><p>Each beat raises the stakes on the last instead of restating it louder.</p><div class="metric">pacing · beat length</div></div>
+      <div class="r-card"><h4>Fairness</h4><p>Aimed at public decisions and artefacts — never protected traits or private life. "Too mean" is a reject.</p><div class="metric">too-mean rate</div></div>
+      <div class="r-card"><h4>Freshness</h4><p>No stock roast clichés. Penalise the generic "it's just an API wrapper" unless the repo <em>earns</em> it.</p><div class="metric">repeat / cliché rate</div></div>
+      <div class="r-card"><h4>Payoff</h4><p>The punch lands and the tag pays it back — a callback, not a shrug.</p><div class="metric">creator keep rate</div></div>
+    </div>
+    <div class="refcard">
+      <h4>Comedy Reference Card — the shape, not the script</h4>
+      <ul>
+        <li><b>Setup → reveal → punch → tag</b> — the four-beat unit each scene is built from.</li>
+        <li><b>Specificity mechanism</b> — how a technical detail (a file name, an issue count) becomes the joke.</li>
+        <li><b>Escalation mechanism</b> — what makes beat 3 bigger than beat 2.</li>
+        <li><b>Deliberately NOT used</b> — no real person's name as a style, no exact phrase, no imitated persona.</li>
+        <li><b>Trait bundle</b> — one original instruction, e.g. <span class="mono">mock-serious awards host · sharp technical specificity · quick escalation · no imitation</span>.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 3: STORYBOARDS ============ -->
+  <section id="boards">
+    <div class="sec-head"><span class="sec-num">03</span><h2>The storyboards</h2></div>
+    <p class="sec-lede">Two candidate formats per subject — a lead pick (green shadow) and an alternate, so you can compare angles the FunnyBench way. Every fact carries a source link and a <span class="claim grounded"><span class="dot"></span>source-grounded</span> tag; every joke is a <span class="claim invention"><span class="dot"></span>comedic-invention</span> and never presented as fact.</p>
+
+    <!-- gstack -->
+    <div class="subject-band">
+      <h3>garrytan/gstack</h3>
+      <a href="https://github.com/garrytan/gstack" target="_blank" rel="noreferrer">github.com/garrytan/gstack ↗</a>
+    </div>
+    <div class="board-grid">
+
+      <!-- G1 -->
+      <div class="board pick">
+        <div class="board-top">
+          <div class="fmt">Format · Corporate all-hands parody</div>
+          <h4>The Org Chart of One</h4>
+          <div class="persona">Persona: Dry awards-show host · Sharpness: sharp</div>
+          <div class="meta"><span>9:16</span><span>~0:40</span><span>5 beats</span><span class="lead">Lead pick</span></div>
+        </div>
+        <div class="beats">
+          <div class="beat"><div class="n">01</div><div><div class="role">Cold open · <span class="claim grounded"><span class="dot"></span>source-grounded</span></div><div class="line">"gstack calls itself twenty-three opinionated tools that serve as CEO, Designer, Eng Manager, Release Manager, Doc Engineer, and QA. That's a whole company. It's also a folder."</div><div class="ev">↳ <a href="https://github.com/garrytan/gstack" target="_blank" rel="noreferrer">repo description</a></div></div></div>
+          <div class="beat"><div class="n">02</div><div><div class="role">Setup · <span class="claim grounded"><span class="dot"></span>source-grounded</span></div><div class="line">"The proof is in the root directory: files named <span class="mono">cso</span>, <span class="mono">plan-ceo-review</span>, <span class="mono">office-hours</span>, and <span class="mono">retro</span>. Your entire management layer, and not one of them can approve your PTO."</div><div class="ev">↳ <a href="https://github.com/garrytan/gstack" target="_blank" rel="noreferrer">root file listing</a></div></div></div>
+          <div class="beat"><div class="n">03</div><div><div class="role">Escalation · <span class="claim grounded"><span class="dot"></span>source-grounded</span></div><div class="line">"It even ships an <span class="mono">ETHOS.md</span>. Values, version-controlled. Which is more than your last three employers managed."</div><div class="ev">↳ <a href="https://github.com/garrytan/gstack" target="_blank" rel="noreferrer">ETHOS.md in root</a></div></div></div>
+          <div class="beat invent"><div class="n">04</div><div><div class="role">Punch · <span class="claim invention"><span class="dot"></span>comedic-invention</span></div><div class="line">"gstack automated the CEO, the designer, and QA. The one role it couldn't replace is the person who has to explain to the board why the org chart is a shell script."</div></div></div>
+          <div class="beat invent"><div class="n">05</div><div><div class="role">Tag · <span class="claim invention"><span class="dot"></span>comedic-invention</span></div><div class="line">"790 open issues. In a startup, that's not a backlog — that's the QA department filing for constructive dismissal."</div><div class="ev">↳ builds on <a href="https://github.com/garrytan/gstack/issues" target="_blank" rel="noreferrer">790 open issues</a> (real count)</div></div></div>
+        </div>
+        <div class="why">
+          <h5>FunnyBench annotation</h5>
+          <dl>
+            <dt>Specificity</dt><dd>Real file names (<span class="mono">cso</span>, <span class="mono">plan-ceo-review</span>, <span class="mono">ETHOS.md</span>) — swap the repo and the joke collapses.</dd>
+            <dt>Reversal</dt><dd>"A whole company. It's also a folder." Corporate framing → filesystem reality.</dd>
+            <dt>Escalation</dt><dd>role names → values doc → the one un-automatable human.</dd>
+          </dl>
+          <div class="avoid">NOT used: Garry Tan's actual voice, likeness, or any claim about him personally. The target is the tool's org-chart conceit.</div>
+        </div>
+        <div class="pick-bar" data-board="G1">
+          <label><input type="checkbox" class="board-pick" data-id="G1" data-title="gstack — The Org Chart of One (all-hands parody)"> Shoot this one</label>
+          <span class="hint">lead pick</span>
+        </div>
+      </div>
+
+      <!-- G2 -->
+      <div class="board">
+        <div class="board-top">
+          <div class="fmt">Format · Nature documentary</div>
+          <h4>Just an API Wrapper</h4>
+          <div class="persona">Persona: Deadpan tech correspondent (Attenborough register) · Sharpness: gentle</div>
+          <div class="meta"><span>16:9</span><span>~0:50</span><span>5 beats</span></div>
+        </div>
+        <div class="beats">
+          <div class="beat"><div class="n">01</div><div><div class="role">Cold open · <span class="claim grounded"><span class="dot"></span>source-grounded</span></div><div class="line">"Here, in its natural habitat — the root directory — we find gstack: some ninety command files, clinging to a single host, Claude Code."</div><div class="ev">↳ <a href="https://github.com/garrytan/gstack" target="_blank" rel="noreferrer">~90 root command files</a></div></div></div>
+          <div class="beat"><div class="n">02</div><div><div class="role">Setup · <span class="claim grounded"><span class="dot"></span>source-grounded</span></div><div class="line">"The creature is 90% TypeScript. It secretes shell scripts to mark territory — <span class="mono">freeze</span>, <span class="mono">unfreeze</span>, <span class="mono">guard</span>, <span class="mono">careful</span>."</div><div class="ev">↳ <a href="https://github.com/garrytan/gstack" target="_blank" rel="noreferrer">language mix · root scripts</a></div></div></div>
+          <div class="beat"><div class="n">03</div><div><div class="role">Escalation · <span class="claim grounded"><span class="dot"></span>source-grounded</span></div><div class="line">"Extraordinary. This specimen keeps a file named <span class="mono">openclaw</span> in its own nest — it has learned to summon a rival."</div><div class="ev">↳ <a href="https://github.com/garrytan/gstack" target="_blank" rel="noreferrer">openclaw file in root</a></div></div></div>
+          <div class="beat invent"><div class="n">04</div><div><div class="role">Punch · <span class="claim invention"><span class="dot"></span>comedic-invention</span></div><div class="line">"What we witness is nature's most ambitious wrapper: a tool that turns one AI into an entire org chart — and files the delegation under 'productivity'."</div></div></div>
+          <div class="beat invent"><div class="n">05</div><div><div class="role">Tag · <span class="claim invention"><span class="dot"></span>comedic-invention</span></div><div class="line">"Licensed MIT. Generous to the last: it gives the whole company away for free, and still no one has to do the standup."</div><div class="ev">↳ builds on <a href="https://github.com/garrytan/gstack/blob/main/LICENSE" target="_blank" rel="noreferrer">MIT license</a> (real)</div></div></div>
+        </div>
+        <div class="why">
+          <h5>FunnyBench annotation</h5>
+          <dl>
+            <dt>Specificity</dt><dd>Exact script names + the buried <span class="mono">openclaw</span> file — a detail only this repo has.</dd>
+            <dt>Reversal</dt><dd>Reverent doc tone applied to a folder of markdown.</dd>
+            <dt>Freshness risk</dt><dd>"Just an API wrapper" is a cliché — the nature-doc frame + real file names earns it back. Watch the repeat-rate score.</dd>
+          </dl>
+          <div class="avoid">NOT used: the Attenborough persona is an original disclosed register, not an impression of him.</div>
+        </div>
+        <div class="pick-bar" data-board="G2">
+          <label><input type="checkbox" class="board-pick" data-id="G2" data-title="gstack — Just an API Wrapper (nature doc)"> Shoot this one</label>
+          <span class="hint">alternate</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- openclaw -->
+    <div class="subject-band" style="margin-top:44px;">
+      <h3>openclaw/openclaw 🦞</h3>
+      <a href="https://github.com/openclaw/openclaw" target="_blank" rel="noreferrer">github.com/openclaw/openclaw ↗</a>
+    </div>
+    <div class="board-grid">
+
+      <!-- O1 -->
+      <div class="board pick">
+        <div class="board-top">
+          <div class="fmt">Format · Nature documentary</div>
+          <h4>The Lobster Way</h4>
+          <div class="persona">Persona: Deadpan tech correspondent · Sharpness: sharp</div>
+          <div class="meta"><span>16:9</span><span>~0:48</span><span>5 beats</span><span class="lead">Lead pick</span></div>
+        </div>
+        <div class="beats">
+          <div class="beat"><div class="n">01</div><div><div class="role">Cold open · <span class="claim grounded"><span class="dot"></span>source-grounded</span></div><div class="line">"openclaw: 'your own personal AI assistant, any OS, any platform — the lobster way.' There is a lobster emoji in the description and a config file called <span class="mono">.crabbox.yaml</span>. We are already committed."</div><div class="ev">↳ <a href="https://github.com/openclaw/openclaw" target="_blank" rel="noreferrer">description · .crabbox.yaml</a></div></div></div>
+          <div class="beat"><div class="n">02</div><div><div class="role">Setup · <span class="claim grounded"><span class="dot"></span>source-grounded</span></div><div class="line">"Its own topics tag it <span class="mono">crustacean</span> and <span class="mono">molty</span>. And yes — there is a <span class="mono">VISION.md</span>. The lobster has a vision. The vision is in Markdown."</div><div class="ev">↳ <a href="https://github.com/openclaw/openclaw" target="_blank" rel="noreferrer">repo topics · VISION.md</a></div></div></div>
+          <div class="beat"><div class="n">03</div><div><div class="role">Escalation · <span class="claim grounded"><span class="dot"></span>source-grounded</span></div><div class="line">"For a <em>personal</em> assistant it has learned Swift, Kotlin, Rust, Go, Ruby and PowerShell — fluent in fifteen languages, and still can't close an issue."</div><div class="ev">↳ <a href="https://github.com/openclaw/openclaw" target="_blank" rel="noreferrer">15-language mix (277 MB TS)</a></div></div></div>
+          <div class="beat invent"><div class="n">04</div><div><div class="role">Punch · <span class="claim invention"><span class="dot"></span>comedic-invention</span></div><div class="line">"This is the lobster way: molt through every platform, own all your data, and leave 6,065 open issues as a trail of empty shells behind you."</div><div class="ev">↳ builds on <a href="https://github.com/openclaw/openclaw/issues" target="_blank" rel="noreferrer">6,065 open issues</a> (real)</div></div></div>
+          <div class="beat invent"><div class="n">05</div><div><div class="role">Tag · <span class="claim invention"><span class="dot"></span>comedic-invention</span></div><div class="line">"387,000 stars. People starred a lobster three hundred and eighty-seven thousand times, and I have made my peace with not understanding why."</div><div class="ev">↳ builds on <a href="https://github.com/openclaw/openclaw" target="_blank" rel="noreferrer">★387,094</a> (real)</div></div></div>
+        </div>
+        <div class="why">
+          <h5>FunnyBench annotation</h5>
+          <dl>
+            <dt>Specificity</dt><dd><span class="mono">.crabbox.yaml</span>, <span class="mono">molty</span>, <span class="mono">VISION.md</span> — the branding is self-incriminating; we just read it aloud.</dd>
+            <dt>Reversal</dt><dd>"fluent in fifteen languages, still can't close an issue."</dd>
+            <dt>Escalation</dt><dd>emoji → vision doc → 15 languages → the molting metaphor turned against it.</dd>
+          </dl>
+          <div class="avoid">NOT used: no claims about maintainers; targets the product's own published branding and metrics.</div>
+        </div>
+        <div class="pick-bar" data-board="O1">
+          <label><input type="checkbox" class="board-pick" data-id="O1" data-title="openclaw — The Lobster Way (nature doc)"> Shoot this one</label>
+          <span class="hint">lead pick</span>
+        </div>
+      </div>
+
+      <!-- O2 -->
+      <div class="board">
+        <div class="board-top">
+          <div class="fmt">Format · Ghosted Issues montage</div>
+          <h4>Ship It, Then Explain It</h4>
+          <div class="persona">Persona: Deadpan correspondent · Tone: warmly forensic (issue #3, job 3)</div>
+          <div class="meta"><span>9:16</span><span>~0:42</span><span>5 beats</span></div>
+        </div>
+        <div class="beats">
+          <div class="beat"><div class="n">01</div><div><div class="role">Headline · <span class="claim grounded"><span class="dot"></span>source-grounded</span></div><div class="line">"openclaw promises to be your personal assistant, on any OS, any platform. Bold. Let's check its own to-do list."</div><div class="ev">↳ <a href="https://github.com/openclaw/openclaw" target="_blank" rel="noreferrer">repo description</a></div></div></div>
+          <div class="beat"><div class="n">02</div><div><div class="role">Public promise · <span class="claim grounded"><span class="dot"></span>source-grounded</span></div><div class="line">"It ships a <span class="mono">VISION.md</span> and a live site at openclaw.ai. The pitch is: it will manage your life."</div><div class="ev">↳ <a href="https://openclaw.ai" target="_blank" rel="noreferrer">openclaw.ai</a> · VISION.md</div></div></div>
+          <div class="beat"><div class="n">03</div><div><div class="role">The receipt · <span class="claim grounded"><span class="dot"></span>source-grounded</span></div><div class="line">"The assistant that will manage your life is currently managing 6,065 open issues of its own. And 81,306 people forked it anyway."</div><div class="ev">↳ <a href="https://github.com/openclaw/openclaw/issues" target="_blank" rel="noreferrer">6,065 issues · 81,306 forks</a></div></div></div>
+          <div class="beat invent"><div class="n">04</div><div><div class="role">Punch · <span class="claim invention"><span class="dot"></span>comedic-invention</span></div><div class="line">"They call it <span class="mono">own-your-data</span>. Turns out the one thing it will never manage for you… is its own backlog."</div></div></div>
+          <div class="beat"><div class="n">05</div><div><div class="role">Constructive close · <span class="claim grounded"><span class="dot"></span>source-grounded</span></div><div class="line">"In fairness: 387k stars, a real vision doc, and it actually ships across fifteen languages. The lobster is winning. That's the part that stings."</div><div class="ev">↳ <a href="https://github.com/openclaw/openclaw" target="_blank" rel="noreferrer">★387,094 · active (pushed today)</a></div></div></div>
+        </div>
+        <div class="why">
+          <h5>FunnyBench annotation</h5>
+          <dl>
+            <dt>Structure</dt><dd>Five-beat "headline → promise → receipt → labelled punch → constructive note" — the issue #3 job-3 format sheet.</dd>
+            <dt>Fairness</dt><dd>Ends on genuine credit; the roast targets the promise-vs-backlog gap, not the team.</dd>
+            <dt>Specificity</dt><dd>Exact issue and fork counts do the comedic work.</dd>
+          </dl>
+          <div class="avoid">NOT used: no invented crowd reactions or fake screenshots — a missing visual stays an empty slot.</div>
+        </div>
+        <div class="pick-bar" data-board="O2">
+          <label><input type="checkbox" class="board-pick" data-id="O2" data-title="openclaw — Ship It, Then Explain It (forensic montage)"> Shoot this one</label>
+          <span class="hint">alternate</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 4: GENERATION GATE ============ -->
+  <section id="gate">
+    <div class="sec-head"><span class="sec-num">04</span><h2>Before any camera rolls</h2></div>
+    <p class="sec-lede">The wired generation path is <b>Chatterbox TTS → VEED Fabric</b>: it turns an approved script into a 480p talking-head. That path needs two things from you it cannot invent — and both are billable, so this stays a separate, explicit step after you choose the boards.</p>
+    <div class="gate">
+      <h3>What "turn it into a video" will actually call</h3>
+      <p>For each selected storyboard, the app runs the approved narration through Chatterbox (~$0.025 / 1,000 chars), then drives VEED Fabric with your presenter image + that audio. Seedance b-roll and per-scene evidence visuals are not wired yet — v1 is a single presenter delivering the script.</p>
+      <div class="needs">
+        <div class="need"><b>Licensed presenter image</b><small>A portrait you own or are licensed to use. Becomes the talking character via VEED Fabric.</small><span class="req">HTTPS URL required</span></div>
+        <div class="need"><b>Licensed voice reference</b><small>An audio sample you're permitted to use. Chatterbox conditions the narration on it.</small><span class="req">HTTPS URL required</span></div>
+        <div class="need"><b>Cost acknowledgement</b><small>Two billable fal calls per board. No voice cloning of real people without rights.</small><span class="req">explicit opt-in</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot wrap">
+    Design source: rendered in Roastr's own design system (tokens + fonts lifted from <span class="mono">web/app/globals.css</span>) so this review looks like the product it feeds. All stars, issue counts, file names, languages and licenses were pulled live from the GitHub API on 2026-08-22.
+  </div>
+</div>
+
+<!-- submit dock -->
+<div class="dock">
+  <div class="dock-inner">
+    <span class="summary" id="summary"><b>0</b> boards selected — tick the storyboards you want shot.</span>
+    <button class="btn ghost" id="adoptBtn" data-lavish-action>Adopt the 4 proposed template fields</button>
+    <button class="btn primary" id="sendBtn" data-lavish-action>Queue selection for the agent →</button>
+  </div>
+</div>
+
+<script>
+  const picks = new Map();
+  const summary = document.getElementById('summary');
+  function refresh(){
+    const n = picks.size;
+    summary.innerHTML = n
+      ? '<b>' + n + '</b> board' + (n>1?'s':'') + ' selected: ' + [...picks.values()].map(v=>v.split(' (')[0]).join(' · ')
+      : '<b>0</b> boards selected — tick the storyboards you want shot.';
+  }
+  document.querySelectorAll('.board-pick').forEach(cb=>{
+    cb.addEventListener('change', e=>{
+      const {id,title} = e.target.dataset;
+      const board = e.target.closest('.board');
+      if(e.target.checked){ picks.set(id,title); board.classList.add('pick'); }
+      else { picks.delete(id); if(!board.querySelector('.lead')) board.classList.remove('pick'); }
+      refresh();
+    });
+  });
+  document.getElementById('sendBtn').addEventListener('click', ()=>{
+    if(!window.lavish) return;
+    if(picks.size===0){
+      window.lavish.queuePrompt('I reviewed the four storyboards but have not selected any to shoot yet — here are my notes.', {tag:'review', text:'No boards selected yet'});
+      return;
+    }
+    const chosen = [...picks.values()];
+    window.lavish.queuePrompt(
+      'Generate videos for these approved storyboards: ' + chosen.join('; ') + '. Use the exact source-grounded beats and labelled comedic-invention lines from the review. I will supply the licensed presenter image URL and voice reference URL for the VEED Fabric path.',
+      {tag:'generate', text:'Shoot: ' + chosen.map(c=>c.split(' — ')[1]||c).join(', '), data:{boards:[...picks.keys()]}}
+    );
+  });
+  document.getElementById('adoptBtn').addEventListener('click', ()=>{
+    if(!window.lavish) return;
+    window.lavish.queuePrompt(
+      'Adopt the four proposed intake fields as saved template fields in the app: creator relationship, sharpness dial, exclusions list, and reference-clip (structure-only) with permission.',
+      {tag:'template', text:'Adopt 4 proposed template fields'}
+    );
+  });
+</script>
+</body>
+</html>

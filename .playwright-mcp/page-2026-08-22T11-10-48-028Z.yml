@@ -1,0 +1,33 @@
+- generic [active] [ref=f3e1]:
+  - alert [ref=f3e145]
+  - main [ref=f3e146]:
+    - navigation [ref=f3e147]:
+      - link "Roastr" [ref=f3e148] [cursor=pointer]:
+        - /url: /
+      - link "Back home" [ref=f3e149] [cursor=pointer]:
+        - /url: /
+    - region [ref=f3e152]:
+      - generic [ref=f3e153]:
+        - generic [ref=f3e154]: "01"
+        - text: Subject
+      - generic [ref=f3e155]:
+        - generic [ref=f3e156]:
+          - paragraph [ref=f3e157]: Research-led video brief
+          - heading [level=1] [ref=f3e158]:
+            - text: Give us a subject.
+            - emphasis [ref=f3e159]: We’ll bring receipts.
+          - generic [ref=f3e160]: Start with one public repository or product URL. No media is generated at this step.
+        - group "Choose a subject" [ref=f3e161]:
+          - generic [ref=f3e163]:
+            - button "Repository Public GitHub URL" [pressed] [ref=f3e164] [cursor=pointer]:
+              - strong [ref=f3e165]: Repository
+              - generic [ref=f3e166]: Public GitHub URL
+            - button "Product Public website URL" [ref=f3e167] [cursor=pointer]:
+              - strong [ref=f3e168]: Product
+              - generic [ref=f3e169]: Public website URL
+        - generic [ref=f3e170]:
+          - generic [ref=f3e171]: Public GitHub repository URL
+          - textbox "Public GitHub repository URL" [ref=f3e172]:
+            - /placeholder: https://github.com/owner/repository
+        - button "Research subject →" [ref=f3e173] [cursor=pointer]
+        - text: No billable VEED or fal.ai call occurs here.

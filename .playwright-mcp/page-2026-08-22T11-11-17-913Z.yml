@@ -1,0 +1,42 @@
+- generic [active] [ref=f4e1]:
+  - main [ref=f4e2]:
+    - navigation [ref=f4e3]:
+      - link "Roastr" [ref=f4e4] [cursor=pointer]:
+        - /url: /
+      - link "Back home" [ref=f4e5] [cursor=pointer]:
+        - /url: /
+    - region [ref=f4e8]:
+      - generic [ref=f4e9]:
+        - generic [ref=f4e10]: "01"
+        - text: Subject
+      - generic [ref=f4e11]:
+        - generic [ref=f4e12]:
+          - paragraph [ref=f4e13]: Research-led video brief
+          - heading [level=1] [ref=f4e14]:
+            - text: Give us a subject.
+            - emphasis [ref=f4e15]: We’ll bring receipts.
+          - generic [ref=f4e16]: Start with one public repository or product URL. No media is generated at this step.
+        - group "Choose a subject" [ref=f4e17]:
+          - generic [ref=f4e19]:
+            - button "Repository Public GitHub URL" [ref=f4e20] [cursor=pointer]:
+              - strong [ref=f4e21]: Repository
+              - generic [ref=f4e22]: Public GitHub URL
+            - button "Product Public website URL" [pressed] [ref=f4e23] [cursor=pointer]:
+              - strong [ref=f4e24]: Product
+              - generic [ref=f4e25]: Public website URL
+        - generic [ref=f4e26]:
+          - generic [ref=f4e27]: Public product URL
+          - textbox "Public product URL" [ref=f4e32]:
+            - /placeholder: https://yourproduct.com
+            - text: https://example.com
+        - region "Research result" [ref=f4e33]:
+          - generic [ref=f4e34]: LIVE PUBLIC DATA
+          - strong [ref=f4e35]: Example Domain
+          - paragraph [ref=f4e36]: The public page identifies itself as “Example Domain”.
+          - generic [ref=f4e37]:
+            - generic [ref=f4e38]: 2 source items found
+            - link "Open source ↗" [ref=f4e39] [cursor=pointer]:
+              - /url: https://example.com/
+        - button "Research again →" [ref=f4e40] [cursor=pointer]
+        - generic [ref=f4e30]: No billable VEED or fal.ai call occurs here.
+  - alert [ref=f4e31]

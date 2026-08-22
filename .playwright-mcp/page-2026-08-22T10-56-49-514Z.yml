@@ -1,0 +1,75 @@
+- generic [active] [ref=f1e1]:
+  - alert [ref=f1e26]
+  - main [ref=f1e27]:
+    - generic [ref=f1e28]:
+      - link "Roastr home" [ref=f1e29] [cursor=pointer]:
+        - /url: "#top"
+        - generic [ref=f1e30]: R
+        - text: ROASTR
+      - generic [ref=f1e31]: 0 frames before approval
+    - generic [ref=f1e33]:
+      - complementary "Creation progress" [ref=f1e34]:
+        - paragraph [ref=f1e35]: Creation flow
+        - generic [ref=f1e36]:
+          - generic [ref=f1e37]: "1"
+          - generic [ref=f1e38]:
+            - generic [ref=f1e39]: Step 1
+            - strong [ref=f1e40]: Subject
+        - generic [ref=f1e41]:
+          - generic [ref=f1e42]: "2"
+          - generic [ref=f1e43]:
+            - generic [ref=f1e44]: Step 2
+            - strong [ref=f1e45]: Research
+        - generic [ref=f1e46]:
+          - generic [ref=f1e47]: "3"
+          - generic [ref=f1e48]:
+            - generic [ref=f1e49]: Step 3
+            - strong [ref=f1e50]: Script
+        - generic [ref=f1e51]:
+          - generic [ref=f1e52]: "4"
+          - generic [ref=f1e53]:
+            - generic [ref=f1e54]: Step 4
+            - strong [ref=f1e55]: Approval
+        - generic [ref=f1e56]:
+          - text: PARODY, NOT IMPERSONATION
+          - paragraph [ref=f1e57]: Persona choices shape tone and pacing. They never claim to be a real comedian.
+      - generic [ref=f1e59]:
+        - generic [ref=f1e60]:
+          - paragraph [ref=f1e61]: Research-led video brief
+          - heading [level=1] [ref=f1e62]:
+            - text: Give us a subject.
+            - emphasis [ref=f1e63]: We’ll bring receipts.
+          - paragraph [ref=f1e64]: Turn a public repository or product page into an evidence-backed late-night roast.
+        - group "1. Choose a subject" [ref=f1e65]:
+          - generic [ref=f1e67]:
+            - button "⌘ Repository Public GitHub URL" [ref=f1e68] [cursor=pointer]:
+              - generic [ref=f1e69]: ⌘
+              - strong [ref=f1e70]: Repository
+              - generic [ref=f1e71]: Public GitHub URL
+            - button "↗ Product Public website URL" [ref=f1e72] [cursor=pointer]:
+              - generic [ref=f1e73]: ↗
+              - strong [ref=f1e74]: Product
+              - generic [ref=f1e75]: Public website URL
+        - generic [ref=f1e76]:
+          - generic [ref=f1e77]: Public GitHub repository URL
+          - textbox "Public GitHub repository URL" [ref=f1e78]:
+            - /placeholder: https://github.com/owner/repository
+        - group "2. Treatment" [ref=f1e79]:
+          - button "☄ Funny / Roast Sharp, evidence-led, late-night desk piece" [ref=f1e81]:
+            - generic [ref=f1e82]: ☄
+            - generic [ref=f1e83]:
+              - strong [ref=f1e84]: Funny / Roast
+              - generic [ref=f1e85]: Sharp, evidence-led, late-night desk piece
+        - generic [ref=f1e87]:
+          - generic [ref=f1e88]:
+            - generic [ref=f1e89]: Original persona direction
+            - combobox "Original persona direction" [ref=f1e90]:
+              - option "Deadpan tech correspondent" [selected]
+              - option "Dry awards-show host"
+              - option "Overcaffeinated founder emcee"
+          - generic [ref=f1e91]:
+            - generic [ref=f1e92]: Custom instructions optional
+            - textbox "Custom instructions optional" [ref=f1e93]:
+              - /placeholder: Topics to include, avoid, or keep gentle…
+        - button "Research subject →" [ref=f1e94] [cursor=pointer]
+        - paragraph [ref=f1e95]: No media generation or billable VEED/fal.ai calls occur here.

@@ -20,10 +20,6 @@ function isPrivateAddress(address) {
 }
 
 export function normalizeSubjectUrl(kind, rawUrl) {
-  if (kind !== "repository" && kind !== "product") {
-    throw new Error("Choose Repository or Product.");
-  }
-
   let parsed;
   try {
     parsed = new URL(String(rawUrl ?? "").trim());
@@ -41,8 +37,13 @@ export function normalizeSubjectUrl(kind, rawUrl) {
     throw new Error("The subject must be publicly reachable.");
   }
 
+  const resolvedKind = kind ?? (parsed.hostname.toLowerCase() === "github.com" ? "repository" : "product");
+  if (resolvedKind !== "repository" && resolvedKind !== "product") {
+    throw new Error("The subject type could not be determined from this URL.");
+  }
+
   parsed.hash = "";
-  if (kind === "repository") {
+  if (resolvedKind === "repository") {
     if (parsed.hostname.toLowerCase() !== "github.com") {
       throw new Error("The repository MVP currently supports public GitHub URLs.");
     }
@@ -52,14 +53,14 @@ export function normalizeSubjectUrl(kind, rawUrl) {
     }
     const cleanRepo = repo.replace(/\.git$/, "");
     return {
-      kind,
+      kind: resolvedKind,
       owner,
       repo: cleanRepo,
       url: `https://github.com/${owner}/${cleanRepo}`,
     };
   }
 
-  return { kind, url: parsed.toString(), hostname: parsed.hostname };
+  return { kind: resolvedKind, url: parsed.toString(), hostname: parsed.hostname };
 }
 
 async function assertPublicDns(hostname) {

@@ -17,6 +17,11 @@ test("normalizeSubjectUrl accepts public HTTPS GitHub repositories", () => {
   assert.equal(subject.url, "https://github.com/AnalystTom/veed_hack");
 });
 
+test("normalizeSubjectUrl infers repository or product from one URL input", () => {
+  assert.equal(normalizeSubjectUrl(undefined, "https://github.com/AnalystTom/veed_hack").kind, "repository");
+  assert.equal(normalizeSubjectUrl(undefined, "https://example.com").kind, "product");
+});
+
 test("normalizeSubjectUrl rejects credentials and local targets", () => {
   assert.throws(
     () => normalizeSubjectUrl("product", "https://user:pass@example.com"),

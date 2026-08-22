@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PROTOTYPE — Roast landing page variants</title>
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:#000}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="module">
+  // PROTOTYPE — throwaway. Four radically different landing pages for the
+  // roast-video generator, switchable with ?variant=A|B|C|D.
+  import * as A from './variants/a-premiere.js';
+  import * as B from './variants/b-feed.js';
+  import * as C from './variants/c-ledger.js';
+  import * as D from './variants/d-wall.js';
+  import { mountSwitcher } from './switcher.js';
+
+  const variants = [A, B, C, D];
+  const want = (new URL(location.href).searchParams.get('variant') || 'A').toUpperCase();
+  const chosen = variants.find((v) => v.key === want) || variants[0];
+
+  document.title = `PROTOTYPE ${chosen.key} — ${chosen.name}`;
+  chosen.render(document.getElementById('root'));
+  mountSwitcher(variants, chosen.key);
+</script>
+</body>
+</html>

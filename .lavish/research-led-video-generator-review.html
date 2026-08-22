@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en" data-theme="luxury">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Research-led Video Generator — Review</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@5.5.19/daisyui.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@5.5.19/themes.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.2.4/dist/index.global.js"></script>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; }
+      :where(.grid, .flex) > * { min-width: 0; }
+      :where(p, h1, h2, h3, li, td, th, .badge) { overflow-wrap: anywhere; }
+      html { background: var(--color-base-300); }
+      .review-shell { max-width: 1280px; margin: 0 auto; }
+      .mermaid { min-height: 220px; }
+    </style>
+  </head>
+  <body class="bg-base-300 text-base-content">
+    <main class="review-shell p-4 sm:p-7 lg:p-10 space-y-8">
+      <header class="hero rounded-box bg-base-100 border border-base-content/10">
+        <div class="hero-content w-full flex-col items-start gap-5 py-10">
+          <div class="flex w-full flex-wrap items-center gap-3">
+            <span class="badge badge-primary badge-outline">Implementation review</span>
+            <span class="badge badge-success badge-outline">Spec published · #1</span>
+            <span class="badge badge-success badge-outline">Narration included</span>
+          </div>
+          <div class="max-w-4xl">
+            <p class="text-sm uppercase tracking-[0.2em] text-base-content/60">VEED hack</p>
+            <h1 class="mt-2 text-4xl font-bold sm:text-6xl">From public context to a reviewable parody video.</h1>
+            <p class="mt-5 text-lg text-base-content/75">A creator supplies a public repo or product link. The app researches the conversation, makes the evidence visible, turns an approved angle into a storyboard, then runs Seedance and VEED as a tracked generation job.</p>
+          </div>
+          <a class="btn btn-primary" href="https://github.com/AnalystTom/veed_hack/issues/1">Open full GitHub spec</a>
+        </div>
+      </header>
+
+      <section class="grid gap-4 lg:grid-cols-3" aria-label="Review summary">
+        <div class="stat rounded-box bg-base-100 border border-base-content/10"><div class="stat-title">Primary seam</div><div class="stat-value text-primary text-3xl">1 Job</div><div class="stat-desc">Creator-visible completion or actionable failure</div></div>
+        <div class="stat rounded-box bg-base-100 border border-base-content/10"><div class="stat-title">Provider chain</div><div class="stat-value text-secondary text-3xl">5</div><div class="stat-desc">Tavily · GPT-5.6 Luna · Eleven v3 · Seedance · VEED</div></div>
+        <div class="stat rounded-box bg-base-100 border border-base-content/10"><div class="stat-title">Current code</div><div class="stat-value text-accent text-3xl">API</div><div class="stat-desc">Fal + VEED server adapters, no web app or persistence yet</div></div>
+      </section>
+
+      <section class="card card-border bg-base-100">
+        <div class="card-body">
+          <div class="flex flex-wrap items-end justify-between gap-3"><div><p class="text-sm uppercase tracking-widest text-base-content/60">Lifecycle</p><h2 class="card-title text-3xl">What the creator sees</h2></div><span class="badge badge-soft badge-info">Source evidence before billable generation</span></div>
+          <div class="mermaid mt-4">
+flowchart TD
+  A["Public repo / product URL\n+criteria + optional reference"] --> B["Video Project"]
+  B --> C["Tavily Research Pack\n+sources + extracted claims"]
+  C --> D["Creator reviews / removes sources"]
+  D --> E["GPT-5.6 Luna\nCreative Brief + Storyboard"]
+  E --> F["Creator approval"]
+  F --> G["Eleven v3 on fal\nselected narrator + delivery"]
+  G --> H["Approved narration asset\naudio URL + timestamps"]
+  H --> I["Generation Job"]
+  I --> J["Seedance on fal\nvisual video"]
+  I --> K["VEED Fabric or Lipsync v2\nwith approved narration audio"]
+  J --> L["Completed real output URL"]
+  K --> L
+  I --> M["Actionable failed / input-required state"]
+          </div>
+          <p class="text-sm text-base-content/60">The flow deliberately stops at review if research, permission acknowledgement, or required media inputs are missing.</p>
+        </div>
+      </section>
+
+      <section class="grid gap-6 xl:grid-cols-[1.15fr_.85fr]">
+        <article class="card card-border bg-base-100"><div class="card-body">
+          <p class="text-sm uppercase tracking-widest text-base-content/60">Data model</p>
+          <h2 class="card-title text-3xl">Core data classes</h2>
+          <div class="overflow-x-auto mt-3"><table class="table table-zebra"><thead><tr><th>Class</th><th>Purpose</th><th>Important fields</th></tr></thead><tbody>
+            <tr><th>VideoProject</th><td>Creator's durable workspace</td><td>targetUrl, criteria, aspectRatio, permissionAcknowledgement, status</td></tr>
+            <tr><th>ResearchPack</th><td>Auditable web context</td><td>sources[], extractedClaims[], retrievedAt, inclusionDecision</td></tr>
+            <tr><th>CreativeBrief</th><td>Approved satirical framing</td><td>angle, audience, claimLabels, sourceReferences, safetyNotes</td></tr>
+            <tr><th>Storyboard</th><td>Scene-by-scene plan</td><td>scenes[], visualPrompts, narration, onScreenCopy, revision</td></tr>
+            <tr><th>NarrationAsset</th><td>Approved spoken-audio handoff</td><td>text, voice, deliverySettings, audioUrl, timestamps, approvalStatus</td></tr>
+            <tr><th>GenerationJob</th><td>Immutable provider run</td><td>stage, providerRequests[], narrationAssetId, status, outputUrls[], failureReason</td></tr>
+            <tr><th>MediaAsset</th><td>Creator-approved input/output</td><td>kind, url, mimeType, provenance, permissionAcknowledgement</td></tr>
+          </tbody></table></div>
+        </div></article>
+        <aside class="card card-border bg-base-100"><div class="card-body">
+          <p class="text-sm uppercase tracking-widest text-base-content/60">Guardrail</p>
+          <h2 class="card-title text-3xl">Claim labels are first-class data</h2>
+          <p>Every line used in a creative brief or storyboard carries one of these labels. The UI must not make an invented joke look like a verified fact.</p>
+          <div class="space-y-3 mt-2"><div class="alert alert-success"><span><strong>Source-grounded</strong><br />Supported by a retained Tavily source.</span></div><div class="alert alert-info"><span><strong>Creator-supplied</strong><br />Provided in the brief, not independently verified.</span></div><div class="alert alert-warning"><span><strong>Comedic invention</strong><br />Clearly framed as satire or creative treatment.</span></div></div>
+        </div></aside>
+      </section>
+
+      <section class="card card-border bg-base-100"><div class="card-body">
+        <p class="text-sm uppercase tracking-widest text-base-content/60">Contract surface</p><h2 class="card-title text-3xl">Inputs and outputs</h2>
+        <div class="overflow-x-auto mt-3"><table class="table table-zebra"><thead><tr><th>Stage</th><th>Inputs</th><th>Outputs</th><th>Visible failure / empty state</th></tr></thead><tbody>
+          <tr><th>Project intake</th><td>Public HTTP(S) target URL; treatment; duration; aspect ratio</td><td>VideoProject</td><td>Unsafe, private, malformed, credential-bearing, or unsupported URL</td></tr>
+          <tr><th>Optional reference</th><td>Creator-provided template/video/image and permission acknowledgement</td><td>MediaAsset + structural guidance</td><td>No reference is a valid empty state; unsupported media asks for replacement</td></tr>
+          <tr><th>Research</th><td>Target URL + Tavily query plan</td><td>ResearchPack with real sources, excerpts, retrieval time</td><td>No usable public sources / Tavily failure</td></tr>
+          <tr><th>Creative planning</th><td>Approved sources + creator criteria + optional reference guidance</td><td>CreativeBrief + Storyboard from GPT-5.6 Luna</td><td>Structured-output validation or safety refusal</td></tr>
+          <tr><th>Narration</th><td>Approved narration text; narrator voice; language; speed; stability; permitted delivery tags</td><td>NarrationAsset with audio URL and optional word timestamps</td><td>Invalid voice/settings, provider failure, or narration awaiting approval</td></tr>
+          <tr><th>Visual generation</th><td>Approved scene prompts; Seedance settings</td><td>Seedance request ID + output video URL</td><td>Queued, provider failure, or no output URL</td></tr>
+          <tr><th>VEED Fabric</th><td>Real portrait/image + approved NarrationAsset audio URL</td><td>Talking video URL</td><td>Input-required if image or approved audio is missing</td></tr>
+          <tr><th>VEED Lipsync v2</th><td>Real talking video + approved NarrationAsset audio URL</td><td>Re-synchronised video URL</td><td>Input-required if video or approved audio is missing</td></tr>
+          <tr><th>Completion</th><td>Terminal provider outputs</td><td>GenerationJob status, provenance, real output links</td><td>Actionable terminal failure with retry eligibility</td></tr>
+        </tbody></table></div>
+      </div></section>
+
+      <section class="grid gap-6 lg:grid-cols-2">
+        <article class="card card-border bg-base-100"><div class="card-body">
+          <p class="text-sm uppercase tracking-widest text-base-content/60">Provider roles</p><h2 class="card-title text-3xl">No silent substitutions</h2>
+          <div class="space-y-3 mt-3">
+            <div class="collapse collapse-arrow bg-base-200"><input type="radio" name="providers" checked /><div class="collapse-title font-semibold">Tavily → research, search, extraction</div><div class="collapse-content">Returns public-source evidence. The app stores provenance and exposes source removal before planning.</div></div>
+            <div class="collapse collapse-arrow bg-base-200"><input type="radio" name="providers" /><div class="collapse-title font-semibold">GPT-5.6 Luna → structured creative planning</div><div class="collapse-content">Produces a schema-validated brief and storyboard; it does not become a source of factual claims.</div></div>
+            <div class="collapse collapse-arrow bg-base-200"><input type="radio" name="providers" /><div class="collapse-title font-semibold">ElevenLabs Eleven v3 on fal → narration</div><div class="collapse-content">Generates a creator-selected narrator from approved script text. The returned audio URL becomes the approved NarrationAsset for VEED; no voice cloning or identity imitation.</div></div>
+            <div class="collapse collapse-arrow bg-base-200"><input type="radio" name="providers" /><div class="collapse-title font-semibold">Seedance on fal → visual scenes</div><div class="collapse-content">Receives approved prompts and generation settings. Its native audio option is separate from the controlled narration asset.</div></div>
+            <div class="collapse collapse-arrow bg-base-200"><input type="radio" name="providers" /><div class="collapse-title font-semibold">VEED on fal → talking-video path</div><div class="collapse-content">Fabric is image + approved narration audio. Lipsync v2 is talking video + approved narration audio. The creator selects the route.</div></div>
+          </div>
+        </div></article>
+        <article class="card card-border bg-base-100"><div class="card-body">
+          <p class="text-sm uppercase tracking-widest text-base-content/60">Narrator input</p><h2 class="card-title text-3xl">Creator selects the narrator</h2>
+          <p class="text-base-content/75">ElevenLabs Eleven v3 on fal turns approved narration text into the audio asset used by VEED. These are project inputs, persisted with the narration asset and job provenance.</p>
+          <div class="mt-3 grid gap-3 sm:grid-cols-2"><fieldset class="fieldset"><legend class="fieldset-legend">Voice</legend><select class="select select-bordered" disabled><option>Provider-fetched voice catalogue</option></select><p class="label">No invented narrator names in the UI.</p></fieldset><fieldset class="fieldset"><legend class="fieldset-legend">Language</legend><select class="select select-bordered" disabled><option>Provider-supported language</option></select><p class="label">From the validated Eleven v3 contract.</p></fieldset><fieldset class="fieldset"><legend class="fieldset-legend">Delivery</legend><input class="input input-bordered" value="Approved tags only" disabled /><p class="label">e.g. expressive tags validated server-side.</p></fieldset><fieldset class="fieldset"><legend class="fieldset-legend">Preview state</legend><input class="input input-bordered" value="Audio approval required" disabled /><p class="label">No video generation until approved.</p></fieldset></div>
+          <div class="alert alert-warning mt-5"><span><strong>Boundary:</strong> v1 supports chosen provider voices and delivery controls only. Voice cloning and identity-imitating narrator choices remain out of scope.</span></div>
+        </div></article>
+      </section>
+
+      <section class="card card-border bg-base-100"><div class="card-body">
+        <p class="text-sm uppercase tracking-widest text-base-content/60">Delivery proof</p><h2 class="card-title text-3xl">What automated verification must demonstrate</h2>
+        <ul class="steps steps-vertical lg:steps-horizontal w-full mt-4">
+          <li class="step step-primary">New user sees an honest empty creation hub</li>
+          <li class="step step-primary">Public URL yields a sourced Research Pack</li>
+          <li class="step step-primary">Creator approves a labeled Storyboard</li>
+          <li class="step">Generation Job reports live status or real failure</li>
+          <li class="step">Completed output is a real provider URL</li>
+        </ul>
+        <p class="mt-5 text-sm text-base-content/65">Browser tests use mocked provider transport. A separate, explicitly opted-in live smoke test verifies billable fal.ai calls. The existing repository tests only cover missing Fal-key handling and JavaScript syntax.</p>
+      </div></section>
+    </main>
+    <script type="module">
+      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.15.0/dist/mermaid.esm.min.mjs";
+      mermaid.initialize({ startOnLoad: true, theme: "dark", securityLevel: "strict" });
+    </script>
+  </body>
+</html>
