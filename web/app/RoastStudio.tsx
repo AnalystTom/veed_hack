@@ -5,6 +5,7 @@ import { FormEvent, ReactNode, useState } from 'react';
 
 import { VIDEO_TEMPLATES } from '../lib/templates.mjs';
 import shell from './components/BrandShell.module.css';
+import { REVIEW_LIBRARY_KEY, type ReviewVideo } from './components/VideoLibrary';
 import styles from './RoastStudio.module.css';
 
 type Evidence = { id: string; label: string; value: string; sourceUrl: string };
@@ -163,6 +164,22 @@ export default function RoastStudio() {
         subjectVisualMode: summary.subjectVisualMode,
       });
       setVideoUrl(payload.result.videoUrl);
+      const selectedTemplate = VIDEO_TEMPLATES.find((template) => template.id === templateId);
+      const completedVideo: ReviewVideo = {
+        id: crypto.randomUUID(),
+        title: `${summary.name} · ${selectedTemplate?.name || 'Roast'}`,
+        videoUrl: payload.result.videoUrl,
+        subjectName: summary.name,
+        treatment: selectedTemplate?.name || templateId,
+        sourceUrl: summary.url,
+      };
+      try {
+        const stored = JSON.parse(localStorage.getItem(REVIEW_LIBRARY_KEY) || '[]');
+        const previous = Array.isArray(stored) ? stored : [];
+        localStorage.setItem(REVIEW_LIBRARY_KEY, JSON.stringify([completedVideo, ...previous].slice(0, 20)));
+      } catch {
+        // The completed provider output remains usable even when browser storage is unavailable.
+      }
       setGenerationStage('complete');
       setFailedStage(null);
     } catch (cause) {

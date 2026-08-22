@@ -1,10 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import VideoLibrary from '../../../components/VideoLibrary';
 import { TEMPLATES } from '../templates';
 import { posterStyle, SHEEN_CSS } from '../shared';
-import ReviewerOverlay from '../ReviewerOverlay';
 
 // A — Premiere, the standard page. Cinematic hero (per the Stanley reference)
 // over a NEUTRAL backdrop, so the colour in the filmstrip belongs to the videos
@@ -55,6 +54,7 @@ ${SHEEN_CSS}
 .rp-a .rp-strip h2{margin:0;font-size:clamp(24px,3.1vw,36px);font-weight:500;letter-spacing:-.025em}
 .rp-a .rp-strip h2 em{font-style:italic;font-weight:700}
 .rp-a .rp-strip .rp-count{font-size:13px;color:#7a7a86;letter-spacing:.12em;text-transform:uppercase}
+.rp-a .rp-library{padding:8px 50px 22px}
 .rp-a .rp-rail{display:flex;gap:14px;overflow-x:auto;padding:8px 50px 22px;scroll-snap-type:x mandatory;scroll-padding-left:50px;
    scrollbar-width:thin;scrollbar-color:#2a2a33 transparent}
 .rp-a .rp-cell{flex:0 0 clamp(150px,15vw,208px);scroll-snap-align:start;background:none;border:0;padding:0;color:inherit;
@@ -81,13 +81,12 @@ ${SHEEN_CSS}
   .rp-a .rp-strip{padding:18px 0 80px}
   .rp-a .rp-strip header{padding:0 20px 8px;gap:12px}
   .rp-a .rp-strip .rp-count{display:none}
+  .rp-a .rp-library{padding:6px 20px 18px}
   .rp-a .rp-rail{gap:10px;padding:6px 20px 18px;scroll-padding-left:20px}
 }
 `;
 
 export default function VariantA() {
-  const [reviewing, setReviewing] = useState<number | null>(null);
-
   return (
     <div className="rp-a">
       <style>{CSS}</style>
@@ -121,23 +120,8 @@ export default function VariantA() {
           <h2>Previous <em>roasts:</em></h2>
           <span className="rp-count">scroll →</span>
         </header>
-        <div className="rp-rail">
-          {TEMPLATES.map((t, i) => (
-            <button className="rp-cell" key={t.id} onClick={() => setReviewing(i)}>
-              <span className="rp-poster rp-ph-sheen" style={posterStyle(t)}>
-                <i className="rp-ph">placeholder</i>
-                <span className="rp-play"><i>▶</i></span>
-              </span>
-              <b>{t.title}</b>
-              <span className="rp-meta">{t.format} · {t.dur}</span>
-            </button>
-          ))}
-        </div>
+        <div className="rp-library"><VideoLibrary videos={[]} /></div>
       </section>
-
-      {reviewing !== null && (
-        <ReviewerOverlay startIndex={reviewing} onClose={() => setReviewing(null)} />
-      )}
     </div>
   );
 }

@@ -44,9 +44,9 @@ export default function VideoLibrary({ videos }: { videos: ReviewVideo[] }) {
   if (!availableVideos.length) {
     return (
       <div className={styles.empty}>
-        <span>NO APPROVED MEDIA</span>
+        <span>NO PREVIOUS ROASTS YET</span>
         <h3>Your first finished roast will appear here.</h3>
-        <p>The B-style click-through reviewer stays unavailable until a real generated video exists.</p>
+        <p>Choose a product or GitHub repo above to make one.</p>
       </div>
     );
   }
