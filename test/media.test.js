@@ -2,13 +2,19 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
-import { buildSubjectCardSvg, generateApprovedVideo } from "../web/lib/media.mjs";
+import { buildSubjectCardSvg, buildSubtitlesSrt, generateApprovedVideo } from "../web/lib/media.mjs";
 
 test("subject card embeds a portable font instead of relying on server fonts", () => {
   const font = readFileSync(new URL("../web/node_modules/next/dist/compiled/@vercel/og/Geist-Regular.ttf", import.meta.url));
   const svg = buildSubjectCardSvg("AnalystTom/veed_hack", font).toString("utf8");
   assert.match(svg, /<path d="M/);
   assert.doesNotMatch(svg, /<text|font-family|Arial/);
+});
+
+test("subtitle builder produces readable timed captions", () => {
+  const captions = buildSubtitlesSrt("One two three four five six seven eight nine.", 9);
+  assert.match(captions, /00:00:00,000 --> 00:00:04,500/);
+  assert.match(captions, /One two three four five six seven eight/);
 });
 
 test("generateApprovedVideo blocks unapproved or incomplete requests before provider calls", async () => {
@@ -57,6 +63,11 @@ test("generateApprovedVideo creates narration before the VEED presenter video", 
       assert.equal(input.subjectVisualUrl, "https://media.example/product.png");
       return "https://media.example/product-presenter-scene.png";
     },
+    captionVideo: async ({ videoUrl, script }) => {
+      assert.equal(videoUrl, "https://media.example/video.mp4");
+      assert.equal(script, "A short approved script.");
+      return "https://media.example/captioned.mp4";
+    },
   });
 
   assert.deepEqual(calls.map((call) => call.model), [
@@ -67,6 +78,7 @@ test("generateApprovedVideo creates narration before the VEED presenter video", 
   assert.equal(calls[1].input.audio_url, "https://media.example/narration.wav");
   assert.equal(calls[1].input.image_url, "https://media.example/product-presenter-scene.png");
   assert.equal(calls[1].input.resolution, "480p");
-  assert.equal(result.videoUrl, "https://media.example/video.mp4");
+  assert.equal(result.videoUrl, "https://media.example/captioned.mp4");
+  assert.equal(result.uncaptionedVideoUrl, "https://media.example/video.mp4");
   assert.equal(result.templateId, "roast");
 });

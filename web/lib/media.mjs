@@ -1,11 +1,16 @@
 import { fal } from "@fal-ai/client";
 import { config } from "dotenv";
-import { readFile } from "node:fs/promises";
+import { execFile } from "node:child_process";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { parse as parseFont } from "opentype.js/dist/opentype.mjs";
+import os from "node:os";
 import path from "node:path";
+import { promisify } from "node:util";
 import sharp from "sharp";
 
 import { getVideoTemplate } from "./templates.mjs";
+
+const execFileAsync = promisify(execFile);
 
 const envPath = path.basename(process.cwd()) === "web"
   ? path.resolve(process.cwd(), "../.env")
@@ -28,6 +33,38 @@ async function defaultSubscribe(model, options) {
     throw new Error("FAL_KEY is missing from the server environment.");
   }
   return fal.subscribe(model, options);
+}
+
+export function buildSubtitlesSrt(script, durationSeconds) {
+  const words = String(script || "").replace(/\s+/g, " ").trim().split(" ").filter(Boolean);
+  if (!words.length) throw new Error("Subtitle generation requires narration text.");
+  const duration = Math.max(1, Number(durationSeconds) || Math.ceil(words.length / 2.5));
+  const chunks = [];
+  for (let index = 0; index < words.length; index += 8) chunks.push(words.slice(index, index + 8).join(" "));
+  const timestamp = (seconds) => {
+    const milliseconds = Math.round(seconds * 1000);
+    return `${String(Math.floor(milliseconds / 3_600_000)).padStart(2, "0")}:${String(Math.floor((milliseconds % 3_600_000) / 60_000)).padStart(2, "0")}:${String(Math.floor((milliseconds % 60_000) / 1000)).padStart(2, "0")},${String(milliseconds % 1000).padStart(3, "0")}`;
+  };
+  return chunks.map((text, index) => `${index + 1}\n${timestamp(duration * index / chunks.length)} --> ${timestamp(duration * (index + 1) / chunks.length)}\n${text}`).join("\n\n");
+}
+
+async function defaultCaptionVideo({ videoUrl, script }) {
+  if (!process.env.FAL_KEY) throw new Error("FAL_KEY is missing from the server environment.");
+  const directory = await mkdtemp(path.join(os.tmpdir(), "roastr-captions-"));
+  const input = path.join(directory, "input.mp4");
+  const subtitles = path.join(directory, "captions.srt");
+  const output = path.join(directory, "captioned.mp4");
+  try {
+    const response = await fetch(videoUrl, { signal: AbortSignal.timeout(60_000) });
+    if (!response.ok) throw new Error(`The generated video could not be downloaded for subtitles (status ${response.status}).`);
+    await writeFile(input, Buffer.from(await response.arrayBuffer()));
+    const probe = await execFileAsync("ffprobe", ["-v", "error", "-show_entries", "format=duration", "-of", "default=noprint_wrappers=1:nokey=1", input]);
+    await writeFile(subtitles, buildSubtitlesSrt(script, Number(probe.stdout.trim())));
+    await execFileAsync("ffmpeg", ["-y", "-i", input, "-vf", `subtitles=${subtitles}:force_style='FontSize=19,PrimaryColour=&H00FFFFFF,OutlineColour=&H0010161C,BorderStyle=1,Outline=3,Alignment=2,MarginV=42'`, "-c:a", "copy", output]);
+    return fal.storage.upload(new Blob([await readFile(output)], { type: "video/mp4" }));
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
 }
 
 export function buildSubjectCardSvg(subjectName, fontBytes) {
@@ -99,6 +136,7 @@ export async function generatePresenterVideo(input, adapters = {}) {
   const audioUrl = requireHttpsUrl(input.audioUrl, "The generated narration");
   const uploadScene = adapters.uploadScene || adapters.uploadPresenter || defaultUploadScene;
   const subscribe = adapters.subscribe || defaultSubscribe;
+  const captionVideo = adapters.captionVideo || defaultCaptionVideo;
   const presenterImageUrl = requireHttpsUrl(await uploadScene(template, input), "The template presenter scene");
   const presenter = await subscribe("veed/fabric-1.0", {
     input: { image_url: presenterImageUrl, audio_url: audioUrl, resolution: "480p" },
@@ -106,7 +144,8 @@ export async function generatePresenterVideo(input, adapters = {}) {
   });
   const videoUrl = presenter?.data?.video?.url;
   if (!videoUrl) throw new Error("VEED Fabric completed without a video URL.");
-  return { videoUrl, templateId: template.id, requestId: presenter.requestId || null };
+  const captionedVideoUrl = requireHttpsUrl(await captionVideo({ videoUrl, script: input.script }), "The captioned generated video");
+  return { videoUrl: captionedVideoUrl, uncaptionedVideoUrl: videoUrl, templateId: template.id, requestId: presenter.requestId || null };
 }
 
 export async function generateApprovedVideo(input, adapters = {}) {
@@ -121,6 +160,7 @@ export async function generateApprovedVideo(input, adapters = {}) {
   const video = await generatePresenterVideo({ ...input, audioUrl: narration.audioUrl }, {
     subscribe,
     uploadScene: adapters.uploadScene || adapters.uploadPresenter,
+    captionVideo: adapters.captionVideo,
   });
-  return { audioUrl: narration.audioUrl, videoUrl: video.videoUrl, templateId: video.templateId };
+  return { audioUrl: narration.audioUrl, videoUrl: video.videoUrl, uncaptionedVideoUrl: video.uncaptionedVideoUrl, templateId: video.templateId };
 }
