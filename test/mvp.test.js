@@ -27,7 +27,7 @@ test("buildResearchBrief returns one grounded Markdown brief with public themes"
   });
 
   assert.match(brief, /^# AnalystTom\/veed_hack/m);
-  assert.match(brief, /## Common themes and complaints/);
+  assert.match(brief, /## Complaints and drama/);
   assert.match(brief, /workflow complexity/i);
   assert.match(brief, /\[Public discussion\]\(https:\/\/example.com\/discussion\)/);
   assert.doesNotMatch(brief, /undefined|null/);
@@ -61,7 +61,7 @@ test("synthesizeResearchBrief gives Luna all evidence and appends deterministic 
     results: [{ title: "Review", url: "https://reviews.example/example", content: "Several reviewers mention setup friction." }],
   }, async ({ user }) => {
     prompt = user;
-    return "# Example\n\n## Popular knowledge and drama\n\n- Ambitious one-click promise.\n\n## Common themes and complaints\n\n- Setup friction recurs across public discussion.\n\n## Roastable signals\n\n- The promise and setup tension create the angle.";
+    return "# Example\n\n## Reputation\n\nAn ambitious one-click video pitch.\n\n## Complaints and drama\n\n- Setup friction recurs across public discussion.\n\n## Contradictions\n\n- Promises one click, ships a setup gauntlet.\n\n## Roastable specifics\n\n- The promise and setup tension create the angle.";
   });
   assert.match(prompt, /Several reviewers mention setup friction/);
   assert.match(brief, /Setup friction recurs/);

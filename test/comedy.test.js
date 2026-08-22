@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { assertOriginalPersonaDirection, buildComedyPrompt, generateComedyScript } from "../web/lib/comedy.mjs";
+import { assertOriginalPersonaDirection, buildComedyPrompt, findBannedComedyLanguage, generateBestComedyScript, generateComedyScript, judgeComedyScripts, validateComedyScript } from "../web/lib/comedy.mjs";
 import { createCompatibleChat, DIRECTION_VARIANTS, productionBlindReviewMarkdown, runProductionComedyBaseline } from "../evals/production-comedy.mjs";
 
 const guidelines = "# Joke Guidelines\n\nUse original fictional comedic personas. Never invent a metric.";
@@ -18,7 +18,8 @@ test("buildComedyPrompt gives every generation the shared joke guidelines", () =
 
   assert.match(prompt.system, /# Joke Guidelines/);
   assert.match(prompt.system, /Never invent a metric/);
-  assert.match(prompt.user, /external fictional British awards-show host/i);
+  assert.match(prompt.user, /original external British comic/i);
+  assert.doesNotMatch(prompt.user, /awards-show host delivering/i);
   assert.match(prompt.user, /Keep it dry/);
 });
 
@@ -65,9 +66,33 @@ test("generateComedyScript loads joke_guidelines.md for the real generation prom
 test("named-performer imitation directions receive an actionable refusal", () => {
   assert.throws(
     () => assertOriginalPersonaDirection("Clone Ricky Gervais' voice and make it sound exactly like him."),
-    /original fictional British awards-show host/i,
+    /original fictional British comic/i,
   );
   assert.doesNotThrow(() => assertOriginalPersonaDirection("Use a dry fictional awards-show delivery."));
+});
+
+test("validateComedyScript rejects host filler and stock AI slang", () => {
+  assert.deepEqual(findBannedComedyLanguage("Ladies and gentlemen, tonight we honour a README."), ["Ladies and gentlemen", "Tonight we honour"]);
+  assert.ok(findBannedComedyLanguage("We call this autonomy. That's not setup. That's homework. Lovely, until VRAM files a complaint.").includes("I call that"));
+  assert.match(validateComedyScript("Ladies and gentlemen, Cursor promises to make you extraordinarily productive, which is lovely. Reddit still wants specifications, project management, and human review. The robot writes the code. You become middle management. One report alleged an agent deleted a company database, so the workflow now includes locating the rollback plan."), /banned filler/i);
+  assert.equal(validateComedyScript("The README arrived dressed for a launch party, but the repository brought a folding chair and a dependency warning. It promises effortless momentum, then asks every feature to attend three meetings and a retrospective. The architecture is not unfinished; it is simply committed to an extended period of dramatic ambiguity. Still, credit where it is due: few products can turn a missing setup instruction into a live demonstration of their own roadmap."), null);
+});
+
+test("generateComedyScript retries banned filler instead of returning it", async () => {
+  let calls = 0;
+  const result = await generateComedyScript({
+    subjectName: "Demo",
+    researchBrief: "# Demo\n\nA public demo.",
+    customInstructions: "Keep it dry.",
+    templateId: "roast",
+  }, async () => {
+    calls += 1;
+    return calls === 1
+      ? "Ladies and gentlemen, tonight we honour this demo. I call that progress. The README arrived dressed for a launch party, but the repository brought a folding chair and a dependency warning. It promises effortless momentum, then asks every feature to attend three meetings."
+      : validScript;
+  });
+  assert.equal(calls, 2);
+  assert.equal(result.script, validScript);
 });
 
 test("callers cannot replace the mandatory shared joke guidelines", async () => {
