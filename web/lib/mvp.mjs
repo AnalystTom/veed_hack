@@ -111,7 +111,7 @@ function decodeReadme(payload) {
     .slice(0, 420);
 }
 
-export function summarizeRepository(repository, languages, rootEntries, readme, packageManifest = null) {
+export function summarizeRepository(repository, languages, rootEntries, readme, packageManifest = null, contributors = [], treeEntries = []) {
   const sourceUrl = repository.html_url;
   const directories = rootEntries.filter((item) => item.type === "dir").map((item) => item.name).slice(0, 12);
   const files = rootEntries.filter((item) => item.type === "file").map((item) => item.name).slice(0, 12);
@@ -158,6 +158,28 @@ export function summarizeRepository(repository, languages, rootEntries, readme, 
       });
     }
   }
+  const namedContributors = contributors.slice(0, 5).filter((item) => item?.login);
+  if (namedContributors.length) {
+    const totalContributions = contributors.reduce((sum, item) => sum + Number(item.contributions || 0), 0);
+    evidence.push({
+      id: "contributors",
+      label: "Contributor pattern",
+      value: `${contributors.length} public contributor${contributors.length === 1 ? "" : "s"} returned. ${namedContributors.map((item) => `${item.login} (${item.contributions})`).join(", ")}${totalContributions ? `; ${totalContributions} contributions across the returned list` : ""}.`,
+      sourceUrl: `${sourceUrl}/graphs/contributors`,
+    });
+  }
+  const paths = treeEntries.map((item) => String(item?.path || "").toLowerCase()).filter(Boolean);
+  const trackedEnvFiles = paths.filter((item) => /(^|\/)\.env(?:\.|$)/.test(item) && !item.endsWith(".example")).slice(0, 4);
+  const aiFiles = paths.filter((item) => /(^|\/)(claude|cursor|copilot)(\.md|\/|$)/.test(item)).slice(0, 6);
+  const repoSignals = [
+    trackedEnvFiles.length ? `Tracked environment-style files: ${trackedEnvFiles.join(", ")}. This identifies filenames only; no credential contents were read.` : null,
+    aiFiles.length ? `AI-assistant configuration paths: ${aiFiles.join(", ")}.` : null,
+    !paths.some((item) => /(^|\/)readme(?:\.[^/]+)?$/.test(item)) ? "No README file appeared in the repository tree." : null,
+    Number(repository.open_issues_count) > 0 ? `${repository.open_issues_count} open issue${repository.open_issues_count === 1 ? "" : "s"} reported by GitHub.` : null,
+  ].filter(Boolean);
+  if (repoSignals.length) {
+    evidence.push({ id: "repository-signals", label: "Observable repository signals", value: repoSignals.join(" "), sourceUrl });
+  }
 
   return {
     kind: "repository",
@@ -165,6 +187,7 @@ export function summarizeRepository(repository, languages, rootEntries, readme, 
     url: sourceUrl,
     overview: `${repository.full_name}: ${description}`,
     architecture: { directories, files, languages: languageNames },
+    visualUrl: `https://opengraph.githubassets.com/roastr/${repository.full_name}`,
     evidence,
     researchedAt: new Date().toISOString(),
   };
@@ -172,12 +195,14 @@ export function summarizeRepository(repository, languages, rootEntries, readme, 
 
 async function researchRepository(subject, fetchImpl) {
   const base = `https://api.github.com/repos/${encodeURIComponent(subject.owner)}/${encodeURIComponent(subject.repo)}`;
-  const [repository, languages, rootEntries, readmeResult, packageResult] = await Promise.all([
-    fetchJson(base, fetchImpl),
+  const repository = await fetchJson(base, fetchImpl);
+  const [languages, rootEntries, readmeResult, packageResult, contributors, treeResult] = await Promise.all([
     fetchJson(`${base}/languages`, fetchImpl).catch(() => ({})),
     fetchJson(`${base}/contents`, fetchImpl).catch(() => []),
     fetchJson(`${base}/readme`, fetchImpl).catch(() => null),
     fetchJson(`${base}/contents/package.json`, fetchImpl).catch(() => null),
+    fetchJson(`${base}/contributors?per_page=30`, fetchImpl).catch(() => []),
+    fetchJson(`${base}/git/trees/${encodeURIComponent(repository.default_branch)}?recursive=1`, fetchImpl).catch(() => ({ tree: [] })),
   ]);
   let packageManifest = null;
   try {
@@ -187,7 +212,7 @@ async function researchRepository(subject, fetchImpl) {
   } catch {
     packageManifest = null;
   }
-  return summarizeRepository(repository, languages, rootEntries, decodeReadme(readmeResult), packageManifest);
+  return summarizeRepository(repository, languages, rootEntries, decodeReadme(readmeResult), packageManifest, contributors, treeResult?.tree || []);
 }
 
 function decodeEntities(value) {
@@ -212,6 +237,15 @@ export function summarizeProduct(subject, html) {
     .map((match) => decodeEntities(match[1].replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim()))
     .filter(Boolean)
     .slice(0, 8);
+  const rawImage = firstMatch(html, /<meta[^>]+(?:property|name)=["']og:image["'][^>]+content=["']([^"']+)["'][^>]*>/i) ||
+    firstMatch(html, /<meta[^>]+content=["']([^"']+)["'][^>]+(?:property|name)=["']og:image["'][^>]*>/i);
+  let visualUrl = "";
+  try {
+    const parsedImage = new URL(rawImage, subject.url);
+    if (parsedImage.protocol === "https:") visualUrl = parsedImage.toString();
+  } catch {
+    visualUrl = "";
+  }
   const evidence = [{ id: "title", label: "Page title", value: title, sourceUrl: subject.url }];
   if (description) evidence.push({ id: "description", label: "Meta description", value: description, sourceUrl: subject.url });
   if (headings.length) evidence.push({ id: "headings", label: "Visible page headings", value: headings.join(" · "), sourceUrl: subject.url });
@@ -221,6 +255,7 @@ export function summarizeProduct(subject, html) {
     url: subject.url,
     overview: description || `The public page identifies itself as “${title}”.`,
     architecture: null,
+    visualUrl,
     evidence,
     researchedAt: new Date().toISOString(),
   };
@@ -265,6 +300,13 @@ function cleanMarkdownText(value) {
   return String(value || "").replace(/[\r\n]+/g, " ").replace(/\s+/g, " ").trim();
 }
 
+function conciseFinding(value, maxLength = 220) {
+  const clean = cleanMarkdownText(value);
+  const sentence = clean.match(/^(.{20,}?[.!?])(?:\s|$)/)?.[1] || clean;
+  if (sentence.length <= maxLength) return sentence;
+  return `${sentence.slice(0, maxLength - 1).trimEnd()}…`;
+}
+
 function markdownLink(label, url) {
   const safeLabel = cleanMarkdownText(label).replace(/[\[\]]/g, "");
   let safeUrl = "";
@@ -280,9 +322,9 @@ function markdownLink(label, url) {
 export function buildResearchBrief(summary, publicContext = {}) {
   const evidence = Array.isArray(summary?.evidence) ? summary.evidence : [];
   const results = Array.isArray(publicContext?.results) ? publicContext.results.slice(0, 6) : [];
-  const answer = cleanMarkdownText(publicContext?.answer);
-  const observableSignals = evidence.slice(0, 6).map((item) => `- **${cleanMarkdownText(item.label)}:** ${cleanMarkdownText(item.value)}`);
-  const publicThemes = results.slice(0, 3).map((result) => `- ${cleanMarkdownText(result.content)}`);
+  const answer = conciseFinding(publicContext?.answer, 360);
+  const observableSignals = evidence.slice(0, 6).map((item) => `- **${cleanMarkdownText(item.label)}:** ${conciseFinding(item.value)}`);
+  const publicThemes = results.slice(0, 3).map((result) => `- **${conciseFinding(result.title, 80)}:** ${conciseFinding(result.content, 180)}`);
   const sourceLinks = [
     ...evidence.map((item) => ({ title: item.label, url: item.sourceUrl })),
     ...results.map((result) => ({ title: result.title, url: result.url })),

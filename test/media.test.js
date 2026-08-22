@@ -32,11 +32,14 @@ test("generateApprovedVideo creates narration before the VEED presenter video", 
     approved: true,
     script: "A short approved script.",
     templateId: "roast",
+    subjectVisualUrl: "https://media.example/product.png",
+    subjectName: "Example product",
   }, {
     subscribe,
-    uploadPresenter: async (template) => {
+    uploadScene: async (template, input) => {
       assert.equal(template.id, "roast");
-      return "https://media.example/licensed-presenter.png";
+      assert.equal(input.subjectVisualUrl, "https://media.example/product.png");
+      return "https://media.example/product-presenter-scene.png";
     },
   });
 
@@ -46,7 +49,7 @@ test("generateApprovedVideo creates narration before the VEED presenter video", 
   ]);
   assert.equal(calls[0].input.voice, "George");
   assert.equal(calls[1].input.audio_url, "https://media.example/narration.wav");
-  assert.equal(calls[1].input.image_url, "https://media.example/licensed-presenter.png");
+  assert.equal(calls[1].input.image_url, "https://media.example/product-presenter-scene.png");
   assert.equal(calls[1].input.resolution, "480p");
   assert.equal(result.videoUrl, "https://media.example/video.mp4");
   assert.equal(result.templateId, "roast");

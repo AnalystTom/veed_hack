@@ -32,6 +32,22 @@ test("buildResearchBrief returns one grounded Markdown brief with public themes"
   assert.doesNotMatch(brief, /undefined|null/);
 });
 
+test("buildResearchBrief condenses long source excerpts into top-level findings", () => {
+  const longExcerpt = `Creators repeatedly mention a complicated setup process. ${"Raw source detail ".repeat(80)}`;
+  const brief = buildResearchBrief({
+    name: "Example",
+    url: "https://example.com",
+    overview: "An example product.",
+    evidence: [{ id: "title", label: "Page title", value: longExcerpt, sourceUrl: "https://example.com" }],
+  }, {
+    answer: "The product is discussed as ambitious. The recurring tension is setup complexity. Irrelevant third sentence.",
+    results: [{ title: "Review", url: "https://example.com/review", content: longExcerpt }],
+  });
+  assert.match(brief, /complicated setup process/i);
+  assert.ok(brief.length < 1_500);
+  assert.doesNotMatch(brief, /Raw source detail Raw source detail Raw source detail Raw source detail Raw source detail/);
+});
+
 test("normalizeSubjectUrl accepts public HTTPS GitHub repositories", () => {
   const subject = normalizeSubjectUrl("repository", "https://github.com/AnalystTom/veed_hack");
 
@@ -68,6 +84,8 @@ test("researchSubject reads GitHub credentials from the environment", async () =
     [],
     { content: Buffer.from("# Real README").toString("base64"), encoding: "base64" },
     { content: Buffer.from(JSON.stringify({ scripts: { test: "node --test" } })).toString("base64"), encoding: "base64" },
+    [{ login: "octocat", contributions: 12, html_url: "https://github.com/octocat" }],
+    [{ name: ".env.example", type: "blob", path: ".env.example" }],
   ];
   let index = 0;
 
@@ -81,7 +99,7 @@ test("researchSubject reads GitHub credentials from the environment", async () =
     else process.env.GITHUB_TOKEN = previousToken;
   }
 
-  assert.equal(authorizationHeaders.length, 5);
+  assert.equal(authorizationHeaders.length, 7);
   assert.equal(authorizationHeaders.every((value) => value === "Bearer test-token"), true);
 });
 

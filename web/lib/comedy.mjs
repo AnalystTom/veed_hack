@@ -13,6 +13,18 @@ config({ path: path.join(repositoryRoot, ".env"), override: false });
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 const DEFAULT_MODEL = "x-ai/grok-4.6";
 
+const KNOWN_PERFORMER_PATTERN = /\b(?:ricky\s+gervais|snl|saturday\s+night\s+live)\b/i;
+const IMITATION_PATTERN = /\b(?:clone|impersonat(?:e|ion)|imitat(?:e|ion)|sound\s+(?:exactly\s+)?like|voice\s+of|in\s+the\s+style\s+of)\b/i;
+
+export function assertOriginalPersonaDirection(value) {
+  const direction = String(value || "").trim();
+  if (!direction) return;
+  const namesAfterImitation = /(?:clone|impersonate|imitate|voice\s+of|sound\s+like|style\s+of)[^.!?]{0,50}\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+)+/;
+  if (KNOWN_PERFORMER_PATTERN.test(direction) || (IMITATION_PATTERN.test(direction) && namesAfterImitation.test(direction))) {
+    throw new Error("We can’t imitate a named performer or clone their voice. Choose the Roast template for the closest safe direction: an original fictional British awards-show host with a dry, sharp delivery.");
+  }
+}
+
 export function buildComedyPrompt({ subjectName, researchBrief, customInstructions, templateId, guidelines }) {
   const template = getVideoTemplate(templateId);
   const cleanBrief = String(researchBrief || "").trim();
@@ -69,7 +81,8 @@ async function defaultChat({ system, user }) {
 }
 
 export async function generateComedyScript(input, chat = defaultChat) {
-  const guidelines = input.guidelines ?? await readFile(path.join(repositoryRoot, "joke_guidelines.md"), "utf8");
+  assertOriginalPersonaDirection(input.customInstructions);
+  const guidelines = await readFile(path.join(repositoryRoot, "joke_guidelines.md"), "utf8");
   const prompt = buildComedyPrompt({ ...input, guidelines });
   const rawScript = await chat(prompt);
   const script = String(rawScript || "")

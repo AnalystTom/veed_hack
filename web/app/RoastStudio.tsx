@@ -16,8 +16,9 @@ type Summary = {
   researchBrief: string;
   researchMode: string;
   researchWarning?: string;
+  visualUrl?: string;
 };
-type Plan = { script: string; templateId: string; subjectName: string };
+type ComedyScript = { script: string; templateId: string; subjectName: string };
 type GenerationStage = 'idle' | 'planning' | 'narrating' | 'animating' | 'complete' | 'failed';
 type FailedStage = 'plan' | 'narration' | 'video' | null;
 
@@ -67,7 +68,7 @@ export default function RoastStudio() {
   const [proceeded, setProceeded] = useState(false);
   const [customInstructions, setCustomInstructions] = useState('');
   const [templateId, setTemplateId] = useState('');
-  const [plan, setPlan] = useState<Plan | null>(null);
+  const [plan, setPlan] = useState<ComedyScript | null>(null);
   const [audioUrl, setAudioUrl] = useState('');
   const [videoUrl, setVideoUrl] = useState('');
   const [generationStage, setGenerationStage] = useState<GenerationStage>('idle');
@@ -125,7 +126,7 @@ export default function RoastStudio() {
       if (!nextPlan || failedStage === 'plan') {
         activeFailure = 'plan';
         setGenerationStage('planning');
-        const payload = await postJson<{ plan: Plan }>('/api/plan', {
+        const payload = await postJson<{ plan: ComedyScript }>('/api/plan', {
           subjectName: summary.name,
           researchBrief: summary.researchBrief,
           customInstructions,
@@ -155,6 +156,8 @@ export default function RoastStudio() {
         approved: true,
         audioUrl: nextAudioUrl,
         templateId,
+        subjectName: summary.name,
+        subjectVisualUrl: summary.visualUrl,
       });
       setVideoUrl(payload.result.videoUrl);
       setGenerationStage('complete');
@@ -207,7 +210,7 @@ export default function RoastStudio() {
               <button className={styles.primary} disabled={researching}>{researching ? 'Researching public context…' : 'Roast it →'}</button>
             )}
           </form>
-          {!summary && <small className={styles.note}>Research is free. Provider calls begin only after you choose a template.</small>}
+          {!summary && <small className={styles.note}>No video-generation call occurs until you choose a template.</small>}
           {error && !proceeded && <p className={styles.error} role="alert">{error}</p>}
         </section>
 

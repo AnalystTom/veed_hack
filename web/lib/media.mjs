@@ -2,6 +2,7 @@ import { fal } from "@fal-ai/client";
 import { config } from "dotenv";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import sharp from "sharp";
 
 import { getVideoTemplate } from "./templates.mjs";
 
@@ -28,13 +29,35 @@ async function defaultSubscribe(model, options) {
   return fal.subscribe(model, options);
 }
 
-async function defaultUploadPresenter(template) {
+function escapeSvg(value) {
+  return String(value || "").replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&apos;" })[character]);
+}
+
+async function defaultUploadScene(template, input) {
   if (!process.env.FAL_KEY) throw new Error("FAL_KEY is missing from the server environment.");
   const publicDirectory = path.basename(process.cwd()) === "web"
     ? path.resolve(process.cwd(), "public")
     : path.resolve(process.cwd(), "web/public");
-  const bytes = await readFile(path.join(publicDirectory, "templates", template.imageFileName));
-  return fal.storage.upload(new Blob([bytes], { type: "image/png" }));
+  const presenterBytes = await readFile(path.join(publicDirectory, "templates", template.imageFileName));
+  const presenter = await sharp(presenterBytes).resize(480, 864, { fit: "cover" }).png().toBuffer();
+  let subjectVisual = null;
+  if (input.subjectVisualUrl) {
+    try {
+      const response = await fetch(requireHttpsUrl(input.subjectVisualUrl, "The subject visual"), { signal: AbortSignal.timeout(15_000) });
+      if (response.ok) subjectVisual = Buffer.from(await response.arrayBuffer());
+    } catch {
+      subjectVisual = null;
+    }
+  }
+  const subjectName = escapeSvg(String(input.subjectName || "Submitted subject").slice(0, 55));
+  const header = Buffer.from(`<svg width="480" height="246" xmlns="http://www.w3.org/2000/svg"><rect width="480" height="246" fill="#111114"/><rect x="12" y="12" width="456" height="222" rx="18" fill="#18181d" stroke="#9f8cff" stroke-width="2"/><text x="30" y="43" fill="#a99bff" font-family="Arial" font-size="13" font-weight="700" letter-spacing="2">TONIGHT'S SUBJECT</text><text x="30" y="216" fill="white" font-family="Arial" font-size="22" font-weight="700">${subjectName}</text></svg>`);
+  const composites = [{ input: header, top: 0, left: 0 }];
+  if (subjectVisual) {
+    const visual = await sharp(subjectVisual).resize(420, 142, { fit: "cover" }).png().toBuffer();
+    composites.push({ input: visual, top: 58, left: 30 });
+  }
+  const scene = await sharp(presenter).composite(composites).png().toBuffer();
+  return fal.storage.upload(new Blob([scene], { type: "image/png" }));
 }
 
 export async function generateNarration(input, subscribe = defaultSubscribe) {
@@ -62,9 +85,9 @@ export async function generatePresenterVideo(input, adapters = {}) {
   if (!input?.approved) throw new Error("The creative package must be approved before generation.");
   const template = getVideoTemplate(input.templateId);
   const audioUrl = requireHttpsUrl(input.audioUrl, "The generated narration");
-  const uploadPresenter = adapters.uploadPresenter || defaultUploadPresenter;
+  const uploadScene = adapters.uploadScene || adapters.uploadPresenter || defaultUploadScene;
   const subscribe = adapters.subscribe || defaultSubscribe;
-  const presenterImageUrl = requireHttpsUrl(await uploadPresenter(template), "The template presenter image");
+  const presenterImageUrl = requireHttpsUrl(await uploadScene(template, input), "The template presenter scene");
   const presenter = await subscribe("veed/fabric-1.0", {
     input: { image_url: presenterImageUrl, audio_url: audioUrl, resolution: "480p" },
     logs: true,
@@ -79,7 +102,7 @@ export async function generateApprovedVideo(input, adapters = {}) {
   const narration = await generateNarration(input, subscribe);
   const video = await generatePresenterVideo({ ...input, audioUrl: narration.audioUrl }, {
     subscribe,
-    uploadPresenter: adapters.uploadPresenter,
+    uploadScene: adapters.uploadScene || adapters.uploadPresenter,
   });
   return { audioUrl: narration.audioUrl, videoUrl: video.videoUrl, templateId: video.templateId };
 }
