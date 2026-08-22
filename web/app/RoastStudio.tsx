@@ -64,6 +64,7 @@ export default function RoastStudio() {
             <span>Public GitHub repository or website URL</span>
             <input
               required
+              disabled={busy}
               type="url"
               value={url}
               onChange={(event) => {
