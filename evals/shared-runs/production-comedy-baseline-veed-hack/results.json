@@ -1,0 +1,114 @@
+[
+  {
+    "runId": "baseline__cycle-01",
+    "provider": "production",
+    "model": "openai/gpt-5.6-luna",
+    "profile": "production_comedy",
+    "variant": "baseline",
+    "title": "Production comedy script",
+    "script": "Good evening, and welcome to RoastBench, the only awards show where the audience has not yet arrived. This tool promises public-perception research on GitHub repositories, despite having zero stars and zero forks—so it’s benchmarking the crowd before discovering one. With a check script, evaluation pipeline, prototype server and AI workflows, it has one public contributor doing the work of an entire production department. No description, no licence, but several identities. Please applaud the full-stack identity crisis.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 76,
+      "meanSeconds": 31
+    }
+  },
+  {
+    "runId": "baseline__cycle-02",
+    "provider": "production",
+    "model": "openai/gpt-5.6-luna",
+    "profile": "production_comedy",
+    "variant": "baseline",
+    "title": "Production comedy script",
+    "script": "Ladies and gentlemen, welcome to RoastBench, the tool researching public perception for repositories with zero stars and zero forks—so, less market research, more checking whether the market has arrived. It boasts evaluation pipelines, prototype servers, and several AI commands, all apparently operated by one public contributor. And with no description or licence, RoastBench has achieved the rare full-stack identity crisis: nominated in every category, eligible in none.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 67,
+      "meanSeconds": 27
+    }
+  },
+  {
+    "runId": "baseline__cycle-03",
+    "provider": "production",
+    "model": "openai/gpt-5.6-luna",
+    "profile": "production_comedy",
+    "variant": "baseline",
+    "failed": "Production narration did not meet the script contract after two attempts: Generated narration appears incomplete; it must end with a complete sentence."
+  },
+  {
+    "runId": "one-premise__cycle-01",
+    "provider": "production",
+    "model": "openai/gpt-5.6-luna",
+    "profile": "production_comedy",
+    "variant": "one-premise",
+    "failed": "Production narration did not meet the script contract after two attempts: Generated narration must be 55 to 85 words; received 26."
+  },
+  {
+    "runId": "one-premise__cycle-02",
+    "provider": "production",
+    "model": "openai/gpt-5.6-luna",
+    "profile": "production_comedy",
+    "variant": "one-premise",
+    "failed": "Production narration did not meet the script contract after two attempts: Generated narration appears incomplete; it must end with a complete sentence."
+  },
+  {
+    "runId": "one-premise__cycle-03",
+    "provider": "production",
+    "model": "openai/gpt-5.6-luna",
+    "profile": "production_comedy",
+    "variant": "one-premise",
+    "title": "Production comedy script",
+    "script": "And the award for Best Public-Perception Research goes to RoastBench, a tool studying GitHub’s crowd with zero stars and zero forks—brave, like reviewing applause before anyone’s arrived. Then it unveils checks, evaluations, prototypes and AI workflows, all apparently operated by one public contributor. That’s not a development team; that’s one person hosting the entire awards ceremony. RoastBench has built the full red carpet, then discovered it’s still waiting for an audience.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 71,
+      "meanSeconds": 29
+    }
+  },
+  {
+    "runId": "viewer-first__cycle-01",
+    "provider": "production",
+    "model": "openai/gpt-5.6-luna",
+    "profile": "production_comedy",
+    "variant": "viewer-first",
+    "failed": "Production narration did not meet the script contract after two attempts: Generated narration must be 55 to 85 words; received 48."
+  },
+  {
+    "runId": "viewer-first__cycle-02",
+    "provider": "production",
+    "model": "openai/gpt-5.6-luna",
+    "profile": "production_comedy",
+    "variant": "viewer-first",
+    "title": "Production comedy script",
+    "script": "Welcome to RoastBench, the only awards entry researching public perception for a GitHub repository with zero stars and zero forks—brilliant, benchmarking the audience before anyone’s arrived. The code has separate commands for checks, evaluations, and AI workflows, which sounds impressively organised, until you learn there’s one public contributor. And with no licence, the grand prize is apparently a standing ovation from nobody, followed by legal ambiguity.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 66,
+      "meanSeconds": 27
+    }
+  },
+  {
+    "runId": "viewer-first__cycle-03",
+    "provider": "production",
+    "model": "openai/gpt-5.6-luna",
+    "profile": "production_comedy",
+    "variant": "viewer-first",
+    "title": "Production comedy script",
+    "script": "And the award for Most Ambitious Audience Research goes to RoastBench: a tool studying public perception with zero stars and zero forks. That’s not a focus group, darling; that’s an empty room with excellent notes. It even has a “check” script, evaluation pipeline, and prototype server, all operated by one public contributor. Congratulations: you’ve built a full awards ceremony, then discovered you’re the host, nominee, audience, and technical crew.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 69,
+      "meanSeconds": 28
+    }
+  }
+]

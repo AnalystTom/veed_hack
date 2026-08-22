@@ -48,3 +48,18 @@ test("feedback compiler resolves opaque candidate aliases from the blind review"
   assert.equal(compiled.records[0].runId, "revealing-b");
   assert.equal(compiled.records[0].packetId, "b");
 });
+
+test("feedback compiler keeps blind aliases aligned when an earlier generation failed", () => {
+  const reviews = parseCsv("run_id,packet_id,decision,rank,reason\ncandidate-b,packet-1,keep,1,best\n");
+  const compiled = compileFeedback([{
+    id: "matrix",
+    reviews,
+    results: [
+      { runId: "first", provider: "production", model: "luna", profile: "production_comedy", metrics: {}, script: "First script" },
+      { runId: "failed", provider: "production", model: "luna", profile: "production_comedy", failed: "no text" },
+      { runId: "second", provider: "production", model: "luna", profile: "production_comedy", metrics: {}, script: "Second script" },
+    ],
+  }]);
+  assert.equal(compiled.records[0].runId, "second");
+  assert.equal(compiled.records[0].packetId, "packet-1");
+});

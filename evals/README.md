@@ -53,3 +53,13 @@ The auto-scores measure mechanical quality, not whether a joke is funny. Give th
 Add optional `mechanics`, `tone`, and `grounding` labels when useful. Recommended mechanics include `specificity`, `mismatch`, `escalation`, `misdirection`, and `callback`; use `|` between multiple values. This lets us learn *why* something won without treating a generic LLM score as ground truth. Reveal `results.json` only after ranking to compare provider, source mix, duration, and grounding failures.
 
 `npm run evals:compile-feedback` turns ranks into every valid pairwise preference, plus a 0–100 pairwise win score and Wilson 95% interval in `evals/shared-runs/leaderboard.json`. The interval is deliberately honest about small samples: it is a prioritisation aid, not proof that a model is funnier.
+
+## Production comedy baseline
+
+Use this for actual prompt and output choices. It calls the same `web/lib/comedy.mjs` `generateComedyScript` function used by the app, including the live `joke_guidelines.md`, production model, temperature, and cleanup. It is separate only in how it records and blinds candidates.
+
+```sh
+GITHUB_TOKEN="$(gh auth token)" npm run evals:production -- --subject https://github.com/owner/repository --cycles 3
+```
+
+That creates nine candidates: three each for the no-extra-direction baseline, a one-premise direction, and a viewer-first direction. First rank `blind-review.md`; then fill `review.csv` with `candidate-a`, `candidate-b`, etc. This is a baseline for choosing the studio default, not a claim that any prompt direction is universally funniest.

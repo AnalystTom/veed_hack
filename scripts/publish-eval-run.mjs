@@ -2,7 +2,10 @@ import { cp, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const workspace = process.cwd();
-const localRoot = path.resolve(workspace, "data/eval-runs");
+const localRoots = [
+  path.resolve(workspace, "data/eval-runs"),
+  path.resolve(workspace, "data/production-comedy-runs"),
+];
 const sharedRoot = path.resolve(workspace, "evals/shared-runs");
 
 function parseArgs(args) {
@@ -31,7 +34,7 @@ function sanitiseManifest(manifest) {
 async function main() {
   const options = parseArgs(process.argv.slice(2));
   const source = path.resolve(workspace, options.source);
-  if (!source.startsWith(`${localRoot}${path.sep}`)) throw new Error("Only a run beneath data/eval-runs may be published.");
+  if (!localRoots.some((root) => source.startsWith(`${root}${path.sep}`))) throw new Error("Only a run beneath data/eval-runs or data/production-comedy-runs may be published.");
   const id = safeId(options.id || path.basename(source));
   const destination = path.resolve(sharedRoot, id);
   if (!destination.startsWith(`${sharedRoot}${path.sep}`)) throw new Error("Invalid shared run id.");

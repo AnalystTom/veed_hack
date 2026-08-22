@@ -1,0 +1,22 @@
+{
+  "generatedAt": "2026-08-22T14:17:34.661Z",
+  "options": {
+    "kind": "repository",
+    "templateId": "roast",
+    "cycles": 3,
+    "directions": [
+      "baseline",
+      "one-premise",
+      "viewer-first"
+    ],
+    "outputRoot": "data/production-comedy-runs",
+    "subjectUrl": "https://github.com/AnalystTom/veed_hack"
+  },
+  "subject": {
+    "name": "AnalystTom/veed_hack",
+    "url": "https://github.com/AnalystTom/veed_hack"
+  },
+  "researchMode": "tavily-and-direct-public-data+gpt-5.6-luna-synthesis",
+  "researchWarning": "",
+  "referenceSignals": {}
+}

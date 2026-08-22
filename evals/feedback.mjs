@@ -25,6 +25,9 @@ function parseCsv(text) {
 function resolvePacket(result, requestedId) {
   const exact = result.packets?.find((packet) => packet.id === requestedId);
   if (exact) return exact;
+  if (result.script && /^packet-\d+$/i.test(requestedId || "")) {
+    return { id: requestedId, title: result.title || "Production script", angle: result.variant || "production" };
+  }
   const ordinal = /^packet-(\d+)$/i.exec(requestedId || "");
   return ordinal ? result.packets?.[Number(ordinal[1]) - 1] || null : null;
 }
@@ -36,7 +39,7 @@ function resolveResult(results, requestedId) {
   if (!candidate) return null;
   let index = 0;
   for (const character of candidate[1].toUpperCase()) index = (index * 26) + (character.charCodeAt(0) - 64);
-  return results[index - 1] || null;
+  return results.filter((result) => !result.failed && !result.skipped)[index - 1] || null;
 }
 
 function grouped(records, keyFor) {
@@ -50,10 +53,11 @@ function grouped(records, keyFor) {
 
 function participant(record) {
   return {
-    key: `${record.provider}__${record.model}__${record.profile}`,
+    key: `${record.provider}__${record.model}__${record.profile}__${record.variant || ""}`,
     provider: record.provider,
     model: record.model,
     profile: record.profile,
+    variant: record.variant || null,
   };
 }
 
@@ -126,6 +130,7 @@ export function compileFeedback(runs) {
         provider: result.provider,
         model: result.model,
         profile: result.profile,
+        variant: result.variant || null,
         decision: review.decision,
         rank: Number(review.rank) || null,
         reason: review.reason,
@@ -138,13 +143,14 @@ export function compileFeedback(runs) {
   }
   const { comparisons, standings } = pairwiseSummary(records);
   const byParticipant = new Map(standings.map((entry) => [entry.key, entry]));
-  const leaderboard = grouped(records, (record) => `${record.provider}__${record.model}__${record.profile}`).map((group) => {
+  const leaderboard = grouped(records, (record) => `${record.provider}__${record.model}__${record.profile}__${record.variant || ""}`).map((group) => {
     const ranked = group.filter((record) => record.rank);
     const pairwise = byParticipant.get(participant(group[0]).key);
     return {
       provider: group[0].provider,
       model: group[0].model,
       profile: group[0].profile,
+      variant: group[0].variant || null,
       reviewed: group.length,
       keeps: group.filter((record) => record.decision === "keep").length,
       revisions: group.filter((record) => record.decision === "revise").length,

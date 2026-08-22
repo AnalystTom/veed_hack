@@ -8,4 +8,5 @@ adws/
 .transcribe-venv/
 data/authorized-reference-transcripts/
 data/eval-runs/
+data/production-comedy-runs/
 scripts/__pycache__/

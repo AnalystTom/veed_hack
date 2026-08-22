@@ -49,6 +49,23 @@ export function buildComedyPrompt({ subjectName, researchBrief, customInstructio
   };
 }
 
+function cleanComedyScript(value) {
+  return String(value || "")
+    .replace(/^```(?:text|markdown)?\s*/i, "")
+    .replace(/\s*```$/i, "")
+    .trim();
+}
+
+export function validateComedyScript(value) {
+  const script = cleanComedyScript(value);
+  if (!script) return "Script generation completed without narration.";
+  if (script.length > 5_000) return "Generated narration exceeded 5,000 characters.";
+  const words = script.split(/\s+/).filter(Boolean).length;
+  if (words < 55 || words > 85) return `Generated narration must be 55 to 85 words; received ${words}.`;
+  if (!/[.!?]["')\]]?$/.test(script)) return "Generated narration appears incomplete; it must end with a complete sentence.";
+  return null;
+}
+
 async function defaultChat({ system, user }) {
   return generateLunaText({ system, user, temperature: 0.8, maxTokens: 320 });
 }
@@ -57,16 +74,22 @@ export async function generateComedyScript(input, chat = defaultChat) {
   assertOriginalPersonaDirection(input.customInstructions);
   const guidelines = await readFile(path.join(repositoryRoot, "joke_guidelines.md"), "utf8");
   const prompt = buildComedyPrompt({ ...input, guidelines });
-  const rawScript = await chat(prompt);
-  const script = String(rawScript || "")
-    .replace(/^```(?:text|markdown)?\s*/i, "")
-    .replace(/\s*```$/i, "")
-    .trim();
-  if (!script) throw new Error("Script generation completed without narration.");
-  if (script.length > 5000) throw new Error("Generated narration exceeded 5,000 characters.");
-  return {
-    script,
-    templateId: input.templateId,
-    subjectName: input.subjectName,
-  };
+  let lastError = "Script generation failed.";
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try {
+      const script = cleanComedyScript(await chat(prompt));
+      const validationError = validateComedyScript(script);
+      if (!validationError) {
+        return {
+          script,
+          templateId: input.templateId,
+          subjectName: input.subjectName,
+        };
+      }
+      lastError = validationError;
+    } catch (error) {
+      lastError = error instanceof Error ? error.message : "Script generation failed.";
+    }
+  }
+  throw new Error(`Production narration did not meet the script contract after two attempts: ${lastError}`);
 }

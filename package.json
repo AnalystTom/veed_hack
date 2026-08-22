@@ -9,6 +9,7 @@
   "scripts": {
     "check": "node --check src/*.js",
     "evals": "node evals/run.mjs",
+    "evals:production": "node evals/production-comedy.mjs",
     "evals:publish": "node scripts/publish-eval-run.mjs",
     "evals:compile-feedback": "node evals/compile-feedback.mjs",
     "fal:image": "node src/index.js fal:image",
