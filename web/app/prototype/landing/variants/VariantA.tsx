@@ -96,7 +96,7 @@ export default function VariantA() {
         <b>Roastr</b>
         <div>
           <a className="rp-lg">Log In</a>
-          <Link className="rp-pill" href="/create">Roast my repo</Link>
+          <Link className="rp-pill" href="/create">Start a roast</Link>
         </div>
       </nav>
 
@@ -105,21 +105,21 @@ export default function VariantA() {
           {TEMPLATES.slice(0, 8).map((t) => <span key={t.id} style={posterStyle(t)} />)}
         </div>
         <div className="rp-scrim" /><div className="rp-scrim2" />
-        <h1>Your repo has <em>notes</em><br />for you.</h1>
+        <h1>Your project has <em>notes</em><br />for you.</h1>
         <p className="rp-sub">
-          Paste a GitHub URL. We read the issues, the commits and the comment section,
-          then hand it all to someone with a microphone and no manners.
+          Paste a product website or public GitHub repository. We research the product,
+          code and public conversation, then hand it all to someone with a microphone and no manners.
         </p>
         <div className="rp-cta">
-          <Link className="rp-pill" href="/create">Roast my repo <span>→</span></Link>
+          <Link className="rp-pill" href="/create">Start a roast <span>→</span></Link>
           <span className="rp-fine">Free preview · you approve the script before anything renders</span>
         </div>
       </section>
 
       <section className="rp-strip">
         <header>
-          <h2>Pick a <em>format</em>. We&apos;ll cast the rest.</h2>
-          <span className="rp-count">{TEMPLATES.length} templates · scroll →</span>
+          <h2>Previous <em>roasts:</em></h2>
+          <span className="rp-count">scroll →</span>
         </header>
         <div className="rp-rail">
           {TEMPLATES.map((t, i) => (
