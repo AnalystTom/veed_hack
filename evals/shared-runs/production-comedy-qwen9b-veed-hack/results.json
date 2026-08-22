@@ -1,0 +1,106 @@
+[
+  {
+    "runId": "baseline__cycle-01",
+    "provider": "openai-compatible",
+    "model": "qwen9b-heretic",
+    "profile": "production_comedy",
+    "variant": "baseline",
+    "title": "Production comedy script",
+    "script": "Right, let’s introduce the latest darling of open source. AnalystTom’s veed_hack. A roast generator with zero stars. One contributor. Five languages. That’s not a team; that’s a solo founder who opened every file type to keep them company. It has a .lavish folder but no declared license, no description, and no audience. It runs production-comedy commands and evaluation pipelines while attracting zero forks. The product is designed to critique other projects while remaining invisible itself. The most honest review ever written.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 81,
+      "meanSeconds": 33
+    }
+  },
+  {
+    "runId": "baseline__cycle-02",
+    "provider": "openai-compatible",
+    "model": "qwen9b-heretic",
+    "profile": "production_comedy",
+    "variant": "baseline",
+    "title": "Production comedy script",
+    "script": "Ladies and gentlemen, welcome to the VEED Awards, where innovation is defined as “how many browser tabs can you have open while pretending your video is safe.”\n\nYou promised a lifetime deal. We’re still paying. In subscriptions. With our life’s work.\n\nYou promised a script generator. We uploaded our best joke and got back a script to delete it.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 59,
+      "meanSeconds": 24
+    }
+  },
+  {
+    "runId": "baseline__cycle-03",
+    "provider": "openai-compatible",
+    "model": "qwen9b-heretic",
+    "profile": "production_comedy",
+    "variant": "baseline",
+    "failed": "Production narration did not meet the script contract after two attempts: OpenAI-compatible model returned no text."
+  },
+  {
+    "runId": "one-premise__cycle-01",
+    "provider": "openai-compatible",
+    "model": "qwen9b-heretic",
+    "profile": "production_comedy",
+    "variant": "one-premise",
+    "title": "Production comedy script",
+    "script": "Right then, let us admire the very British art of doing nothing spectacular while doing five languages at once. Zero stars, one soul, and a directory called `.lavish` — because apparently, the embarrassment was too conspicuous for your `LICENSE` file. You built a roast machine with the community reach of a damp handkerchief. And yet, here we are, applauding the sheer audacity of shipping zero products while pretending you've shipped a lot. It's lovely. Truly magnificent.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 76,
+      "meanSeconds": 31
+    }
+  },
+  {
+    "runId": "one-premise__cycle-02",
+    "provider": "openai-compatible",
+    "model": "qwen9b-heretic",
+    "profile": "production_comedy",
+    "variant": "one-premise",
+    "failed": "Production narration did not meet the script contract after two attempts: OpenAI-compatible model returned no text."
+  },
+  {
+    "runId": "one-premise__cycle-03",
+    "provider": "openai-compatible",
+    "model": "qwen9b-heretic",
+    "profile": "production_comedy",
+    "variant": "one-premise",
+    "title": "Production comedy script",
+    "script": "Right then, welcome to the awards. In the Best Self-Deprecation category, we have AnalystTom's veed_hack. A roast generator with zero stars—that's meta, darling. Five languages in the one file, including a directory called `.lavish`. What's that? The project has taste but no licence? The README promises a roast while the repo itself stares blankly at the wall, unfollowed. A tool that critiques other projects while attracting no audience of its own. It's not humble, is it? It's lonely. And nobody's clapping.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 81,
+      "meanSeconds": 33
+    }
+  },
+  {
+    "runId": "viewer-first__cycle-01",
+    "provider": "openai-compatible",
+    "model": "qwen9b-heretic",
+    "profile": "production_comedy",
+    "variant": "viewer-first",
+    "failed": "Production narration did not meet the script contract after two attempts: OpenAI-compatible model returned no text."
+  },
+  {
+    "runId": "viewer-first__cycle-02",
+    "provider": "openai-compatible",
+    "model": "qwen9b-heretic",
+    "profile": "production_comedy",
+    "variant": "viewer-first",
+    "failed": "Production narration did not meet the script contract after two attempts: Generated narration must be 55 to 85 words; received 112."
+  },
+  {
+    "runId": "viewer-first__cycle-03",
+    "provider": "openai-compatible",
+    "model": "qwen9b-heretic",
+    "profile": "production_comedy",
+    "variant": "viewer-first",
+    "failed": "Production narration did not meet the script contract after two attempts: Generated narration must be 55 to 85 words; received 90."
+  }
+]

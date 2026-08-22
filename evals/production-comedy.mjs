@@ -10,6 +10,34 @@ export const DIRECTION_VARIANTS = Object.freeze({
   "viewer-first": "Use one supported technical detail that a non-engineer can follow. Make the turn clear, specific, and concise rather than explaining the repository.",
 });
 
+function compatibleUrl(baseUrl) {
+  const clean = String(baseUrl || "").trim().replace(/\/$/, "");
+  if (!clean) throw new Error("--base-url is required for --provider openai-compatible.");
+  return `${clean}/chat/completions`;
+}
+
+export function createCompatibleChat({ baseUrl, model, fetchImpl = fetch }) {
+  const endpoint = compatibleUrl(baseUrl);
+  const selectedModel = String(model || "").trim();
+  if (!selectedModel) throw new Error("--model is required for --provider openai-compatible.");
+  return async ({ system, user }) => {
+    const response = await fetchImpl(endpoint, {
+      method: "POST",
+      headers: { Authorization: "Bearer local", "Content-Type": "application/json" },
+      body: JSON.stringify({ model: selectedModel, messages: [{ role: "system", content: system }, { role: "user", content: user }], temperature: 0.8, max_tokens: 320 }),
+      signal: AbortSignal.timeout(90_000),
+    });
+    if (!response.ok) {
+      const detail = (await response.text().catch(() => "")).slice(0, 500);
+      throw new Error(`OpenAI-compatible generation failed (${response.status}): ${detail || response.statusText}`);
+    }
+    const payload = await response.json();
+    const text = payload?.choices?.[0]?.message?.content;
+    if (!String(text || "").trim()) throw new Error("OpenAI-compatible model returned no text.");
+    return String(text).trim();
+  };
+}
+
 function candidateLabel(index) {
   let value = index + 1;
   let label = "";
@@ -39,7 +67,7 @@ export function productionBlindReviewMarkdown(candidates) {
 }
 
 function parseArgs(args) {
-  const options = { kind: "repository", templateId: "roast", cycles: 3, directions: ["baseline", "one-premise", "viewer-first"], outputRoot: "data/production-comedy-runs" };
+  const options = { kind: "repository", templateId: "roast", cycles: 3, directions: ["baseline", "one-premise", "viewer-first"], outputRoot: "data/production-comedy-runs", provider: "production", baseUrl: "", model: "" };
   for (let index = 0; index < args.length; index += 1) {
     const value = args[index];
     const next = () => args[++index] || "";
@@ -48,6 +76,9 @@ function parseArgs(args) {
     else if (value === "--template") options.templateId = next();
     else if (value === "--cycles") options.cycles = Math.min(Math.max(Number(next()) || 3, 1), 10);
     else if (value === "--directions") options.directions = next().split(",").filter(Boolean);
+    else if (value === "--provider") options.provider = next();
+    else if (value === "--base-url") options.baseUrl = next();
+    else if (value === "--model") options.model = next();
     else if (value === "--out") options.outputRoot = next();
     else if (value === "--help") options.help = true;
     else throw new Error(`Unknown argument: ${value}`);
@@ -57,6 +88,11 @@ function parseArgs(args) {
     throw new Error(`--directions must use: ${Object.keys(DIRECTION_VARIANTS).join(", ")}`);
   }
   if (!["repository", "product"].includes(options.kind)) throw new Error("--kind must be repository or product.");
+  if (!["production", "openai-compatible"].includes(options.provider)) throw new Error("--provider must be production or openai-compatible.");
+  if (options.provider === "openai-compatible") {
+    compatibleUrl(options.baseUrl);
+    if (!options.model) throw new Error("--model is required for --provider openai-compatible.");
+  }
   return options;
 }
 
@@ -84,21 +120,27 @@ async function productionResearch(kind, subjectUrl) {
 export async function runProductionComedyBaseline(options, dependencies = {}) {
   const research = await (dependencies.productionResearch || productionResearch)(options.kind, options.subjectUrl);
   const generate = dependencies.generateComedyScript || generateComedyScript;
+  const chat = options.provider === "openai-compatible"
+    ? (dependencies.createCompatibleChat || createCompatibleChat)({ baseUrl: options.baseUrl, model: options.model, fetchImpl: dependencies.fetchImpl || fetch })
+    : null;
+  const provider = options.provider || "production";
+  const model = provider === "openai-compatible" ? options.model : "openai/gpt-5.6-luna";
   const candidates = [];
   for (const variant of options.directions) {
     for (let cycle = 1; cycle <= options.cycles; cycle += 1) {
       try {
-        const output = await generate({
+        const input = {
           subjectName: research.summary.name,
           researchBrief: research.researchBrief,
           customInstructions: DIRECTION_VARIANTS[variant],
           templateId: options.templateId,
-        });
+        };
+        const output = chat ? await generate(input, chat) : await generate(input);
         const words = wordCount(output.script);
         candidates.push({
           runId: `${variant}__cycle-${String(cycle).padStart(2, "0")}`,
-          provider: "production",
-          model: "openai/gpt-5.6-luna",
+          provider,
+          model,
           profile: "production_comedy",
           variant,
           title: "Production comedy script",
@@ -106,7 +148,7 @@ export async function runProductionComedyBaseline(options, dependencies = {}) {
           metrics: { candidateCount: 1, passedCount: words >= 55 && words <= 85 ? 1 : 0, passRate: words >= 55 && words <= 85 ? 1 : 0, meanWords: words, meanSeconds: Math.ceil((words / 150) * 60) },
         });
       } catch (error) {
-        candidates.push({ runId: `${variant}__cycle-${String(cycle).padStart(2, "0")}`, provider: "production", model: "openai/gpt-5.6-luna", profile: "production_comedy", variant, failed: error instanceof Error ? error.message : "Production generation failed." });
+        candidates.push({ runId: `${variant}__cycle-${String(cycle).padStart(2, "0")}`, provider, model, profile: "production_comedy", variant, failed: error instanceof Error ? error.message : "Production generation failed." });
       }
     }
   }
@@ -116,7 +158,7 @@ export async function runProductionComedyBaseline(options, dependencies = {}) {
 async function main() {
   const options = parseArgs(process.argv.slice(2));
   if (options.help) {
-    console.log("Usage: npm run evals:production -- --subject https://github.com/owner/repo [--cycles 3] [--directions baseline,one-premise,viewer-first]");
+    console.log("Usage: npm run evals:production -- --subject https://github.com/owner/repo [--cycles 3] [--directions baseline,one-premise,viewer-first] [--provider production|openai-compatible --base-url http://host:4000/v1 --model model-id]");
     return;
   }
   const report = await runProductionComedyBaseline(options);

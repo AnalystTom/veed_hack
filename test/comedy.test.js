@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { assertOriginalPersonaDirection, buildComedyPrompt, generateComedyScript } from "../web/lib/comedy.mjs";
-import { DIRECTION_VARIANTS, productionBlindReviewMarkdown, runProductionComedyBaseline } from "../evals/production-comedy.mjs";
+import { createCompatibleChat, DIRECTION_VARIANTS, productionBlindReviewMarkdown, runProductionComedyBaseline } from "../evals/production-comedy.mjs";
 
 const guidelines = "# Joke Guidelines\n\nUse original fictional comedic personas. Never invent a metric.";
 const validScript = "The README arrived dressed for a launch party, but the repository brought a folding chair and a dependency warning. It promises effortless momentum, then asks every feature to attend three meetings and a retrospective. The architecture is not unfinished; it is simply committed to an extended period of dramatic ambiguity. Still, credit where it is due: few products can turn a missing setup instruction into a live demonstration of their own roadmap.";
@@ -129,4 +129,15 @@ test("production comedy baseline runs the app generator and hides direction labe
   assert.match(blind, /Candidate A/);
   assert.doesNotMatch(blind, /## one-premise|## baseline/i);
   assert.match(DIRECTION_VARIANTS["one-premise"], /clean final callback/i);
+});
+
+test("OpenAI-compatible production challenger preserves the production chat shape", async () => {
+  let request;
+  const chat = createCompatibleChat({ baseUrl: "http://gateway.test/v1", model: "qwen9b-heretic", fetchImpl: async (url, options) => {
+    request = { url, options };
+    return new Response(JSON.stringify({ choices: [{ message: { content: "A complete response." } }] }), { status: 200 });
+  } });
+  assert.equal(await chat({ system: "system", user: "user" }), "A complete response.");
+  assert.equal(request.url, "http://gateway.test/v1/chat/completions");
+  assert.equal(JSON.parse(request.options.body).model, "qwen9b-heretic");
 });

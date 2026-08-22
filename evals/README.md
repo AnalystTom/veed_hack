@@ -63,3 +63,11 @@ GITHUB_TOKEN="$(gh auth token)" npm run evals:production -- --subject https://gi
 ```
 
 That creates nine candidates: three each for the no-extra-direction baseline, a one-premise direction, and a viewer-first direction. First rank `blind-review.md`; then fill `review.csv` with `candidate-a`, `candidate-b`, etc. This is a baseline for choosing the studio default, not a claim that any prompt direction is universally funniest.
+
+Run a local or gateway model against the same production prompt with its OpenAI-compatible endpoint:
+
+```sh
+GITHUB_TOKEN="$(gh auth token)" npm run evals:production -- --subject https://github.com/owner/repository --cycles 3 --provider openai-compatible --base-url http://100.117.78.96:4000/v1 --model qwen9b-heretic
+```
+
+This does not make the challenger the app default. It provides an identical-prompt blind challenger run to review beside the production-Luna baseline.
