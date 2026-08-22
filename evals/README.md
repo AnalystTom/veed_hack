@@ -71,3 +71,13 @@ GITHUB_TOKEN="$(gh auth token)" npm run evals:production -- --subject https://gi
 ```
 
 This does not make the challenger the app default. It provides an identical-prompt blind challenger run to review beside the production-Luna baseline.
+
+## Master blind arena
+
+After publishing fresh production, Qwen, and Venice runs generated under the same current `joke_guidelines.md`, combine them into one shuffled scorecard:
+
+```sh
+npm run evals:arena -- --runs production-current,qwen-current,venice-current --id current-guidelines-arena
+```
+
+The resulting `blind-review.md` hides source run, provider, model, and prompt direction. Its `review.csv` is prefilled with one row per valid candidate. Rank that single sheet first; only then inspect `results.json` to reveal the provider and direction behind each candidate.

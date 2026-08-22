@@ -12,6 +12,7 @@
     "evals:production": "node evals/production-comedy.mjs",
     "evals:publish": "node scripts/publish-eval-run.mjs",
     "evals:compile-feedback": "node evals/compile-feedback.mjs",
+    "evals:arena": "node scripts/build-master-arena.mjs",
     "fal:image": "node src/index.js fal:image",
     "grok": "node src/index.js grok",
     "prototype": "node prototype/serve.js",
