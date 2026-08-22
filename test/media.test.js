@@ -1,8 +1,18 @@
 import assert from "node:assert/strict";
+import { execFile } from "node:child_process";
 import { readFileSync } from "node:fs";
 import test from "node:test";
+import { promisify } from "node:util";
 
-import { buildSubjectCardSvg, buildSubtitlesSrt, generateApprovedVideo } from "../web/lib/media.mjs";
+import { buildSubjectCardSvg, buildSubtitlesSrt, getMediaBinaryPaths, generateApprovedVideo } from "../web/lib/media.mjs";
+
+test("captioning resolves bundled ffmpeg and ffprobe binaries", async () => {
+  const binaries = getMediaBinaryPaths();
+  assert.match(binaries.ffprobe, /ffprobe/);
+  assert.match(binaries.ffmpeg, /ffmpeg/);
+  await assert.doesNotReject(promisify(execFile)(binaries.ffprobe, ["-version"]));
+  await assert.doesNotReject(promisify(execFile)(binaries.ffmpeg, ["-version"]));
+});
 
 test("subject card embeds a portable font instead of relying on server fonts", () => {
   const font = readFileSync(new URL("../web/node_modules/next/dist/compiled/@vercel/og/Geist-Regular.ttf", import.meta.url));

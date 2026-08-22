@@ -14,6 +14,8 @@ const nextConfig: NextConfig = {
       '../joke_guidelines.md',
       '../comedy_corpus.json',
       'node_modules/next/dist/compiled/@vercel/og/Geist-Regular.ttf',
+      'node_modules/ffmpeg-static/ffmpeg',
+      'node_modules/ffprobe-static/bin/**',
     ],
   },
   // The 127.0.0.1:3101 preview runs `next start` alongside `next dev`; they

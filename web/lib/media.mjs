@@ -1,6 +1,8 @@
 import { fal } from "@fal-ai/client";
 import { config } from "dotenv";
 import { execFile } from "node:child_process";
+import ffmpegStatic from "ffmpeg-static";
+import ffprobeStatic from "ffprobe-static";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { parse as parseFont } from "opentype.js/dist/opentype.mjs";
 import os from "node:os";
@@ -16,6 +18,23 @@ const envPath = path.basename(process.cwd()) === "web"
   ? path.resolve(process.cwd(), "../.env")
   : path.resolve(process.cwd(), ".env");
 config({ path: envPath, override: false });
+
+function requiredBinaryPath(value, binaryName) {
+  const candidate = typeof value === "string" ? value : value?.path;
+  if (!candidate) {
+    throw new Error(`${binaryName} is unavailable for this server platform.`);
+  }
+  return candidate;
+}
+
+// These packages supply the executables inside the server bundle. Do not use
+// bare command names: serverless hosts do not provide Homebrew's PATH.
+export function getMediaBinaryPaths() {
+  return {
+    ffmpeg: requiredBinaryPath(ffmpegStatic, "ffmpeg"),
+    ffprobe: requiredBinaryPath(ffprobeStatic, "ffprobe"),
+  };
+}
 
 function requireHttpsUrl(rawValue, label) {
   let url;
@@ -54,13 +73,14 @@ async function defaultCaptionVideo({ videoUrl, script }) {
   const input = path.join(directory, "input.mp4");
   const subtitles = path.join(directory, "captions.srt");
   const output = path.join(directory, "captioned.mp4");
+  const binaries = getMediaBinaryPaths();
   try {
     const response = await fetch(videoUrl, { signal: AbortSignal.timeout(60_000) });
     if (!response.ok) throw new Error(`The generated video could not be downloaded for subtitles (status ${response.status}).`);
     await writeFile(input, Buffer.from(await response.arrayBuffer()));
-    const probe = await execFileAsync("ffprobe", ["-v", "error", "-show_entries", "format=duration", "-of", "default=noprint_wrappers=1:nokey=1", input]);
+    const probe = await execFileAsync(binaries.ffprobe, ["-v", "error", "-show_entries", "format=duration", "-of", "default=noprint_wrappers=1:nokey=1", input]);
     await writeFile(subtitles, buildSubtitlesSrt(script, Number(probe.stdout.trim())));
-    await execFileAsync("ffmpeg", ["-y", "-i", input, "-vf", `subtitles=${subtitles}:force_style='FontSize=19,PrimaryColour=&H00FFFFFF,OutlineColour=&H0010161C,BorderStyle=1,Outline=3,Alignment=2,MarginV=42'`, "-c:a", "copy", output]);
+    await execFileAsync(binaries.ffmpeg, ["-y", "-i", input, "-vf", `subtitles=${subtitles}:force_style='FontSize=19,PrimaryColour=&H00FFFFFF,OutlineColour=&H0010161C,BorderStyle=1,Outline=3,Alignment=2,MarginV=42'`, "-c:a", "copy", output]);
     return fal.storage.upload(new Blob([await readFile(output)], { type: "video/mp4" }));
   } finally {
     await rm(directory, { recursive: true, force: true });
