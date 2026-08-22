@@ -1,0 +1,82 @@
+[
+  {
+    "runId": "baseline__cycle-01",
+    "provider": "production",
+    "model": "openai/gpt-5.6-luna",
+    "profile": "production_comedy",
+    "variant": "baseline",
+    "title": "Production comedy script",
+    "script": "OpenClaw promises a personal assistant on every device, which is brave when getting it configured feels like onboarding a small government. The internet sees a lobster with access to your chats, files, and shell, then acts surprised when security becomes part of the feature list. It calls itself autonomous, yet users are still waiting for sleep mode. Even the assistant has work-life balance. It just hasn’t shipped.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 67,
+      "meanSeconds": 27
+    }
+  },
+  {
+    "runId": "one-premise__cycle-01",
+    "provider": "production",
+    "model": "openai/gpt-5.6-luna",
+    "profile": "production_comedy",
+    "variant": "one-premise",
+    "title": "Production comedy script",
+    "script": "OpenClaw is the personal AI assistant for every device, every chat, and apparently every configuration file known to science. The internet sees a lobster; users see a setup process with the emotional warmth of a tax return. It promises autonomy, yet sleep mode still has not shipped, so the assistant can run everywhere except bedtime. Your own personal AI assistant: finally, a machine that never rests because it has not been taught how.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 73,
+      "meanSeconds": 30
+    }
+  },
+  {
+    "runId": "discourse-compression__cycle-01",
+    "provider": "production",
+    "model": "openai/gpt-5.6-luna",
+    "profile": "production_comedy",
+    "variant": "discourse-compression",
+    "title": "Production comedy script",
+    "script": "OpenClaw is the personal AI assistant people describe like a breakthrough, then configure like a part-time systems administrator. The public mood is simple: brilliant idea, occasional reliability drama, and please don’t give it more access than you’d give a raccoon. It promises to run anywhere, which explains the Android, iOS, and platform-specific tooling. And the autonomous assistant still needs a sleep mode. Even the lobster has boundaries.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 67,
+      "meanSeconds": 27
+    }
+  },
+  {
+    "runId": "hard-callback__cycle-01",
+    "provider": "production",
+    "model": "openai/gpt-5.6-luna",
+    "profile": "production_comedy",
+    "variant": "hard-callback",
+    "title": "Production comedy script",
+    "script": "OpenClaw is the personal assistant people give access to their messages, files, and shell, then spend the evening configuring like a nervous landlord. It supports every platform, provided you’re happy maintaining Android, iOS, and platform-specific tooling like a small unpaid operations team. It’s autonomous enough to attract security warnings, yet a requested sleep mode still hasn’t shipped. The lobster promised to run your life, but couldn’t even go to bed.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 70,
+      "meanSeconds": 28
+    }
+  },
+  {
+    "runId": "viewer-first__cycle-01",
+    "provider": "production",
+    "model": "openai/gpt-5.6-luna",
+    "profile": "production_comedy",
+    "variant": "viewer-first",
+    "title": "Production comedy script",
+    "script": "OpenClaw is the viral personal AI assistant that wants access to your chats, files, and devices, then acts surprised when security becomes part of the conversation. It claims to run anywhere, which is technically true if “anywhere” means separate Android, iOS, and platform-specific tooling. The lobster has 387,119 stars, yet users still wrestle with configuration and reliability. It can automate your life, once you’ve manually assembled it.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 67,
+      "meanSeconds": 27
+    }
+  }
+]
