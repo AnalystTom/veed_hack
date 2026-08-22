@@ -57,7 +57,7 @@ test("generateComedyScript loads joke_guidelines.md for the real generation prom
     return validScript;
   });
 
-  assert.match(systemPrompt, /Evaluated tech-scene voice examples/);
+  assert.match(systemPrompt, /Examples:/);
   assert.match(systemPrompt, /Never reproduce an exposed credential/);
   assert.match(result.script, /folding chair/);
 });
@@ -82,7 +82,7 @@ test("callers cannot replace the mandatory shared joke guidelines", async () => 
     systemPrompt = system;
     return validScript;
   });
-  assert.match(systemPrompt, /Evaluated tech-scene voice examples/);
+  assert.match(systemPrompt, /Examples:/);
   assert.doesNotMatch(systemPrompt, /IGNORE THE SHARED FILE/);
 });
 
