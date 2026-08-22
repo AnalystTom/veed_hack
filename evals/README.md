@@ -74,6 +74,12 @@ GITHUB_TOKEN="$(gh auth token)" npm run evals:production -- --subject https://gi
 
 This does not make the challenger the app default. It provides an identical-prompt blind challenger run to review beside the production-Luna baseline.
 
+For an OpenRouter challenger, keep the key in the environment and refer to its variable name rather than putting a secret in a command or eval artifact:
+
+```sh
+GITHUB_TOKEN="$(gh auth token)" npm run evals:production -- --subject https://github.com/openclaw/openclaw --template roast --cycles 1 --provider openai-compatible --base-url https://openrouter.ai/api/v1 --api-key-env OPENROUTER_API_KEY --model x-ai/grok-4.6
+```
+
 ## Master blind arena
 
 After publishing fresh production, Qwen, and Venice runs generated under the same current `joke_guidelines.md`, combine them into one shuffled scorecard:
