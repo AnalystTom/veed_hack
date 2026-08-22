@@ -15,27 +15,27 @@ export default function LandingPage() {
         <strong>Roastr</strong>
         <div>
           <Link href="/create" className={shell.login}>Log in</Link>
-          <Link href="/create" className={`${shell.pill} ${shell.navCta}`}>Roast my repo</Link>
+          <Link href="/create" className={`${shell.pill} ${shell.navCta}`}>Start a roast</Link>
         </div>
       </nav>
 
       <section className={styles.hero}>
         <div className={shell.neutralBackdrop} aria-hidden="true" />
         <div className={shell.scrim} aria-hidden="true" />
-        <h1>Your repo has <em>notes</em><br />for you.</h1>
+        <h1>Your project has <em>notes</em><br />for you.</h1>
         <p className={styles.subhead}>
-          Paste a GitHub URL. We read the code, issues and repository evidence,
-          then turn the approved facts into a presenter-led roast.
+          Paste a product website or public GitHub repository. We research the public story,
+          product page and available repository evidence, then turn approved findings into a presenter-led roast.
         </p>
         <div className={styles.heroCta}>
-          <Link href="/create" className={shell.pill}>Roast my repo <span>→</span></Link>
+          <Link href="/create" className={shell.pill}>Start a roast <span>→</span></Link>
           <small>Free preview · you approve the script before anything renders</small>
         </div>
       </section>
 
       <section className={styles.librarySection} aria-labelledby="approved-roasts-heading">
         <header>
-          <h2 id="approved-roasts-heading">Your approved <em>videos</em>.</h2>
+          <h2 id="approved-roasts-heading">Previous <em>roasts:</em></h2>
           <span>Real generated media · click to review</span>
         </header>
         <VideoLibrary videos={approvedVideos} />
