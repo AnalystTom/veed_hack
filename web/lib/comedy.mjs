@@ -3,7 +3,7 @@ import path from "node:path";
 
 import { getVideoTemplate } from "./templates.mjs";
 import { generateLunaText } from "./llm.mjs";
-import { formatExamplesBlock, loadCuratedExamples } from "./preferences.mjs";
+import { formatCorpusBlock, formatExamplesBlock, loadComedyCorpus, loadCuratedExamples } from "./preferences.mjs";
 
 const repositoryRoot = path.basename(process.cwd()) === "web"
   ? path.resolve(process.cwd(), "..")
@@ -56,7 +56,7 @@ export function findBannedComedyLanguage(value) {
   return BANNED_SCRIPT_PATTERNS.filter((item) => item.pattern.test(script)).map((item) => item.label);
 }
 
-export function buildComedyPrompt({ subjectName, researchBrief, customInstructions, templateId, guidelines, examples = [] }) {
+export function buildComedyPrompt({ subjectName, researchBrief, customInstructions, templateId, guidelines, examples = [], corpus = {} }) {
   const template = getVideoTemplate(templateId);
   const cleanSubjectName = String(subjectName || "").trim();
   if (!cleanSubjectName) throw new Error("A researched subject name is required before script generation.");
@@ -64,6 +64,7 @@ export function buildComedyPrompt({ subjectName, researchBrief, customInstructio
   if (!cleanBrief) throw new Error("A Research Brief is required before script generation.");
   const direction = String(customInstructions || "").trim() || "No additional creator direction.";
   const examplesBlock = formatExamplesBlock(examples);
+  const corpusBlock = formatCorpusBlock(corpus);
 
   return {
     system: [
@@ -74,6 +75,7 @@ export function buildComedyPrompt({ subjectName, researchBrief, customInstructio
       "Return only the spoken narration: 55 to 85 words, no title, no Markdown, no stage directions.",
       "Shared guidelines:",
       String(guidelines || "").trim(),
+      ...(corpusBlock ? [corpusBlock] : []),
       ...(examplesBlock ? [examplesBlock] : []),
     ].join("\n\n"),
     user: [
@@ -112,9 +114,12 @@ async function defaultChat({ system, user }) {
 
 export async function generateComedyScript(input, chat = defaultChat) {
   assertOriginalPersonaDirection(input.customInstructions);
-  const guidelines = await readFile(path.join(repositoryRoot, "joke_guidelines.md"), "utf8");
-  const examples = await loadCuratedExamples(input.templateId);
-  const prompt = buildComedyPrompt({ ...input, guidelines, examples });
+  const [guidelines, examples, corpus] = await Promise.all([
+    readFile(path.join(repositoryRoot, "joke_guidelines.md"), "utf8"),
+    loadCuratedExamples(input.templateId),
+    loadComedyCorpus(),
+  ]);
+  const prompt = buildComedyPrompt({ ...input, guidelines, examples, corpus });
   let lastError = "Script generation failed.";
   for (let attempt = 0; attempt < 3; attempt += 1) {
     try {
@@ -199,10 +204,13 @@ export async function generateBestComedyScript(input, { chat = defaultChat, judg
   if (candidates.length === 1) {
     return { ...candidates[0], candidates, chosenIndex: 0 };
   }
-  const guidelines = await readFile(path.join(repositoryRoot, "joke_guidelines.md"), "utf8").catch(() => "");
-  const examples = await loadCuratedExamples(input.templateId);
+  const [guidelines, examples, corpus] = await Promise.all([
+    readFile(path.join(repositoryRoot, "joke_guidelines.md"), "utf8").catch(() => ""),
+    loadCuratedExamples(input.templateId),
+    loadComedyCorpus(),
+  ]);
   const chosenIndex = await judgeComedyScripts(
-    { subjectName: input.subjectName, templateId: input.templateId, candidates, examples, guidelines },
+    { subjectName: input.subjectName, templateId: input.templateId, candidates, examples, guidelines: [guidelines, formatCorpusBlock(corpus)].filter(Boolean).join("\n\n") },
     judge,
   );
   const safeIndex = chosenIndex >= 0 && chosenIndex < candidates.length ? chosenIndex : 0;

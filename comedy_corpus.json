@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "provenance": "Derived mechanics only from 10 locally authorised Tech Roast / Austin Nasso transcript files. No source dialogue is stored here or supplied to the model.",
+  "metrics": {
+    "referenceVideos": 10,
+    "referenceSeconds": 10065,
+    "referenceSegments": 2852,
+    "referenceWords": 24594,
+    "wordsPerMinute": 147,
+    "medianBeatSeconds": 1.84
+  },
+  "mechanics": [
+    "Cold-open on the target, their claim, or an awkwardly specific detail. Do not warm up the room.",
+    "Treat the subject's own description as the setup, then reframe it in plain language.",
+    "Escalate by changing the angle, not by repeating a synonym for bad.",
+    "Use short reaction beats after a turn when they sharpen the contrast. Do not explain the reaction.",
+    "Exit immediately after the strongest concrete word or callback. Never add a moral, summary, or recovery sentence."
+  ],
+  "scriptRecipe": {
+    "targetWords": "60-72",
+    "shape": "3-4 sentences. Sentence one opens with the target. Each later sentence introduces a fresh turn. The final sentence is the callback or hardest hit.",
+    "voice": "Fast, conversational, observant, and unbothered. Original material only; never quote, imitate, or identify any source performer."
+  }
+}

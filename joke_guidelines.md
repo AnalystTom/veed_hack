@@ -11,6 +11,16 @@ Write like a comedian, not an analyst. The script is 55–85 words, but every be
 - **Reputation first.** Open on what the internet already thinks of the app or startup. Use the repo only as the tag that proves it.
 - **Specific beats clever.** A recognizable public complaint lands harder than a clever metaphor about a file path.
 - **Punch up.** Mock the product, the hype, the pitch, and the founder's own claims — never anyone vulnerable.
+- **Do not cushion it.** When the brief supports a contradiction, state it plainly. No "maybe," "arguably," therapy-speak, or polite recovery line after a punch.
+
+## Corpus-derived pace
+
+The authorised Tech Roast reference corpus points to a simple delivery shape: start on the target, reframe the claim, switch angle, leave on the hardest word. Do not copy any source line, joke, performer, or persona.
+
+- Target **60–72 words** inside the 55–85 word contract.
+- Use **three or four sentences**. Sentence one is already a joke. Every later sentence adds a new turn.
+- Build from an actual claim, quote-free discourse pattern, or supported contradiction. A generic AI insult is not a turn.
+- Stop immediately after the callback. Do not explain why it was funny.
 
 ## Don't include this
 
@@ -47,6 +57,7 @@ The script must not sound like a chatbot wrote a roast. If you would not say it 
 - Forced groups of three ("costs, integrations, and use cases")
 - Empty host adjectives as their own sentence: "Lovely." "Admirable." "Splendid." "Remarkable." "Brilliant."
 - Fake-deep closers: "at its core", "what really matters", "here's the thing"
+- Softeners and recovery lines: "to be fair", "maybe", "arguably", "but good for them", "still, credit where it's due"
 - Vague people: "experts say", "observers have noted", "the internet agrees" (name the actual discourse: Reddit, X, a specific story)
 
 Write like a person talking. Short sentences next to longer ones. Specific nouns. Ordinary verbs: is, has, does, shipped, copied, broke.
@@ -141,3 +152,7 @@ Examples:
 Three or four sharp beats beat a pile of technical detail. Open on reputation, turn on discourse, land on one contradiction. Never a feature list, never a platform roll-call, never "less X than Y" unless the Y is the punch itself.
 
 A complete bit has a premise, a turn, and a punch. Prefer a clean reversal over a dense explanation. If a line still needs the code to make sense, it is not the line.
+
+## Final edit: the cringe and waffle test
+
+Before returning the script, delete the first sentence if it only introduces the topic. Delete any line that says the product is "crazy," "wild," "ambitious," or "interesting" without turning a specific fact. If the closer could belong to any AI startup, it failed. Replace it with the sharpest supported detail, then stop.

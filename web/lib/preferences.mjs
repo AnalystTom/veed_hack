@@ -6,6 +6,7 @@ const repositoryRoot = path.basename(process.cwd()) === "web"
   : process.cwd();
 
 const EXAMPLES_FILENAME = "comedy_examples.json";
+const CORPUS_FILENAME = "comedy_corpus.json";
 const DEFAULT_LIMIT = 4;
 
 // Pure selector so the curation contract is unit-testable without the filesystem.
@@ -39,4 +40,31 @@ export function formatExamplesBlock(examples) {
     "Preferred lines. Match their rhythm, economy, and bite. Never reuse their wording, subject, or jokes:",
     ...lines.map((line, index) => `${index + 1}. ${line}`),
   ].join("\n");
+}
+
+// This is a compact, original mechanics summary of the authorised reference
+// corpus. Raw transcripts remain local and are never added to app prompts.
+export async function loadComedyCorpus({ root = repositoryRoot } = {}) {
+  try {
+    const raw = await readFile(path.join(root, CORPUS_FILENAME), "utf8");
+    const data = JSON.parse(raw);
+    return data && typeof data === "object" ? data : {};
+  } catch {
+    return {};
+  }
+}
+
+export function formatCorpusBlock(corpus) {
+  const mechanics = Array.isArray(corpus?.mechanics)
+    ? corpus.mechanics.map((item) => String(item || "").trim()).filter(Boolean)
+    : [];
+  const recipe = corpus?.scriptRecipe && typeof corpus.scriptRecipe === "object" ? corpus.scriptRecipe : {};
+  if (!mechanics.length && !recipe.shape) return "";
+  return [
+    "Authorised comedy-corpus mechanics. These are original production notes, not lines to copy:",
+    ...mechanics.map((item) => `- ${item}`),
+    recipe.targetWords ? `Target ${recipe.targetWords} words while still obeying the 55-85 word contract.` : "",
+    recipe.shape ? `Structure: ${recipe.shape}` : "",
+    recipe.voice ? `Voice: ${recipe.voice}` : "",
+  ].filter(Boolean).join("\n");
 }

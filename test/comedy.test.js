@@ -14,10 +14,12 @@ test("buildComedyPrompt gives every generation the shared joke guidelines", () =
     customInstructions: "Keep it dry.",
     templateId: "roast",
     guidelines,
+    corpus: { mechanics: ["Open on the target."], scriptRecipe: { targetWords: "60-72" } },
   });
 
   assert.match(prompt.system, /# Joke Guidelines/);
   assert.match(prompt.system, /Never invent a metric/);
+  assert.match(prompt.system, /Authorised comedy-corpus mechanics/);
   assert.match(prompt.user, /original external British comic/i);
   assert.doesNotMatch(prompt.user, /awards-show host delivering/i);
   assert.match(prompt.user, /Keep it dry/);

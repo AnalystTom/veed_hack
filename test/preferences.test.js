@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { formatExamplesBlock, selectCuratedExamples } from "../web/lib/preferences.mjs";
+import { formatCorpusBlock, formatExamplesBlock, selectCuratedExamples } from "../web/lib/preferences.mjs";
 
 test("selectCuratedExamples returns trimmed lines for the requested template", () => {
   const data = { roast: ["  A sharp line.  ", "", "Another one."], parody: ["Owner voice."] };
@@ -23,4 +23,11 @@ test("formatExamplesBlock numbers lines and empties cleanly", () => {
   assert.match(block, /2\. Second\./);
   assert.equal(formatExamplesBlock([]), "");
   assert.equal(formatExamplesBlock(["   "]), "");
+});
+
+test("formatCorpusBlock supplies mechanics without raw transcript dialogue", () => {
+  const block = formatCorpusBlock({ mechanics: ["Open on the target."], scriptRecipe: { targetWords: "60-72", shape: "Four turns.", voice: "Original only." } });
+  assert.match(block, /Open on the target/);
+  assert.match(block, /60-72/);
+  assert.equal(formatCorpusBlock({}), "");
 });

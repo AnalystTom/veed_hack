@@ -89,6 +89,33 @@ function stableHash(value) {
   return createHash("sha256").update(value).digest("hex");
 }
 
+function sharedCandidates(left, right) {
+  const previous = new Set([left.left.id, left.right.id]);
+  return [right.left.id, right.right.id].filter((id) => previous.has(id)).length;
+}
+
+// Keep the pair sequence deterministic for a shared arena, but avoid showing a
+// reviewer the same challenger in Option B (or the same pair member) twice in
+// a row when another matchup remains. This prevents a static-looking column.
+export function rotatePairs(pairs) {
+  const remaining = [...pairs];
+  const ordered = [];
+  while (remaining.length) {
+    const previous = ordered.at(-1);
+    remaining.sort((left, right) => {
+      const leftOverlap = previous ? sharedCandidates(previous, left) : 0;
+      const rightOverlap = previous ? sharedCandidates(previous, right) : 0;
+      if (leftOverlap !== rightOverlap) return leftOverlap - rightOverlap;
+      const leftSameRight = previous && left.right.id === previous.right.id ? 1 : 0;
+      const rightSameRight = previous && right.right.id === previous.right.id ? 1 : 0;
+      if (leftSameRight !== rightSameRight) return leftSameRight - rightSameRight;
+      return stableHash(left.id).localeCompare(stableHash(right.id));
+    });
+    ordered.push(remaining.shift());
+  }
+  return ordered;
+}
+
 export function buildPairs(candidates) {
   const pairs = [];
   for (let leftIndex = 0; leftIndex < candidates.length; leftIndex += 1) {
@@ -100,7 +127,7 @@ export function buildPairs(candidates) {
       pairs.push({ id, left: flipped ? second : first, right: flipped ? first : second });
     }
   }
-  return pairs.sort((left, right) => stableHash(left.id).localeCompare(stableHash(right.id)));
+  return rotatePairs(pairs);
 }
 
 function page() {
@@ -112,7 +139,7 @@ function firstOpenIndex(){const open=data.pairs.findIndex(p=>!answers[p.id]);ret
 function current(){return data.pairs[index]}
 function syncDraft(){const p=current();if(!p)return;drafts[p.id]={choice:draftChoice,comment:document.querySelector('#comment')?.value||''}}
 function choiceClass(choice){return draftChoice===choice?' selected':''}
-function render(){if(!data.pairs.length)return;index=(index+data.pairs.length)%data.pairs.length;const p=current(),saved=answers[p.id]||{},draft=drafts[p.id]||saved;draftChoice=draft.choice||null;const root=document.querySelector('#pair');document.querySelector('#status').textContent=Object.keys(answers).length+' / '+data.pairs.length+' saved · revisit anything';root.innerHTML='<div class="pair-meta">Comparison '+(index+1)+' of '+data.pairs.length+'</div><div class="pair"><article class="option"><div class="option-label">OPTION A</div><div class="script">'+esc(p.left.script)+'</div><button class="choice'+choiceClass('left')+'" data-choice="left">← Option A is better</button></article><article class="option"><div class="option-label">OPTION B</div><div class="script">'+esc(p.right.script)+'</div><button class="choice'+choiceClass('right')+'" data-choice="right">Option B is better →</button></article></div><textarea class="comment" id="comment" placeholder="Why did this one land better? Optional, but great prompt signal.">'+esc(draft.comment||'')+'</textarea><button class="tie'+choiceClass('tie')+'" data-choice="tie">About equal</button><p class="note" id="note"></p><div class="actions"><button class="nav" id="previous">← Previous</button><button class="nav" id="next">Next →</button><button class="save save-choice" id="save-choice">Save choice &amp; next</button></div><p class="keys">Keyboard: ← choose A · → choose B · = tie. Your choice does not advance until you save.</p>';document.querySelectorAll('[data-choice]').forEach(b=>b.onclick=()=>selectChoice(b.dataset.choice));document.querySelector('#previous').onclick=()=>move(-1);document.querySelector('#next').onclick=()=>move(1);document.querySelector('#save-choice').onclick=saveChoice;}
+function render(){if(!data.pairs.length)return;index=(index+data.pairs.length)%data.pairs.length;const p=current(),saved=answers[p.id]||{},draft=drafts[p.id]||saved;draftChoice=draft.choice||null;const root=document.querySelector('#pair');document.querySelector('#status').textContent=Object.keys(answers).length+' / '+data.pairs.length+' saved · fresh challenger each round';root.innerHTML='<div class="pair-meta">Comparison '+(index+1)+' of '+data.pairs.length+'</div><div class="pair"><article class="option"><div class="option-label">OPTION A</div><div class="script">'+esc(p.left.script)+'</div><button class="choice'+choiceClass('left')+'" data-choice="left">← Option A is better</button></article><article class="option"><div class="option-label">OPTION B</div><div class="script">'+esc(p.right.script)+'</div><button class="choice'+choiceClass('right')+'" data-choice="right">Option B is better →</button></article></div><textarea class="comment" id="comment" placeholder="Why did this one land better? Optional, but great prompt signal.">'+esc(draft.comment||'')+'</textarea><button class="tie'+choiceClass('tie')+'" data-choice="tie">About equal</button><p class="note" id="note"></p><div class="actions"><button class="nav" id="previous">← Previous</button><button class="nav" id="next">Next challenger →</button><button class="save save-choice" id="save-choice">Save choice &amp; next</button></div><p class="keys">Keyboard: ← choose A · → choose B · = tie. Your choice does not advance until you save.</p>';document.querySelectorAll('[data-choice]').forEach(b=>b.onclick=()=>selectChoice(b.dataset.choice));document.querySelector('#previous').onclick=()=>move(-1);document.querySelector('#next').onclick=()=>move(1);document.querySelector('#save-choice').onclick=saveChoice;}
 function selectChoice(choice){syncDraft();draftChoice=choice;drafts[current().id].choice=choice;document.querySelectorAll('[data-choice]').forEach(button=>button.classList.toggle('selected',button.dataset.choice===choice));document.querySelector('#note').textContent='Choice selected — add a comment if useful, then save when ready.'}
 function move(offset){syncDraft();index+=offset;render()}
 async function saveChoice(){syncDraft();const p=current(),draft=drafts[p.id]||{};const note=document.querySelector('#note');if(!draft.choice){note.textContent='Pick Option A, Option B, or About equal before saving.';return}answers[p.id]={choice:draft.choice,comment:draft.comment||'',reviewedAt:new Date().toISOString()};delete drafts[p.id];await fetch('/api/pairs',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({answers})});index+=1;render()}

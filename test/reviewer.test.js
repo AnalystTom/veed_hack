@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { buildPairs, reviewCsv } from "../evals/reviewer-server.mjs";
+import { buildPairs, reviewCsv, rotatePairs } from "../evals/reviewer-server.mjs";
 
 test("reviewer writes one stable scorecard row per blind candidate", () => {
   const csv = reviewCsv({ "candidate-b": { decision: "keep", rank: "1", reason: "funny, specific", mechanics: "specificity|callback" } }, 2);
@@ -17,4 +17,12 @@ test("pair reviewer produces every candidate matchup with a stable hidden orient
   assert.equal(first.length, 3);
   assert.deepEqual(first, second);
   assert.equal(first.every((pair) => pair.left.id !== pair.right.id), true);
+});
+
+test("pair reviewer rotates challengers instead of leaving Option B static", () => {
+  const candidates = ["a", "b", "c", "d", "e"].map((id) => ({ id: `candidate-${id}`, script: id }));
+  const pairs = buildPairs(candidates);
+  assert.equal(pairs.length, 10);
+  assert.equal(pairs.every((pair, index) => index === 0 || pair.right.id !== pairs[index - 1].right.id), true);
+  assert.deepEqual(rotatePairs(pairs), pairs);
 });

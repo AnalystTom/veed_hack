@@ -6,9 +6,11 @@ import { buildResearchBrief, researchSubject, searchPublicContext, synthesizeRes
 import { searchOfficialSocialContext } from "../web/lib/social-api.mjs";
 
 export const DIRECTION_VARIANTS = Object.freeze({
-  baseline: "",
-  "one-premise": "Use one supported premise, then build two escalating turns and a clean final callback. Do not list repository facts.",
-  "viewer-first": "Use one supported technical detail that a non-engineer can follow. Make the turn clear, specific, and concise rather than explaining the repository.",
+  baseline: "Open with a joke, not context. Target 60 to 72 words and cut every sentence that merely explains the product.",
+  "one-premise": "Use one supported premise only. Build three fresh turns from it and end on a clean final callback. Do not list repository facts.",
+  "discourse-compression": "Open on the recurring public reputation or discourse from the brief. Compress the thread into one sharp line, then prove it with one supported contradiction.",
+  "hard-callback": "Write exactly four sentences. Sentence one is a cold-open joke. Each later sentence must change the angle. Sentence four calls back to sentence one and stops on the punch.",
+  "viewer-first": "Use one supported technical detail that a non-engineer can follow. State the contradiction plainly, with no hedge, scene-setting, or explanatory closer.",
 });
 
 function compatibleUrl(baseUrl) {
@@ -68,7 +70,7 @@ export function productionBlindReviewMarkdown(candidates) {
 }
 
 function parseArgs(args) {
-  const options = { kind: "repository", templateId: "roast", cycles: 3, directions: ["baseline", "one-premise", "viewer-first"], outputRoot: "data/production-comedy-runs", provider: "production", baseUrl: "", model: "", apiKeyEnv: "", timeoutMs: 90_000 };
+  const options = { kind: "repository", templateId: "roast", cycles: 1, directions: Object.keys(DIRECTION_VARIANTS), outputRoot: "data/production-comedy-runs", provider: "production", baseUrl: "", model: "", apiKeyEnv: "", timeoutMs: 90_000 };
   for (let index = 0; index < args.length; index += 1) {
     const value = args[index];
     const next = () => args[++index] || "";

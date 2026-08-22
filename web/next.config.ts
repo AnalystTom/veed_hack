@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     '/*': [
       '../joke_guidelines.md',
+      '../comedy_corpus.json',
       'node_modules/next/dist/compiled/@vercel/og/Geist-Regular.ttf',
     ],
   },
