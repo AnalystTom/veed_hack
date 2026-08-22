@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 
 import { getVideoTemplate } from "./templates.mjs";
-import { generateLunaText } from "./llm.mjs";
+import { generateOpusText } from "./llm.mjs";
 import { formatCorpusBlock, formatExamplesBlock, loadComedyCorpus, loadCuratedExamples } from "./preferences.mjs";
 
 const repositoryRoot = path.basename(process.cwd()) === "web"
@@ -109,7 +109,7 @@ export function validateComedyScript(value) {
 }
 
 async function defaultChat({ system, user }) {
-  return generateLunaText({ system, user, temperature: 0.8, maxTokens: 320 });
+  return generateOpusText({ system, user, temperature: 0.8, maxTokens: 320 });
 }
 
 export async function generateComedyScript(input, chat = defaultChat) {
@@ -145,8 +145,9 @@ export async function generateComedyScript(input, chat = defaultChat) {
 }
 
 async function defaultJudge({ system, user }) {
-  // The judge only ever returns a single index, so keep it cheap and decisive.
-  return generateLunaText({ system, user, temperature: 0, maxTokens: 12 });
+  // Opus makes the final candidate choice, so the delivered narration stays
+  // entirely within the requested generation model.
+  return generateOpusText({ system, user, temperature: 0, maxTokens: 12 });
 }
 
 // Ranks pre-validated candidate scripts and returns the index of the funniest,

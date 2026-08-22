@@ -9,6 +9,7 @@ config({ path: path.join(repositoryRoot, ".env"), override: false });
 
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 export const LUNA_MODEL = "openai/gpt-5.6-luna";
+export const OPUS_MODEL = "anthropic/claude-opus-4.8";
 
 function completionText(content) {
   if (typeof content === "string") return content.trim();
@@ -21,7 +22,7 @@ function completionText(content) {
   }).join("").trim();
 }
 
-export async function generateLunaText({ system, user, temperature = 0.3, maxTokens = 900 }, fetchImpl = fetch) {
+async function generateOpenRouterText({ model, modelName, system, user, temperature = 0.3, maxTokens = 900 }, fetchImpl = fetch) {
   const apiKey = process.env.OPENROUTER_API_KEY?.trim();
   if (!apiKey) throw new Error("OPENROUTER_API_KEY is missing from the server environment.");
   const response = await fetchImpl(OPENROUTER_URL, {
@@ -31,26 +32,34 @@ export async function generateLunaText({ system, user, temperature = 0.3, maxTok
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: LUNA_MODEL,
+      model,
       messages: [
         { role: "system", content: system },
         { role: "user", content: user },
       ],
       temperature,
       max_tokens: maxTokens,
-      // Luna otherwise may spend the entire short comedy budget on reasoning
-      // and return an empty narration.
+      // This endpoint requires short, directly usable text rather than a
+      // reasoning trace for both research and video-script generation.
       reasoning: { effort: "none" },
     }),
     signal: AbortSignal.timeout(60_000),
   });
   if (!response.ok) {
     const detail = (await response.text().catch(() => "")).slice(0, 500);
-    throw new Error(`GPT-5.6 Luna generation failed (${response.status}): ${detail || response.statusText}`);
+    throw new Error(`${modelName} generation failed (${response.status}): ${detail || response.statusText}`);
   }
   const payload = await response.json();
   const choice = payload?.choices?.[0];
   const text = completionText(choice?.message?.content);
-  if (!text) throw new Error(`GPT-5.6 Luna returned no text${choice?.finish_reason ? ` (finished: ${choice.finish_reason})` : ""}.`);
+  if (!text) throw new Error(`${modelName} returned no text${choice?.finish_reason ? ` (finished: ${choice.finish_reason})` : ""}.`);
   return text;
+}
+
+export function generateLunaText({ system, user, temperature = 0.3, maxTokens = 900 }, fetchImpl = fetch) {
+  return generateOpenRouterText({ model: LUNA_MODEL, modelName: "GPT-5.6 Luna", system, user, temperature, maxTokens }, fetchImpl);
+}
+
+export function generateOpusText({ system, user, temperature = 0.3, maxTokens = 900 }, fetchImpl = fetch) {
+  return generateOpenRouterText({ model: OPUS_MODEL, modelName: "Claude Opus 4.8", system, user, temperature, maxTokens }, fetchImpl);
 }
