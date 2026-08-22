@@ -81,3 +81,13 @@ npm run evals:arena -- --runs production-current,qwen-current,venice-current --i
 ```
 
 The resulting `blind-review.md` hides source run, provider, model, and prompt direction. Its `review.csv` is prefilled with one row per valid candidate. Rank that single sheet first; only then inspect `results.json` to reveal the provider and direction behind each candidate.
+
+## Spam-review UI
+
+Run the local reviewer against a master arena:
+
+```sh
+npm run evals:reviewer -- --arena evals/shared-runs/current-guidelines-arena
+```
+
+Open `http://127.0.0.1:4174`. It saves labels directly to that arena's `review.csv`: keep/revise/reject, rank, rationale, notes, and comedy-mechanic tags. It exposes no provider, model, or direction labels.
