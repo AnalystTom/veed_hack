@@ -1,0 +1,11 @@
+{
+  "generatedAt": "2026-08-22T14:59:21.786Z",
+  "kind": "master_comedy_arena",
+  "sourceRuns": [
+    "openclaw-roast-luna",
+    "openclaw-roast-venice",
+    "openclaw-roast-qwen9b"
+  ],
+  "candidateCount": 6,
+  "jokeGuidelinesSha256": "cd60d59fe86215207c04b3db24ddc3dac3e95ac3a5d8b0eedd3cf2260f699d24"
+}

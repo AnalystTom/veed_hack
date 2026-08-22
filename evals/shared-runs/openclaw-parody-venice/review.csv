@@ -1,0 +1,3 @@
+run_id,packet_id,decision,rank,reason,notes,mechanics,tone,grounding
+candidate-a,packet-1,,,,,,,
+candidate-b,packet-1,,,,,,,

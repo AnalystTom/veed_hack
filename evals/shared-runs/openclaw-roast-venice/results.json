@@ -1,0 +1,42 @@
+[
+  {
+    "runId": "baseline__cycle-01",
+    "provider": "openai-compatible",
+    "model": "venice-uncensored",
+    "profile": "production_comedy",
+    "variant": "baseline",
+    "title": "Production comedy script",
+    "script": "OpenClaw is the AI assistant that promised to be your personal genie, but turns out to need a PhD in computer science to set up. It's like having a lobster for a butler, but it keeps asking for your container permissions and sandbox keys. Security concerns? Oh, absolutely—it's like inviting a stranger into your home and asking them to manage your data. But hey, at least it looks cool with that lobster logo.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 73,
+      "meanSeconds": 30
+    }
+  },
+  {
+    "runId": "one-premise__cycle-01",
+    "provider": "openai-compatible",
+    "model": "venice-uncensored",
+    "profile": "production_comedy",
+    "variant": "one-premise",
+    "title": "Production comedy script",
+    "script": "OpenClaw promises to meet you in your chats, but its setup asks you to understand APIs, containers, and token economics. It's like a personal AI assistant that speaks in riddles. The lobster logo is a giveaway: this project has changed names more times than a chameleon at a disco. You've got to love the confidence of a lobster as your brand mascot.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 62,
+      "meanSeconds": 25
+    }
+  },
+  {
+    "runId": "viewer-first__cycle-01",
+    "provider": "openai-compatible",
+    "model": "venice-uncensored",
+    "profile": "production_comedy",
+    "variant": "viewer-first",
+    "failed": "Production narration did not meet the script contract after two attempts: Generated narration must be 55 to 85 words; received 88."
+  }
+]

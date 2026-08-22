@@ -1,0 +1,34 @@
+[
+  {
+    "runId": "baseline__cycle-01",
+    "provider": "openai-compatible",
+    "model": "qwen9b-heretic",
+    "profile": "production_comedy",
+    "variant": "baseline",
+    "title": "Production comedy script",
+    "script": "It looks like personal automation. It is actually a shell of a corporate infrastructure department.\n\nThey tell you it’s a personal assistant. It is a personal accounting nightmare. One message, one API call, one pound lost to your account.\n\nThe lobster? A marketing decision. The rebrand? A marketing decision. The build system? A committee’s nightmare.\n\nIt promises anything, everywhere. All it can do is ask you to read a README that was written by a different department.\n\nIt’s not an assistant. It’s a bill.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 84,
+      "meanSeconds": 34
+    }
+  },
+  {
+    "runId": "one-premise__cycle-01",
+    "provider": "openai-compatible",
+    "model": "qwen9b-heretic",
+    "profile": "production_comedy",
+    "variant": "one-premise",
+    "failed": "Production narration did not meet the script contract after two attempts: OpenAI-compatible model returned no text."
+  },
+  {
+    "runId": "viewer-first__cycle-01",
+    "provider": "openai-compatible",
+    "model": "qwen9b-heretic",
+    "profile": "production_comedy",
+    "variant": "viewer-first",
+    "failed": "Production narration did not meet the script contract after two attempts: OpenAI-compatible model returned no text."
+  }
+]

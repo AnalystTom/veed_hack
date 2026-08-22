@@ -1,0 +1,104 @@
+[
+  {
+    "runId": "openclaw-roast-luna__baseline__cycle-01",
+    "provider": "production",
+    "model": "openai/gpt-5.6-luna",
+    "profile": "master_comedy_arena",
+    "variant": "baseline",
+    "title": "Production comedy script",
+    "script": "OpenClaw: the personal AI assistant so personal, you must personally survive the installation. It promises your assistant on every device and chat, then arrives with Android, iOS, Kotlin, Swift, Gradle, and several emotional support build systems. The branding has changed from Warelay to Clawdbot to Moltbot to OpenClaw — less a product roadmap, more witness protection. And with token costs, rate limits, and careful configuration, it’s wonderfully autonomous… at generating admin.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 71,
+      "meanSeconds": 29
+    },
+    "sourceBundle": "openclaw-roast-luna"
+  },
+  {
+    "runId": "openclaw-roast-qwen9b__baseline__cycle-01",
+    "provider": "openai-compatible",
+    "model": "qwen9b-heretic",
+    "profile": "master_comedy_arena",
+    "variant": "baseline",
+    "title": "Production comedy script",
+    "script": "It looks like personal automation. It is actually a shell of a corporate infrastructure department.\n\nThey tell you it’s a personal assistant. It is a personal accounting nightmare. One message, one API call, one pound lost to your account.\n\nThe lobster? A marketing decision. The rebrand? A marketing decision. The build system? A committee’s nightmare.\n\nIt promises anything, everywhere. All it can do is ask you to read a README that was written by a different department.\n\nIt’s not an assistant. It’s a bill.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 84,
+      "meanSeconds": 34
+    },
+    "sourceBundle": "openclaw-roast-qwen9b"
+  },
+  {
+    "runId": "openclaw-roast-venice__one-premise__cycle-01",
+    "provider": "openai-compatible",
+    "model": "venice-uncensored",
+    "profile": "master_comedy_arena",
+    "variant": "one-premise",
+    "title": "Production comedy script",
+    "script": "OpenClaw promises to meet you in your chats, but its setup asks you to understand APIs, containers, and token economics. It's like a personal AI assistant that speaks in riddles. The lobster logo is a giveaway: this project has changed names more times than a chameleon at a disco. You've got to love the confidence of a lobster as your brand mascot.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 62,
+      "meanSeconds": 25
+    },
+    "sourceBundle": "openclaw-roast-venice"
+  },
+  {
+    "runId": "openclaw-roast-luna__viewer-first__cycle-01",
+    "provider": "production",
+    "model": "openai/gpt-5.6-luna",
+    "profile": "master_comedy_arena",
+    "variant": "viewer-first",
+    "title": "Production comedy script",
+    "script": "OpenClaw is the internet’s favourite personal AI assistant, provided you’re personally an infrastructure engineer. It promises your assistant on every device and in every chat, then greets you with Android, iOS, Kotlin, Swift, Gradle, and Shell. That’s not setup friction; that’s an onboarding committee. Even the name has had several upgrades, like an assistant trying to escape its own search history. OpenClaw: your digital helper, now requiring its own digital helper.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 71,
+      "meanSeconds": 29
+    },
+    "sourceBundle": "openclaw-roast-luna"
+  },
+  {
+    "runId": "openclaw-roast-luna__one-premise__cycle-01",
+    "provider": "production",
+    "model": "openai/gpt-5.6-luna",
+    "profile": "master_comedy_arena",
+    "variant": "one-premise",
+    "title": "Production comedy script",
+    "script": "OpenClaw is the personal AI assistant for every device, every chat, and apparently every identity crisis. It began as Warelay, became Clawdbot, then Moltbot, and finally OpenClaw—less a brand journey, more witness protection for software. The pitch says effortless automation; users report setup that feels like applying for planning permission. And with mobile apps, deployment, extensions, and several build systems, it’s wonderfully personal: one assistant, requiring an entire enterprise. OpenClaw indeed.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 71,
+      "meanSeconds": 29
+    },
+    "sourceBundle": "openclaw-roast-luna"
+  },
+  {
+    "runId": "openclaw-roast-venice__baseline__cycle-01",
+    "provider": "openai-compatible",
+    "model": "venice-uncensored",
+    "profile": "master_comedy_arena",
+    "variant": "baseline",
+    "title": "Production comedy script",
+    "script": "OpenClaw is the AI assistant that promised to be your personal genie, but turns out to need a PhD in computer science to set up. It's like having a lobster for a butler, but it keeps asking for your container permissions and sandbox keys. Security concerns? Oh, absolutely—it's like inviting a stranger into your home and asking them to manage your data. But hey, at least it looks cool with that lobster logo.",
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 73,
+      "meanSeconds": 30
+    },
+    "sourceBundle": "openclaw-roast-venice"
+  }
+]

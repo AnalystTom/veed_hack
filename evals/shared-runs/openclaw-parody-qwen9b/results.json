@@ -1,0 +1,26 @@
+[
+  {
+    "runId": "baseline__cycle-01",
+    "provider": "openai-compatible",
+    "model": "qwen9b-heretic",
+    "profile": "production_comedy",
+    "variant": "baseline",
+    "failed": "Production narration did not meet the script contract after two attempts: Generated narration must be 55 to 85 words; received 97."
+  },
+  {
+    "runId": "one-premise__cycle-01",
+    "provider": "openai-compatible",
+    "model": "qwen9b-heretic",
+    "profile": "production_comedy",
+    "variant": "one-premise",
+    "failed": "Production narration did not meet the script contract after two attempts: OpenAI-compatible model returned no text."
+  },
+  {
+    "runId": "viewer-first__cycle-01",
+    "provider": "openai-compatible",
+    "model": "qwen9b-heretic",
+    "profile": "production_comedy",
+    "variant": "viewer-first",
+    "failed": "Production narration did not meet the script contract after two attempts: OpenAI-compatible model returned no text."
+  }
+]
