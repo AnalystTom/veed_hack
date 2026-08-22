@@ -18,3 +18,11 @@ git push origin main
 ```
 
 Do not add local transcripts, downloaded audio, `.env`, API keys, or raw reference-card excerpts. The publish script removes the transcript-card material from `manifest.json` before creating a shared bundle.
+
+Regenerate the cross-run human-feedback dataset after adding reviews:
+
+```sh
+npm run evals:compile-feedback
+git add evals/shared-runs/leaderboard.json evals/shared-runs/preference-pairs.jsonl
+git commit -m "eval: compile feedback"
+```
