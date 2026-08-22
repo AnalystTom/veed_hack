@@ -73,8 +73,14 @@ function wilsonInterval(successes, total, z = 1.96) {
   };
 }
 
-function pairwiseSummary(records) {
-  const stats = new Map(records.map((record) => [participant(record).key, { ...participant(record), wins: 0, losses: 0, ties: 0 }]));
+function pairwiseSummary(records, directComparisons = []) {
+  const stats = new Map();
+  const ensureStats = (entry) => {
+    const item = participant(entry);
+    if (!stats.has(item.key)) stats.set(item.key, { ...item, wins: 0, losses: 0, ties: 0 });
+    return stats.get(item.key);
+  };
+  for (const record of records) ensureStats(record);
   const comparisons = [];
   for (const group of grouped(records.filter((record) => record.rank), (record) => `${record.bundle}__${record.profile}`)) {
     const ordered = [...group].sort((left, right) => left.rank - right.rank);
@@ -82,8 +88,8 @@ function pairwiseSummary(records) {
       for (let rightIndex = leftIndex + 1; rightIndex < ordered.length; rightIndex += 1) {
         const left = ordered[leftIndex];
         const right = ordered[rightIndex];
-        const leftStats = stats.get(participant(left).key);
-        const rightStats = stats.get(participant(right).key);
+        const leftStats = ensureStats(left);
+        const rightStats = ensureStats(right);
         const outcome = left.rank === right.rank ? "tie" : "left";
         if (outcome === "tie") {
           leftStats.ties += 1;
@@ -95,13 +101,29 @@ function pairwiseSummary(records) {
         comparisons.push({
           bundle: left.bundle,
           profile: left.profile,
-          left: { runId: left.runId, packetId: left.packetId, provider: left.provider, model: left.model },
-          right: { runId: right.runId, packetId: right.packetId, provider: right.provider, model: right.model },
+          left: { runId: left.runId, packetId: left.packetId, provider: left.provider, model: left.model, profile: left.profile, variant: left.variant || null },
+          right: { runId: right.runId, packetId: right.packetId, provider: right.provider, model: right.model, profile: right.profile, variant: right.variant || null },
           outcome,
           rationale: outcome === "tie" ? "Equal human rank" : left.reason,
         });
       }
     }
+  }
+  for (const comparison of directComparisons) {
+    if (!comparison?.left || !comparison?.right || !["left", "right", "tie"].includes(comparison.outcome)) continue;
+    const leftStats = ensureStats(comparison.left);
+    const rightStats = ensureStats(comparison.right);
+    if (comparison.outcome === "tie") {
+      leftStats.ties += 1;
+      rightStats.ties += 1;
+    } else if (comparison.outcome === "left") {
+      leftStats.wins += 1;
+      rightStats.losses += 1;
+    } else {
+      rightStats.wins += 1;
+      leftStats.losses += 1;
+    }
+    comparisons.push(comparison);
   }
   const standings = [...stats.values()].map((entry) => {
     const comparisonsCount = entry.wins + entry.losses + entry.ties;
@@ -141,33 +163,34 @@ export function compileFeedback(runs) {
       });
     }
   }
-  const { comparisons, standings } = pairwiseSummary(records);
-  const byParticipant = new Map(standings.map((entry) => [entry.key, entry]));
-  const leaderboard = grouped(records, (record) => `${record.provider}__${record.model}__${record.profile}__${record.variant || ""}`).map((group) => {
+  const directComparisons = runs.flatMap((run) => run.pairwiseComparisons || []);
+  const { comparisons, standings } = pairwiseSummary(records, directComparisons);
+  const recordsByParticipant = new Map(grouped(records, (record) => participant(record).key).map((group) => [participant(group[0]).key, group]));
+  const leaderboard = standings.map((pairwise) => {
+    const group = recordsByParticipant.get(pairwise.key) || [];
     const ranked = group.filter((record) => record.rank);
-    const pairwise = byParticipant.get(participant(group[0]).key);
     return {
-      provider: group[0].provider,
-      model: group[0].model,
-      profile: group[0].profile,
-      variant: group[0].variant || null,
+      provider: pairwise.provider,
+      model: pairwise.model,
+      profile: pairwise.profile,
+      variant: pairwise.variant || null,
       reviewed: group.length,
       keeps: group.filter((record) => record.decision === "keep").length,
       revisions: group.filter((record) => record.decision === "revise").length,
       rejects: group.filter((record) => record.decision === "reject").length,
       meanRank: ranked.length ? Number((ranked.reduce((sum, record) => sum + record.rank, 0) / ranked.length).toFixed(2)) : null,
-      meanSeconds: Math.round(group.reduce((sum, record) => sum + (record.metrics?.meanSeconds || 0), 0) / group.length),
-      gatePassRate: Number((group.reduce((sum, record) => sum + (record.metrics?.passRate || 0), 0) / group.length).toFixed(3)),
-      pairwiseScore: pairwise?.pairwiseScore ?? null,
-      pairwiseInterval95: pairwise?.interval95 ?? null,
-      pairwiseComparisons: pairwise?.comparisons ?? 0,
+      meanSeconds: group.length ? Math.round(group.reduce((sum, record) => sum + (record.metrics?.meanSeconds || 0), 0) / group.length) : null,
+      gatePassRate: group.length ? Number((group.reduce((sum, record) => sum + (record.metrics?.passRate || 0), 0) / group.length).toFixed(3)) : null,
+      pairwiseScore: pairwise.pairwiseScore,
+      pairwiseInterval95: pairwise.interval95,
+      pairwiseComparisons: pairwise.comparisons,
     };
   }).sort((left, right) => (right.pairwiseScore ?? -1) - (left.pairwiseScore ?? -1) || (left.meanRank ?? Infinity) - (right.meanRank ?? Infinity));
   const pairs = comparisons.filter((comparison) => comparison.outcome !== "tie").map((comparison) => ({
     bundle: comparison.bundle,
     profile: comparison.profile,
-    chosen: comparison.left,
-    rejected: comparison.right,
+    chosen: comparison.outcome === "left" ? comparison.left : comparison.right,
+    rejected: comparison.outcome === "left" ? comparison.right : comparison.left,
     rationale: comparison.rationale,
   }));
   return { records, leaderboard, pairs, comparisons, standings };

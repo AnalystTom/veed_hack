@@ -54,6 +54,14 @@ Add optional `mechanics`, `tone`, and `grounding` labels when useful. Recommende
 
 `npm run evals:compile-feedback` turns ranks into every valid pairwise preference, plus a 0–100 pairwise win score and Wilson 95% interval in `evals/shared-runs/leaderboard.json`. The interval is deliberately honest about small samples: it is a prioritisation aid, not proof that a model is funnier.
 
+The pair-review UI is also training signal. After saving A/B choices and notes, compile just that arena so the hidden left/right orientation is resolved and each note becomes the preference rationale:
+
+```sh
+npm run evals:compile-feedback -- --arena openclaw-roast-oneliner-v3-arena
+```
+
+This writes directional examples to `evals/shared-runs/preference-pairs.jsonl` and updates the leaderboard. It does not change `joke_guidelines.md` or regenerate candidates automatically: inspect the batch, make a deliberate prompt revision, then create a new arena.
+
 ## Production comedy baseline
 
 Use this for actual prompt and output choices. It calls the same `web/lib/comedy.mjs` `generateComedyScript` function used by the app, including the live `joke_guidelines.md`, production model, temperature, and cleanup. It is separate only in how it records and blinds candidates.
@@ -101,5 +109,7 @@ npm run evals:reviewer -- --arena evals/shared-runs/current-guidelines-arena
 ```
 
 Open `http://127.0.0.1:4174`. It shows two anonymous scripts at a time; choose left, right, or tie, add an optional note, then explicitly save. Arrow-left, arrow-right, and `=` select a choice but do not advance. Previous/Next lets reviewers revisit and overwrite any comparison before saving it to the arena's `pairwise-review.json`, without exposing provider, model, direction, or candidate identity.
+
+When a reviewer has finished a batch, run the arena-scoped feedback compiler above. It preserves the comment, treats a tie as no preference, and makes a right-side win choose the actual right-hand candidate rather than a static label.
 
 The expandable **Joke guidelines** editor writes the real root `joke_guidelines.md`, which is the production comedy system prompt. Save a revision, create a fresh master arena, and review it separately—never overwrite the arena you are currently judging.

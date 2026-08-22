@@ -63,3 +63,24 @@ test("feedback compiler keeps blind aliases aligned when an earlier generation f
   assert.equal(compiled.records[0].runId, "second");
   assert.equal(compiled.records[0].packetId, "packet-1");
 });
+
+test("feedback compiler turns pairwise UI answers into preference pairs with comments", () => {
+  const compiled = compileFeedback([{
+    id: "one-liner-arena",
+    reviews: [],
+    results: [],
+    pairwiseComparisons: [{
+      bundle: "one-liner-arena",
+      profile: "pairwise_ui",
+      left: { runId: "candidate-a", packetId: "packet-1", provider: "production", model: "luna", profile: "master_comedy_arena", variant: "baseline" },
+      right: { runId: "candidate-b", packetId: "packet-1", provider: "openai-compatible", model: "opus", profile: "master_comedy_arena", variant: "hard-callback" },
+      outcome: "right",
+      rationale: "Sharper callback.",
+    }],
+  }]);
+  assert.equal(compiled.comparisons.length, 1);
+  assert.equal(compiled.pairs.length, 1);
+  assert.equal(compiled.pairs[0].chosen.model, "opus");
+  assert.equal(compiled.pairs[0].rationale, "Sharper callback.");
+  assert.equal(compiled.leaderboard[0].pairwiseScore, 100);
+});

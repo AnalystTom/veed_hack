@@ -21,10 +21,12 @@ git push origin main
 
 Do not add local transcripts, downloaded audio, `.env`, API keys, or raw reference-card excerpts. The publish script removes the transcript-card material from `manifest.json` before creating a shared bundle.
 
-Regenerate the cross-run human-feedback dataset after adding reviews. It derives strict preference pairs and a pairwise win-rate leaderboard with uncertainty bounds; the latter will stay wide until we have many independent reviews:
+Regenerate the cross-run human-feedback dataset after adding reviews. It derives strict preference pairs and a pairwise win-rate leaderboard with uncertainty bounds; the latter will stay wide until we have many independent reviews. For the pair-review UI, compile the specific arena so only its saved A/B choices and reviewer comments are included:
 
 ```sh
-npm run evals:compile-feedback
+npm run evals:compile-feedback -- --arena <arena-id>
 git add evals/shared-runs/leaderboard.json evals/shared-runs/preference-pairs.jsonl
 git commit -m "eval: compile feedback"
 ```
+
+The compiler reconstructs the UI's hidden left/right mapping from the arena, writes the actual winner as `chosen`, and stores the optional comment as `rationale`. Ties intentionally produce no training pair.
