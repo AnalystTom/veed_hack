@@ -18,7 +18,7 @@ type Scene = {
   heading: string;
   claimType: 'source-grounded' | 'creator-supplied' | 'comedic-invention';
   narration: string;
-  visual: { label: string; value: string; sourceUrl: string };
+  visual: { label: string; value: string; sourceUrl: string; availability: 'unavailable'; reason: string };
 };
 type Plan = {
   title: string;
@@ -50,6 +50,10 @@ export default function RoastStudio() {
   const [plan, setPlan] = useState<Plan | null>(null);
   const [script, setScript] = useState('');
   const [checks, setChecks] = useState({ narration: false, presenter: false, visuals: false });
+  const [voiceReferenceUrl, setVoiceReferenceUrl] = useState('');
+  const [presenterImageUrl, setPresenterImageUrl] = useState('');
+  const [mediaApproved, setMediaApproved] = useState(false);
+  const [mediaResult, setMediaResult] = useState<{ audioUrl: string; videoUrl: string } | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
 
@@ -117,7 +121,35 @@ export default function RoastStudio() {
     setScript('');
     setSelectedEvidence([]);
     setChecks({ narration: false, presenter: false, visuals: false });
+    setVoiceReferenceUrl('');
+    setPresenterImageUrl('');
+    setMediaApproved(false);
+    setMediaResult(null);
     setError('');
+  }
+
+  async function generateMedia() {
+    setBusy(true);
+    setError('');
+    try {
+      const response = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          approved: mediaApproved,
+          script,
+          voiceReferenceUrl,
+          presenterImageUrl,
+        }),
+      });
+      const payload = await response.json();
+      if (!response.ok) throw new Error(payload.error || 'Media generation failed.');
+      setMediaResult(payload.result);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Media generation failed.');
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (
@@ -252,8 +284,8 @@ export default function RoastStudio() {
                 <p className="lede">Facts link to source evidence. Punchlines are visibly labeled as comedic invention.</p>
               </div>
               <div className="disclosure">{plan.disclosure}</div>
-              <label className="field script-editor"><span>Presenter narration <small>editable</small></span>
-                <textarea value={script} onChange={(event) => setScript(event.target.value)} />
+              <label className="field script-editor"><span>Presenter narration <small>reviewed as one approved script</small></span>
+                <textarea value={script} readOnly />
               </label>
               <div className="scene-list">
                 {plan.scenes.map((scene, index) => (
@@ -263,8 +295,8 @@ export default function RoastStudio() {
                       <div className="scene-topline"><strong>{scene.heading}</strong><span className={`claim ${scene.claimType}`}>{scene.claimType}</span></div>
                       <p>{scene.narration}</p>
                     </div>
-                    <div className="visual-proof"><small>SUPPORTING VISUAL · REAL DATA</small><strong>{scene.visual.label}</strong>
-                      <p>{scene.visual.value}</p><a href={scene.visual.sourceUrl} target="_blank" rel="noreferrer">Source ↗</a>
+                    <div className="visual-proof"><small>SUPPORTING VISUAL · UNAVAILABLE</small><strong>{scene.visual.label}</strong>
+                      <p>{scene.visual.reason}</p><a href={scene.visual.sourceUrl} target="_blank" rel="noreferrer">Evidence source ↗</a>
                     </div>
                   </article>
                 ))}
@@ -291,11 +323,11 @@ export default function RoastStudio() {
                   detail="VEED Fabric is the planned path. A licensed presenter image and approved narration audio remain explicit input gaps; generation stays blocked."
                   checked={checks.presenter} onChange={() => setChecks({ ...checks, presenter: !checks.presenter })} />
                 <ApprovalCard number="03" title="Supporting visuals" status={`${plan.scenes.length} sourced evidence cards`}
-                  detail="Every scene uses public subject data and keeps its source link. No screenshot, reaction, or architecture evidence was invented."
+                  detail="Every scene keeps its source link and an explicit unavailable state. No screenshot, reaction, or architecture visual was invented."
                   checked={checks.visuals} onChange={() => setChecks({ ...checks, visuals: !checks.visuals })} />
               </div>
-              <div className="generation-lock"><span>LOCKED</span><div><strong>Generation is intentionally disabled in this MVP</strong>
-                <p>Approval records the creative package. It does not call VEED, fal.ai, or create media.</p></div></div>
+              <div className="generation-lock"><span>LOCKED</span><div><strong>No provider call occurs at this checkpoint</strong>
+                <p>Media generation is a separate, explicit billable action after the creative package is approved.</p></div></div>
               <div className="actions">
                 <button className="secondary" onClick={() => setStage('script')}>← Review script</button>
                 <button className="primary" disabled={!Object.values(checks).every(Boolean)} onClick={() => setStage('complete')}>Approve creative package →</button>
@@ -306,13 +338,34 @@ export default function RoastStudio() {
           {stage === 'complete' && plan && (
             <section className="panel complete-panel">
               <div className="complete-mark">✓</div><p className="eyebrow">Approval recorded in this session</p>
-              <h1>Creative package approved.<br /><em>Zero frames generated.</em></h1>
-              <p className="lede">The evidence, narration, and SNL-style scene plan are ready. Generation remains safely blocked until licensed presenter media and narration audio are supplied.</p>
+              <h1>{mediaResult ? 'Presenter video ready.' : 'Creative package approved.'}<br /><em>{mediaResult ? 'Built from approved inputs.' : 'Zero frames generated.'}</em></h1>
+              <p className="lede">The evidence, narration, and SNL-style scene plan are ready. Generation requires licensed presenter and voice-reference media plus a separate cost acknowledgement.</p>
               <div className="receipt">
                 <div><span>Subject</span><strong>{summary?.name}</strong></div><div><span>Treatment</span><strong>{plan.treatment}</strong></div>
                 <div><span>Evidence items</span><strong>{keptEvidence.length}</strong></div><div><span>Scenes</span><strong>{plan.scenes.length}</strong></div>
-                <div><span>Billable calls</span><strong>0</strong></div>
+                <div><span>Billable calls this session</span><strong>{mediaResult ? '2' : '0'}</strong></div>
               </div>
+              {mediaResult ? (
+                <div className="media-result">
+                  <video src={mediaResult.videoUrl} controls />
+                  <div><a href={mediaResult.videoUrl} target="_blank" rel="noreferrer">Open generated video ↗</a>
+                    <a href={mediaResult.audioUrl} target="_blank" rel="noreferrer">Open narration audio ↗</a></div>
+                </div>
+              ) : (
+                <div className="generation-form">
+                  <p className="eyebrow">Optional billable generation</p>
+                  <div className="two-col">
+                    <label className="field"><span>Licensed voice reference URL</span><input type="url" value={voiceReferenceUrl} onChange={(event) => setVoiceReferenceUrl(event.target.value)} placeholder="https://…/licensed-voice.wav" /></label>
+                    <label className="field"><span>Licensed presenter image URL</span><input type="url" value={presenterImageUrl} onChange={(event) => setPresenterImageUrl(event.target.value)} placeholder="https://…/licensed-presenter.png" /></label>
+                  </div>
+                  <label className="cost-approval"><input type="checkbox" checked={mediaApproved} onChange={(event) => setMediaApproved(event.target.checked)} />
+                    <span>I own or license both inputs and approve two billable calls: Chatterbox narration ($0.025 / 1,000 characters), then VEED Fabric at 480p.</span></label>
+                  {error && <p className="error" role="alert">{error}</p>}
+                  <button className="primary" disabled={busy || !mediaApproved || !voiceReferenceUrl || !presenterImageUrl} onClick={generateMedia}>
+                    {busy ? 'Generating narration, then presenter…' : 'Generate approved presenter video →'}
+                  </button>
+                </div>
+              )}
               <button className="primary" onClick={reset}>Start another roast</button>
             </section>
           )}

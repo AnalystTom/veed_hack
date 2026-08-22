@@ -97,7 +97,7 @@ function decodeReadme(payload) {
     .slice(0, 420);
 }
 
-export function summarizeRepository(repository, languages, rootEntries, readme) {
+export function summarizeRepository(repository, languages, rootEntries, readme, packageManifest = null) {
   const sourceUrl = repository.html_url;
   const directories = rootEntries.filter((item) => item.type === "dir").map((item) => item.name).slice(0, 12);
   const files = rootEntries.filter((item) => item.type === "file").map((item) => item.name).slice(0, 12);
@@ -127,6 +127,23 @@ export function summarizeRepository(repository, languages, rootEntries, readme) 
   if (readme) {
     evidence.push({ id: "readme", label: "README excerpt", value: readme, sourceUrl });
   }
+  if (packageManifest && typeof packageManifest === "object") {
+    const scripts = Object.keys(packageManifest.scripts || {}).slice(0, 10);
+    const dependencies = Object.keys(packageManifest.dependencies || {}).slice(0, 12);
+    const architectureFacts = [
+      packageManifest.type ? `Module type: ${packageManifest.type}.` : null,
+      scripts.length ? `Scripts: ${scripts.join(", ")}.` : null,
+      dependencies.length ? `Runtime dependencies: ${dependencies.join(", ")}.` : null,
+    ].filter(Boolean);
+    if (architectureFacts.length) {
+      evidence.push({
+        id: "runtime-architecture",
+        label: "Runtime architecture",
+        value: architectureFacts.join(" "),
+        sourceUrl: `${sourceUrl}/blob/${repository.default_branch}/package.json`,
+      });
+    }
+  }
 
   return {
     kind: "repository",
@@ -141,13 +158,22 @@ export function summarizeRepository(repository, languages, rootEntries, readme) 
 
 async function researchRepository(subject, fetchImpl) {
   const base = `https://api.github.com/repos/${encodeURIComponent(subject.owner)}/${encodeURIComponent(subject.repo)}`;
-  const [repository, languages, rootEntries, readmeResult] = await Promise.all([
+  const [repository, languages, rootEntries, readmeResult, packageResult] = await Promise.all([
     fetchJson(base, fetchImpl),
     fetchJson(`${base}/languages`, fetchImpl).catch(() => ({})),
     fetchJson(`${base}/contents`, fetchImpl).catch(() => []),
     fetchJson(`${base}/readme`, fetchImpl).catch(() => null),
+    fetchJson(`${base}/contents/package.json`, fetchImpl).catch(() => null),
   ]);
-  return summarizeRepository(repository, languages, rootEntries, decodeReadme(readmeResult));
+  let packageManifest = null;
+  try {
+    if (packageResult?.content && packageResult.encoding === "base64") {
+      packageManifest = JSON.parse(Buffer.from(packageResult.content.replace(/\n/g, ""), "base64").toString("utf8"));
+    }
+  } catch {
+    packageManifest = null;
+  }
+  return summarizeRepository(repository, languages, rootEntries, decodeReadme(readmeResult), packageManifest);
 }
 
 function decodeEntities(value) {
@@ -214,13 +240,31 @@ export function buildRoastPlan({ subjectName, subjectUrl, persona, customInstruc
     throw new Error("Keep at least one research item before generating the script.");
   }
   const safePersona = persona?.trim() || "Deadpan tech correspondent";
+  const profiles = {
+    "Deadpan tech correspondent": {
+      opening: `Tonight's technical bulletin concerns ${subjectName}. The evidence is public; enthusiasm remains under peer review.`,
+      joke: "That is not a roadmap; it is a confidence interval wearing a launch-day hoodie.",
+      closer: "We roast because we care—and because the architecture diagram declined to comment.",
+    },
+    "Dry awards-show host": {
+      opening: `Welcome to the awards nobody asked for, where ${subjectName} is nominated in every category and somehow still presenting.`,
+      joke: "A round of applause for the roadmap: bold enough to arrive wearing last quarter's release notes.",
+      closer: "Please collect your trophy backstage, next to the architecture diagram and the unresolved acceptance speech.",
+    },
+    "Overcaffeinated founder emcee": {
+      opening: `Big energy for ${subjectName}: public evidence, maximum velocity, and absolutely no time to ask what the burn multiple means.`,
+      joke: "This is not technical debt; it is founder-led financing for future refactors.",
+      closer: "Ship the applause, iterate on the architecture, and put the punchline in the next sprint.",
+    },
+  };
+  const profile = profiles[safePersona] || profiles["Deadpan tech correspondent"];
   const selected = evidence.slice(0, 4);
   const first = selected[0];
   const second = selected[1] || first;
   const third = selected[2] || second;
   const instructionNote = customInstructions?.trim()
-    ? ` Creator direction: ${customInstructions.trim()}`
-    : "";
+    ? `Creator direction applied: ${customInstructions.trim()}`
+    : "No additional creator direction was supplied.";
 
   return {
     title: `${subjectName}: the evidence-led roast`,
@@ -229,11 +273,11 @@ export function buildRoastPlan({ subjectName, subjectUrl, persona, customInstruc
     disclosure: `An original parody presented in the style of a ${safePersona.toLowerCase()}; no real comedian or presenter is being impersonated.`,
     mediaGenerated: false,
     script: [
-      `Tonight's subject is ${subjectName}. The evidence is public, and the jokes are clearly labeled.`,
+      profile.opening,
       `${first.label}: ${first.value}`,
-      `That is not a roadmap; it is a confidence interval wearing a launch-day hoodie.`,
+      profile.joke,
       `${second.label}: ${second.value}`,
-      `We roast because we care—and because the architecture diagram filed a restraining order.${instructionNote}`,
+      `${profile.closer} ${instructionNote}`,
     ].join("\n\n"),
     scenes: [
       {
@@ -241,21 +285,39 @@ export function buildRoastPlan({ subjectName, subjectUrl, persona, customInstruc
         heading: "Cold open",
         claimType: "source-grounded",
         narration: `${first.label}: ${first.value}`,
-        visual: { label: first.label, value: first.value, sourceUrl: first.sourceUrl },
+        visual: {
+          label: first.label,
+          value: first.value,
+          sourceUrl: first.sourceUrl,
+          availability: "unavailable",
+          reason: "No captured screenshot or generated visual exists for this evidence item yet.",
+        },
       },
       {
         id: "scene-2",
         heading: "Desk-piece evidence",
         claimType: "source-grounded",
         narration: `${second.label}: ${second.value}`,
-        visual: { label: second.label, value: second.value, sourceUrl: second.sourceUrl },
+        visual: {
+          label: second.label,
+          value: second.value,
+          sourceUrl: second.sourceUrl,
+          availability: "unavailable",
+          reason: "No captured screenshot or generated visual exists for this evidence item yet.",
+        },
       },
       {
         id: "scene-3",
         heading: "Final punchline",
         claimType: "comedic-invention",
         narration: `Based on ${third.label.toLowerCase()}, ${subjectName} has achieved the rare technical milestone of making the README sound like the responsible adult in the room.`,
-        visual: { label: third.label, value: third.value, sourceUrl: third.sourceUrl },
+        visual: {
+          label: third.label,
+          value: third.value,
+          sourceUrl: third.sourceUrl,
+          availability: "unavailable",
+          reason: "No captured screenshot or generated visual exists for this evidence item yet.",
+        },
       },
     ],
     sourceUrl: subjectUrl,

@@ -43,6 +43,11 @@ test("summarizeRepository only exposes evidence returned by GitHub", () => {
       { name: "package.json", type: "file" },
     ],
     "# VEED hack\nBuild real videos from researched evidence.",
+    {
+      type: "module",
+      scripts: { test: "node --test", check: "node --check src/index.js" },
+      dependencies: { "@fal-ai/client": "^1.9.0", dotenv: "^16.6.1" },
+    },
   );
 
   assert.match(summary.overview, /research-led parody video experiment/);
@@ -50,6 +55,7 @@ test("summarizeRepository only exposes evidence returned by GitHub", () => {
   assert.deepEqual(summary.architecture.files, ["package.json"]);
   assert.equal(summary.evidence.every((item) => item.sourceUrl.includes("github.com")), true);
   assert.equal(summary.evidence.some((item) => item.value.includes("4 stars")), true);
+  assert.equal(summary.evidence.some((item) => item.value.includes("@fal-ai/client")), true);
 });
 
 test("buildRoastPlan labels facts and jokes and does not claim media was generated", () => {
@@ -78,6 +84,28 @@ test("buildRoastPlan labels facts and jokes and does not claim media was generat
   assert.equal(plan.mediaGenerated, false);
   assert.equal(plan.scenes.length, 3);
   assert.equal(plan.scenes.every((scene) => scene.visual.sourceUrl), true);
+  assert.equal(plan.scenes.every((scene) => scene.visual.availability === "unavailable"), true);
   assert.equal(plan.scenes.some((scene) => scene.claimType === "comedic-invention"), true);
   assert.match(plan.disclosure, /parody/i);
+});
+
+test("buildRoastPlan changes delivery and jokes with the selected original persona", () => {
+  const input = {
+    subjectName: "AnalystTom/veed_hack",
+    subjectUrl: "https://github.com/AnalystTom/veed_hack",
+    customInstructions: "Keep the architecture central.",
+    evidence: [{
+      id: "architecture",
+      label: "Repository structure",
+      value: "Directories: src, web.",
+      sourceUrl: "https://github.com/AnalystTom/veed_hack",
+    }],
+  };
+
+  const deadpan = buildRoastPlan({ ...input, persona: "Deadpan tech correspondent" });
+  const awards = buildRoastPlan({ ...input, persona: "Dry awards-show host" });
+
+  assert.notEqual(deadpan.script, awards.script);
+  assert.match(awards.script, /awards/i);
+  assert.match(awards.script, /architecture central/i);
 });
