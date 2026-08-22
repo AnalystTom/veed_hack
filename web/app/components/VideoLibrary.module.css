@@ -1,0 +1,31 @@
+.empty { padding: 50px; border: 1px dashed #3a3a40; background: #101012; text-align: center; }
+.empty span { color: #6f6f78; font: 600 9px ui-monospace, monospace; letter-spacing: .18em; }
+.empty h3 { margin: 12px 0 7px; font-size: 21px; }
+.empty p { margin: 0 auto; max-width: 510px; color: #85858f; font-size: 13px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; }
+.videoCard { padding: 0; border: 0; background: none; color: #fff; text-align: left; cursor: pointer; }
+.videoCard video { width: 100%; aspect-ratio: 9/16; display: block; object-fit: cover; border: 1px solid #303036; border-radius: 14px; background: #151519; }
+.videoCard span, .videoCard strong, .videoCard small { display: block; }
+.videoCard span { padding: 11px 2px; }
+.videoCard small { margin-top: 4px; color: #777780; }
+.reviewer { position: fixed; inset: 0; z-index: 100; display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 400px); background: #060608; color: #fff; }
+.reviewerTopbar { position: absolute; inset: 0 0 auto; z-index: 2; padding: 20px 24px; display: flex; justify-content: space-between; font: 600 11px ui-monospace, monospace; }
+.reviewerTopbar button { padding: 8px 14px; border: 1px solid #44444c; border-radius: 999px; background: #151519; color: #fff; cursor: pointer; }
+.reviewerCanvas { display: grid; place-items: center; min-width: 0; padding: 64px 24px 24px; background: #000; }
+.reviewerCanvas video { max-width: 100%; max-height: calc(100vh - 88px); }
+.reviewerCopy { display: flex; flex-direction: column; justify-content: center; padding: 72px 42px 38px; border-left: 1px solid #242429; }
+.reviewerCopy > span { color: #8d8d98; font: 600 10px ui-monospace, monospace; letter-spacing: .14em; text-transform: uppercase; }
+.reviewerCopy h2 { margin: 12px 0 8px; font-size: clamp(32px, 4vw, 52px); line-height: 1; }
+.reviewerCopy p { margin: 0 0 22px; color: #a4a4ad; }
+.reviewerCopy a { color: #fff; }
+.reviewSteps { display: flex; gap: 8px; margin-top: 30px; }
+.reviewSteps button { flex: 1; min-height: 44px; border: 1px solid #3a3a42; background: #121216; color: #fff; cursor: pointer; }
+.reviewSteps button:disabled { opacity: .3; cursor: default; }
+
+@media (max-width: 760px) {
+  .empty { padding: 36px 20px; }
+  .reviewer { grid-template-columns: 1fr; grid-template-rows: minmax(0, 58vh) 1fr; overflow-y: auto; }
+  .reviewerCanvas { padding: 60px 14px 14px; }
+  .reviewerCanvas video { max-height: 52vh; }
+  .reviewerCopy { padding: 28px 20px 34px; border-left: 0; border-top: 1px solid #242429; }
+}
