@@ -4,3 +4,7 @@ adws/
 *.db
 *.db-shm
 *.db-wal
+.transcribe-venv/
+data/authorized-reference-transcripts/
+data/eval-runs/
+scripts/__pycache__/

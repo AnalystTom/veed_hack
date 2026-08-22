@@ -1,4 +1,5 @@
 import { generateImage } from "./fal.js";
+import { startServer } from "./server.js";
 import { createFabricVideo, lipSyncVideo } from "./veed.js";
 import { chatWithGrok } from "./openrouter.js";
 
@@ -6,6 +7,7 @@ const [command, ...args] = process.argv.slice(2);
 
 const usage = `Usage:
   npm run fal:image -- "<prompt>"
+  npm start
   npm run veed:fabric -- <image-url> <audio-url> [480p|720p]
   npm run veed:lipsync -- <video-url> <audio-url>
   npm run grok -- "<prompt>" [model]`;
@@ -15,6 +17,10 @@ async function main() {
     case "fal:image": {
       const result = await generateImage(args.join(" "));
       console.log(result.data);
+      return;
+    }
+    case "serve": {
+      startServer();
       return;
     }
     case "veed:fabric": {

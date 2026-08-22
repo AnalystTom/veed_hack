@@ -7,10 +7,12 @@
     "node": ">=20"
   },
   "scripts": {
-    "check": "node --check src/fal.js && node --check src/veed.js && node --check src/openrouter.js && node --check src/index.js",
+    "check": "node --check src/*.js",
+    "evals": "node evals/run.mjs",
     "fal:image": "node src/index.js fal:image",
     "grok": "node src/index.js grok",
     "prototype": "node prototype/serve.js",
+    "start": "node src/server.js",
     "test": "node --test",
     "veed:fabric": "node src/index.js veed:fabric",
     "veed:lipsync": "node src/index.js veed:lipsync"

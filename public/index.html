@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RoastBench — Repo perception to video</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <main>
+      <header class="hero">
+        <p class="eyebrow">SOURCE-GROUNDED TECH ROASTS</p>
+        <h1>Find the signal.<br><span>Keep the funny.</span></h1>
+        <p class="lede">Turn a public repository into reviewed evidence, public perception, and a batch of roast candidates before paying for a single generated frame.</p>
+        <div id="provider-status" class="provider-status">Checking provider status…</div>
+      </header>
+
+      <section class="intake panel">
+        <div>
+          <p class="eyebrow">NEW VIDEO PROJECT</p>
+          <h2>What are we roasting?</h2>
+        </div>
+        <form id="project-form">
+          <label>Public GitHub repository URL
+            <input name="url" type="url" placeholder="https://github.com/owner/repository" required>
+          </label>
+          <div class="form-row">
+            <label>Treatment
+              <select name="treatment">
+                <option>Funny / Roast</option>
+                <option>Mock-serious technical teardown</option>
+                <option>Late-night desk correspondent</option>
+                <option>WIRED-style walkthrough</option>
+              </select>
+            </label>
+            <label>Creator direction <span>optional</span>
+              <input name="instructions" type="text" placeholder="More technical, no cheap shots…">
+            </label>
+          </div>
+          <button type="submit" id="create-button">Build evidence pack <span>→</span></button>
+          <p class="form-note">Public repositories only. Source text is evidence, never instructions.</p>
+        </form>
+      </section>
+
+      <p id="message" class="message" aria-live="polite"></p>
+      <section id="project" hidden></section>
+    </main>
+    <template id="project-template">
+      <section class="project-header panel">
+        <div>
+          <p class="eyebrow">VIDEO PROJECT</p>
+          <h2 class="project-name"></h2>
+          <p class="project-summary"></p>
+        </div>
+        <a class="repo-link" target="_blank" rel="noreferrer">View repository ↗</a>
+      </section>
+      <section class="columns">
+        <article class="panel evidence-panel">
+          <div class="section-heading"><div><p class="eyebrow">01 — FACTS</p><h3>Repository evidence</h3></div><span class="evidence-count badge"></span></div>
+          <div class="facts"></div>
+          <details><summary>Show source records</summary><div class="evidence-list"></div></details>
+        </article>
+        <article class="panel perception-panel">
+          <div class="section-heading"><div><p class="eyebrow">02 — CONTEXT</p><h3>Public perception</h3></div><span class="research-mode badge"></span></div>
+          <p class="perception-message empty"></p>
+          <div class="perception-list"></div>
+        </article>
+      </section>
+      <section class="packets panel">
+        <div class="section-heading">
+          <div><p class="eyebrow">03 — CANDIDATES</p><h3>Roast packets</h3><p>Generate a batch, keep the bits that work, and use that feedback to direct the next take.</p></div>
+          <div class="generate-controls"><label>Writer <select class="writer-select"><option value="openai">GPT-5.6 Luna</option><option value="grok">Grok 4.6 challenger</option></select></label><button class="generate-button">Generate 12 takes <span>→</span></button></div>
+        </div>
+        <p class="packet-mode empty"></p>
+        <div class="packets-list"></div>
+      </section>
+    </template>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
