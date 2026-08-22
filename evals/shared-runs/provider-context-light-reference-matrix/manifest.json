@@ -1,0 +1,191 @@
+{
+  "generatedAt": "2026-08-22T13:08:52.569Z",
+  "options": {
+    "providers": [
+      "gpt",
+      "grok",
+      "openrouter:cognitivecomputations/dolphin-mistral-24b-venice-edition"
+    ],
+    "profiles": [
+      "repo_only",
+      "repo_plus_reference_sources"
+    ],
+    "count": 1,
+    "treatment": "Funny / Roast",
+    "instructions": "",
+    "outputRoot": "data/eval-runs",
+    "referenceStrength": "light",
+    "repositoryUrl": "https://github.com/AnalystTom/veed_hack"
+  },
+  "repository": {
+    "repository": "AnalystTom/veed_hack",
+    "description": null,
+    "defaultBranch": "main",
+    "pinnedSha": "54d66976c48f9bec7a6a508b89b46351870f2062",
+    "languages": [
+      {
+        "name": "js",
+        "count": 35
+      },
+      {
+        "name": "tsx",
+        "count": 13
+      },
+      {
+        "name": "mjs",
+        "count": 11
+      },
+      {
+        "name": "ts",
+        "count": 6
+      },
+      {
+        "name": "py",
+        "count": 1
+      }
+    ],
+    "package": {
+      "name": "veed-hack",
+      "scripts": [
+        "check",
+        "evals",
+        "evals:publish",
+        "fal:image",
+        "grok",
+        "prototype",
+        "start",
+        "test",
+        "veed:fabric",
+        "veed:lipsync"
+      ],
+      "dependencies": [
+        "@fal-ai/client",
+        "dotenv"
+      ]
+    },
+    "importHints": [
+      {
+        "path": "evals/ollama.mjs",
+        "imports": [
+          "../src/openai.js"
+        ]
+      },
+      {
+        "path": "evals/reference-signals.mjs",
+        "imports": [
+          "node:fs/promises",
+          "node:path"
+        ]
+      },
+      {
+        "path": "evals/run.mjs",
+        "imports": [
+          "node:fs/promises",
+          "node:path",
+          "../src/config.js",
+          "../src/github.js",
+          "../src/openai.js",
+          "../src/openrouter.js",
+          "../src/tavily.js",
+          "./ollama.mjs"
+        ]
+      },
+      {
+        "path": "evals/scenarios.mjs",
+        "imports": [
+          "./reference-signals.mjs"
+        ]
+      },
+      {
+        "path": "evals/scorers.mjs",
+        "imports": [
+          "../src/roastbench.js"
+        ]
+      },
+      {
+        "path": "prototype/serve.js",
+        "imports": [
+          "node:http",
+          "node:fs/promises",
+          "node:path"
+        ]
+      },
+      {
+        "path": "scripts/publish-eval-run.mjs",
+        "imports": [
+          "node:fs/promises",
+          "node:path"
+        ]
+      },
+      {
+        "path": "src/fal.js",
+        "imports": [
+          "@fal-ai/client",
+          "./config.js"
+        ]
+      },
+      {
+        "path": "src/index.js",
+        "imports": [
+          "./fal.js",
+          "./server.js",
+          "./veed.js",
+          "./openrouter.js"
+        ]
+      },
+      {
+        "path": "src/openai.js",
+        "imports": [
+          "./roastbench.js"
+        ]
+      },
+      {
+        "path": "src/openrouter.js",
+        "imports": [
+          "./config.js",
+          "./openai.js"
+        ]
+      }
+    ],
+    "selectedPaths": [
+      "README.md",
+      "evals/Dockerfile",
+      "evals/README.md",
+      "evals/compose.yml",
+      "evals/shared-runs/README.md",
+      "package.json",
+      "web/README.md",
+      "web/app/prototype/landing/README.md",
+      "web/package.json",
+      "evals/ollama.mjs",
+      "evals/reference-signals.mjs",
+      "evals/run.mjs",
+      "evals/scenarios.mjs",
+      "evals/scorers.mjs",
+      "prototype/serve.js",
+      "public/app.js",
+      "scripts/publish-eval-run.mjs",
+      "scripts/transcribe_authorized_youtube.py",
+      "src/config.js",
+      "src/fal.js",
+      "src/github.js",
+      "src/index.js",
+      "src/openai.js",
+      "src/openrouter.js"
+    ]
+  },
+  "perception": {
+    "mode": "not_requested",
+    "evidenceCount": 0
+  },
+  "referenceSignals": {
+    "available": true,
+    "videoCount": 10,
+    "segmentCount": 2852,
+    "wordCount": 24594,
+    "totalSeconds": 10065,
+    "wordsPerMinute": 147,
+    "medianBeatSeconds": 1.84,
+    "message": "Use only these high-level pacing signals from 10 authorised references: about 147 words per minute and 1.8 seconds per spoken beat. Write original material; do not imitate, quote, or reference any performer."
+  }
+}

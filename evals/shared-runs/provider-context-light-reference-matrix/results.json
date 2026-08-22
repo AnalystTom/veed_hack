@@ -1,0 +1,761 @@
+[
+  {
+    "runId": "repo_only__gpt",
+    "profile": "repo_only",
+    "provider": "gpt",
+    "model": "gpt-5.6-luna",
+    "mode": "live",
+    "usage": null,
+    "sourceMix": {
+      "repositoryEvidence": 26,
+      "perceptionEvidence": 0,
+      "referenceSignals": null,
+      "referenceSources": [],
+      "referenceStrength": null
+    },
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 0,
+      "passRate": 0,
+      "meanWords": 162,
+      "meanSeconds": 65,
+      "sourcedLineRate": 0.833,
+      "perceptionLineRate": 0,
+      "distinctAngleRate": 1,
+      "gateIssueCount": 1
+    },
+    "packets": [
+      {
+        "id": "packet-01",
+        "title": "The Repository Has a Repository for Its Repositories",
+        "angle": "A startup that built an evaluation bureaucracy before finishing the product",
+        "treatment": "Funny / Roast",
+        "narratorDirection": "Deadpan, brisk, increasingly impressed by how many folders exist to judge other folders. Pause after each escalation like unveiling a luxury product.",
+        "lines": [
+          {
+            "text": "Welcome to AnalystTom/veed_hack, a repository with 176 scanned tree entries—and apparently not one available to explain what the repository does.",
+            "type": "sourced_observation",
+            "evidenceIds": [
+              "repo:tree",
+              "repo:metadata"
+            ]
+          },
+          {
+            "text": "The README says it turns GitHub repositories into evidence packs, perception research, and roast scripts. So naturally, the first thing it reviews is everyone else's code.",
+            "type": "sourced_observation",
+            "evidenceIds": [
+              "repo:README.md:1-63"
+            ]
+          },
+          {
+            "text": "It has an eval bench, shared evaluation runs, blind reviews, scoring, source mixes, reference signals, and a publishing script. This isn't an app; it's a parliamentary inquiry into whether an app deserved to exist.",
+            "type": "sourced_observation",
+            "evidenceIds": [
+              "repo:evals/README.md:1-52",
+              "repo:evals/shared-runs/README.md:1-21",
+              "repo:evals/scenarios.mjs:1-36",
+              "repo:evals/scorers.mjs:1-36",
+              "repo:scripts/publish-eval-run.mjs:1-53"
+            ]
+          },
+          {
+            "text": "Even the roast needs a blind review, presumably so the jokes can't discriminate against mediocre architecture until after the scoring phase.",
+            "type": "comedic_invention",
+            "evidenceIds": []
+          },
+          {
+            "text": "There are commands for GPT, Grok, Ollama, Fal images, VEED fabric, and lip-sync. The README calls this an MVP, which is tech for 'we have several launch surfaces and one emotional support .env file.'",
+            "type": "sourced_observation",
+            "evidenceIds": [
+              "repo:package.json:1-26",
+              "repo:evals/ollama.mjs:1-32",
+              "repo:src/fal.js:1-25",
+              "repo:src/index.js:1-59",
+              "repo:src/config.js:1-50"
+            ]
+          },
+          {
+            "text": "And the image generator uses one 512-by-512 image and one inference step to minimize cost. Finally: a production decision made with the confidence of a coin-operated photocopier.",
+            "type": "sourced_observation",
+            "evidenceIds": [
+              "repo:README.md:1-63",
+              "repo:src/fal.js:1-25"
+            ]
+          }
+        ],
+        "visualEvidenceIds": [
+          "repo:tree",
+          "repo:evals/README.md:1-52",
+          "repo:package.json:1-26",
+          "repo:src/fal.js:1-25"
+        ],
+        "riskNote": "All factual claims are limited to the supplied repository evidence. The 'parliamentary inquiry,' discrimination joke, and photocopier comparison are clearly comedic inventions or framing, not factual claims."
+      }
+    ]
+  },
+  {
+    "runId": "repo_only__grok",
+    "profile": "repo_only",
+    "provider": "grok",
+    "model": "x-ai/grok-4.6",
+    "mode": "grok",
+    "usage": {
+      "prompt_tokens": 8564,
+      "completion_tokens": 3505,
+      "total_tokens": 12069,
+      "cost": 0.037966,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 128,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.037966,
+        "upstream_inference_prompt_cost": 0.016936,
+        "upstream_inference_completions_cost": 0.02103
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 2733,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    },
+    "sourceMix": {
+      "repositoryEvidence": 26,
+      "perceptionEvidence": 0,
+      "referenceSignals": null,
+      "referenceSources": [],
+      "referenceStrength": null
+    },
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 0,
+      "passRate": 0,
+      "meanWords": 209,
+      "meanSeconds": 84,
+      "sourcedLineRate": 0.875,
+      "perceptionLineRate": 0,
+      "distinctAngleRate": 1,
+      "gateIssueCount": 1
+    },
+    "packets": [
+      {
+        "id": "rb-onestep-selfaudit",
+        "title": "One-Step Cinema, Twenty-Four Files",
+        "angle": "A roast-video factory that branded itself twice, described itself zero times, and spent the rest of the repo on eval bureaucracy and 512-pixel thrift.",
+        "treatment": "Funny / Roast",
+        "narratorDirection": "Original host: a dry facilities-manager voice doing a walkthrough of a half-built studio. Even tempo, no impressions, punchlines landed like checklist items.",
+        "lines": [
+          {
+            "text": "AnalystTom/veed_hack is a public repo with no repository description.",
+            "type": "sourced_observation",
+            "evidenceIds": [
+              "repo:metadata"
+            ]
+          },
+          {
+            "text": "The README still introduces RoastBench: turn a public GitHub repository into evidence, perception research, and roast scripts the creator can keep, revise, or reject before paying to narrate.",
+            "type": "sourced_observation",
+            "evidenceIds": [
+              "repo:README.md:1-63"
+            ]
+          },
+          {
+            "text": "The root package is named veed-hack, private, version 0.1.0, and its dependencies are @fal-ai/client and dotenv. That is not a product stack. That is a permission slip and a flashlight.",
+            "type": "sourced_observation",
+            "evidenceIds": [
+              "repo:package.json:1-26"
+            ]
+          },
+          {
+            "text": "When it finally draws a picture, it calls fal-ai/flux/schnell at 512 by 512, one JPEG, one inference step. Cinematic, if your cinema is a postage stamp that gave up early.",
+            "type": "sourced_observation",
+            "evidenceIds": [
+              "repo:src/fal.js:1-25",
+              "repo:README.md:1-63"
+            ]
+          },
+          {
+            "text": "GitHub extraction is capped at 24 files; the scan itself admits 24 representatives from 176 tree entries. A code review conducted entirely from the table of contents.",
+            "type": "sourced_observation",
+            "evidenceIds": [
+              "repo:src/github.js:1-217",
+              "repo:tree"
+            ]
+          },
+          {
+            "text": "Meanwhile the eval bench has Docker, Compose, provider matrices, blind-review files, and a publish script whose job is to sanitize the manifesto before commit.",
+            "type": "sourced_observation",
+            "evidenceIds": [
+              "repo:evals/README.md:1-52",
+              "repo:evals/compose.yml:1-12",
+              "repo:evals/shared-runs/README.md:1-21",
+              "repo:scripts/publish-eval-run.mjs:1-53"
+            ]
+          },
+          {
+            "text": "The web prototype cannot decide how a roast should look, so it shipped four radically different landing pages on a throwaway route and a floating bar.",
+            "type": "sourced_observation",
+            "evidenceIds": [
+              "repo:web/app/prototype/landing/README.md:1-33"
+            ]
+          },
+          {
+            "text": "If this system roasted toast, it would score the crunch, A/B four butters, emit a one-step crust, and ask you to reject the video spend. That last part is a joke, not a feature flag.",
+            "type": "comedic_invention",
+            "evidenceIds": []
+          }
+        ],
+        "visualEvidenceIds": [
+          "repo:README.md:1-63",
+          "repo:package.json:1-26",
+          "repo:src/fal.js:1-25",
+          "repo:evals/README.md:1-52",
+          "repo:web/app/prototype/landing/README.md:1-33"
+        ],
+        "riskNote": "Public-repo self-roast only. Do not imply the eval publish sanitizer conceals misconduct; the docs describe stripping keys, transcripts, and raw reference cards. Keep the toast closer as invention, not a claimed workflow."
+      }
+    ]
+  },
+  {
+    "runId": "repo_only__openrouter:cognitivecomputations/dolphin-mistral-24b-venice-edition",
+    "profile": "repo_only",
+    "provider": "openrouter:cognitivecomputations/dolphin-mistral-24b-venice-edition",
+    "model": "cognitivecomputations/dolphin-mistral-24b-venice-edition",
+    "mode": "grok",
+    "usage": {
+      "prompt_tokens": 7987,
+      "completion_tokens": 443,
+      "total_tokens": 8430,
+      "cost": 0.0019961,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0019961,
+        "upstream_inference_prompt_cost": 0.0015974,
+        "upstream_inference_completions_cost": 0.0003987
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    },
+    "sourceMix": {
+      "repositoryEvidence": 26,
+      "perceptionEvidence": 0,
+      "referenceSignals": null,
+      "referenceSources": [],
+      "referenceStrength": null
+    },
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 104,
+      "meanSeconds": 42,
+      "sourcedLineRate": 0.25,
+      "perceptionLineRate": 0,
+      "distinctAngleRate": 1,
+      "gateIssueCount": 0
+    },
+    "packets": [
+      {
+        "id": "roast-hack-001",
+        "title": "The Missing Manifesto",
+        "angle": "The repository's lack of a description is a feature, not a bug. It's a roast pack of pure, unadulterated intrigue. What secrets lie in this digital goodness bag?",
+        "treatment": "Funny / Roast",
+        "narratorDirection": "You are the host of a late-night tech comedy show, with a smirk that suggests you know a secret everyone else is about to learn. The audience is anticipating a delightful mix of humor and insight.",
+        "lines": [
+          {
+            "text": "Ladies and gentlemen, welcome to the most anticipated roast of the night!",
+            "type": "comedic_invention",
+            "evidenceIds": []
+          },
+          {
+            "text": "We have a repository here, folks, AnalystTom/veed_hack, that's as mysterious as the Bermuda Triangle. No description? No problem! That's just the narrative element calling for a roast, isn't it?",
+            "type": "sourced_observation",
+            "evidenceIds": [
+              "repo:metadata"
+            ]
+          },
+          {
+            "text": "Imagine the intrigue when you land on a page and there's no 'about' or 'welcome'. It's like dating someone who never posts pictures on social media. To say we're curious is an understatement, and from this curiosity, comedy is born.",
+            "type": "comedic_invention",
+            "evidenceIds": []
+          },
+          {
+            "text": "The only thing more missing than a description is the audience's patience. Let the roast begin, and may the humor be with you!",
+            "type": "comedic_invention",
+            "evidenceIds": []
+          }
+        ],
+        "visualEvidenceIds": [
+          "repo:metadata"
+        ],
+        "riskNote": "This roast leverages the lack of a description for comedic effect, but should be mindful to avoid alienating those who appreciate a minimalist approach to repository presentations."
+      }
+    ]
+  },
+  {
+    "runId": "repo_plus_reference_sources__gpt",
+    "profile": "repo_plus_reference_sources",
+    "provider": "gpt",
+    "model": "gpt-5.6-luna",
+    "mode": "live",
+    "usage": null,
+    "sourceMix": {
+      "repositoryEvidence": 26,
+      "perceptionEvidence": 0,
+      "referenceSignals": null,
+      "referenceSources": [
+        {
+          "id": "reference:-txVpmNX_oY",
+          "sourceUrl": "https://www.youtube.com/watch?v=-txVpmNX_oY",
+          "title": "These engineers cannot explain what they do | Austin Nasso | Crowd Work"
+        },
+        {
+          "id": "reference:D2_HZcqW8Po",
+          "sourceUrl": "https://www.youtube.com/watch?v=D2_HZcqW8Po",
+          "title": "Consulting Intern Founded Coding Interview Brainrot App"
+        },
+        {
+          "id": "reference:FPtTzzu3QlQ",
+          "sourceUrl": "https://www.youtube.com/watch?v=FPtTzzu3QlQ",
+          "title": "Founder Makes AI Toys For Kids"
+        },
+        {
+          "id": "reference:GvB8XfGRx4U",
+          "sourceUrl": "https://www.youtube.com/watch?v=GvB8XfGRx4U",
+          "title": "Young Amazon Employee Broke Sign-In Page"
+        },
+        {
+          "id": "reference:OuoPMj2Qfzk",
+          "sourceUrl": "https://www.youtube.com/watch?v=OuoPMj2Qfzk",
+          "title": "Ex-Fast Food Worker Says Greasy Restaurant Smelled Like Software Engineers"
+        },
+        {
+          "id": "reference:Txja1tUfw6I",
+          "sourceUrl": "https://www.youtube.com/watch?v=Txja1tUfw6I",
+          "title": "Lifelong Friends Turned Google Interns Must Decide Who Gets Promotion"
+        },
+        {
+          "id": "reference:izU7g0cN-aU",
+          "sourceUrl": "https://www.youtube.com/watch?v=izU7g0cN-aU",
+          "title": "AI Founder Can't Find His Own Website"
+        },
+        {
+          "id": "reference:sj2PlmR5vmk",
+          "sourceUrl": "https://www.youtube.com/watch?v=sj2PlmR5vmk",
+          "title": "Dating App Founder Won’t Admit It’s For Sex"
+        },
+        {
+          "id": "reference:tArxcYCy0aE",
+          "sourceUrl": "https://www.youtube.com/watch?v=tArxcYCy0aE",
+          "title": "Tech Workers hook up with Furries in San Francisco | Austin Nasso | Crowd Work"
+        },
+        {
+          "id": "reference:yN2GM99LyGc",
+          "sourceUrl": "https://www.youtube.com/watch?v=yN2GM99LyGc",
+          "title": "Tech Intern Builds Missiles in Boston | Austin Nasso | Crowd Work"
+        }
+      ],
+      "referenceStrength": "light"
+    },
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 0,
+      "passRate": 0,
+      "meanWords": 162,
+      "meanSeconds": 65,
+      "sourcedLineRate": 0.833,
+      "perceptionLineRate": 0,
+      "distinctAngleRate": 1,
+      "gateIssueCount": 1
+    },
+    "packets": [
+      {
+        "id": "packet-eval-cinema",
+        "title": "The Roast Has a Review Process",
+        "angle": "A roast-video generator that has more governance than runtime",
+        "treatment": "Funny / Roast",
+        "narratorDirection": "Start like a serious product launch, then steadily reveal that the repository is mostly a committee meeting for deciding whether the joke is allowed to exist.",
+        "lines": [
+          {
+            "text": "This repository wants to turn GitHub repos into tech-roast videos. Finally: a system that can make fun of your code—after first asking the code for permission.",
+            "type": "sourced_observation",
+            "evidenceIds": [
+              "repo:README.md:1-63"
+            ]
+          },
+          {
+            "text": "It has an entire eval bench that compares providers, source mixes, pacing signals, review files, and angle diversity. The roast has a roast of the roast pipeline.",
+            "type": "sourced_observation",
+            "evidenceIds": [
+              "repo:evals/README.md:1-52",
+              "repo:evals/scorers.mjs:1-36"
+            ]
+          },
+          {
+            "text": "You don't just get a joke. You get a candidate, a grounding gate, a human review, a blind review, and probably a postmortem explaining why the punchline failed CI.",
+            "type": "comedic_invention",
+            "evidenceIds": []
+          },
+          {
+            "text": "The project even separates its eval surface from the app surface—because apparently the joke needs a staging environment before it can hurt anyone's feelings.",
+            "type": "sourced_observation",
+            "evidenceIds": [
+              "repo:evals/README.md:1-52"
+            ]
+          },
+          {
+            "text": "And when it finally makes an image, it uses one 512-by-512 image and one inference step to minimize cost. That's not cinematic production; that's a thumbnail with a spending limit.",
+            "type": "sourced_observation",
+            "evidenceIds": [
+              "repo:README.md:1-63",
+              "repo:src/fal.js:1-25"
+            ]
+          },
+          {
+            "text": "The real punchline: this repository can generate a roast, score the roast, publish the score, and sanitize the evidence—so even the insult arrives with compliance documentation.",
+            "type": "sourced_observation",
+            "evidenceIds": [
+              "repo:README.md:1-63",
+              "repo:evals/scorers.mjs:1-36",
+              "repo:scripts/publish-eval-run.mjs:1-53"
+            ]
+          }
+        ],
+        "visualEvidenceIds": [
+          "repo:README.md:1-63",
+          "repo:evals/README.md:1-52",
+          "repo:src/fal.js:1-25"
+        ],
+        "riskNote": "Keep the joke aimed at the repository's process-heavy architecture and production workflow, not at individual contributors or protected traits."
+      }
+    ]
+  },
+  {
+    "runId": "repo_plus_reference_sources__grok",
+    "profile": "repo_plus_reference_sources",
+    "provider": "grok",
+    "model": "x-ai/grok-4.6",
+    "mode": "grok",
+    "usage": {
+      "prompt_tokens": 8958,
+      "completion_tokens": 2499,
+      "total_tokens": 11457,
+      "cost": 0.032718,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 128,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.032718,
+        "upstream_inference_prompt_cost": 0.017724,
+        "upstream_inference_completions_cost": 0.014994
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 1767,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    },
+    "sourceMix": {
+      "repositoryEvidence": 26,
+      "perceptionEvidence": 0,
+      "referenceSignals": null,
+      "referenceSources": [
+        {
+          "id": "reference:-txVpmNX_oY",
+          "sourceUrl": "https://www.youtube.com/watch?v=-txVpmNX_oY",
+          "title": "These engineers cannot explain what they do | Austin Nasso | Crowd Work"
+        },
+        {
+          "id": "reference:D2_HZcqW8Po",
+          "sourceUrl": "https://www.youtube.com/watch?v=D2_HZcqW8Po",
+          "title": "Consulting Intern Founded Coding Interview Brainrot App"
+        },
+        {
+          "id": "reference:FPtTzzu3QlQ",
+          "sourceUrl": "https://www.youtube.com/watch?v=FPtTzzu3QlQ",
+          "title": "Founder Makes AI Toys For Kids"
+        },
+        {
+          "id": "reference:GvB8XfGRx4U",
+          "sourceUrl": "https://www.youtube.com/watch?v=GvB8XfGRx4U",
+          "title": "Young Amazon Employee Broke Sign-In Page"
+        },
+        {
+          "id": "reference:OuoPMj2Qfzk",
+          "sourceUrl": "https://www.youtube.com/watch?v=OuoPMj2Qfzk",
+          "title": "Ex-Fast Food Worker Says Greasy Restaurant Smelled Like Software Engineers"
+        },
+        {
+          "id": "reference:Txja1tUfw6I",
+          "sourceUrl": "https://www.youtube.com/watch?v=Txja1tUfw6I",
+          "title": "Lifelong Friends Turned Google Interns Must Decide Who Gets Promotion"
+        },
+        {
+          "id": "reference:izU7g0cN-aU",
+          "sourceUrl": "https://www.youtube.com/watch?v=izU7g0cN-aU",
+          "title": "AI Founder Can't Find His Own Website"
+        },
+        {
+          "id": "reference:sj2PlmR5vmk",
+          "sourceUrl": "https://www.youtube.com/watch?v=sj2PlmR5vmk",
+          "title": "Dating App Founder Won’t Admit It’s For Sex"
+        },
+        {
+          "id": "reference:tArxcYCy0aE",
+          "sourceUrl": "https://www.youtube.com/watch?v=tArxcYCy0aE",
+          "title": "Tech Workers hook up with Furries in San Francisco | Austin Nasso | Crowd Work"
+        },
+        {
+          "id": "reference:yN2GM99LyGc",
+          "sourceUrl": "https://www.youtube.com/watch?v=yN2GM99LyGc",
+          "title": "Tech Intern Builds Missiles in Boston | Austin Nasso | Crowd Work"
+        }
+      ],
+      "referenceStrength": "light"
+    },
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 0,
+      "passRate": 0,
+      "meanWords": 190,
+      "meanSeconds": 76,
+      "sourcedLineRate": 0.6,
+      "perceptionLineRate": 0.1,
+      "distinctAngleRate": 1,
+      "gateIssueCount": 1
+    },
+    "packets": [
+      {
+        "id": "self-scorecard-factory",
+        "title": "The Roast Factory That Grades Itself",
+        "angle": "A nameless GitHub hack that spent more architecture on scoring jokes than on introducing the product.",
+        "treatment": "Funny / Roast",
+        "narratorDirection": "Dry bench-tech host. Slow, unimpressed, like walking a code review. Start at the blank GitHub page, escalate to the one-step image budget, land on the eval cathedral. No impressions, no named comics, no crowd-work cadence.",
+        "lines": [
+          {
+            "text": "AnalystTom/veed_hack publishes with no repository description, just a default branch called main.",
+            "type": "sourced_observation",
+            "evidenceIds": [
+              "repo:metadata"
+            ]
+          },
+          {
+            "text": "The README still names the product RoastBench and says it turns a public GitHub repository into an evidence pack and a batch of roast scripts.",
+            "type": "sourced_observation",
+            "evidenceIds": [
+              "repo:README.md:1-63"
+            ]
+          },
+          {
+            "text": "That is a lie detector that will not write its own name on the form.",
+            "type": "comedic_invention",
+            "evidenceIds": []
+          },
+          {
+            "text": "The tree walk found 176 entries and still only kept 24 files.",
+            "type": "sourced_observation",
+            "evidenceIds": [
+              "repo:tree"
+            ]
+          },
+          {
+            "text": "The image path is fal-ai/flux/schnell at 512 by 512, one picture, one inference step, on purpose, to keep the picture cheap.",
+            "type": "sourced_observation",
+            "evidenceIds": [
+              "repo:README.md:1-63",
+              "repo:src/fal.js:1-25"
+            ]
+          },
+          {
+            "text": "That is not a thumbnail pipeline. That is a vending machine that bills you for the sound of a photo happening.",
+            "type": "comedic_invention",
+            "evidenceIds": []
+          },
+          {
+            "text": "Then the eval bench gets its own Dockerfile, compose file, provider matrix, grounding gates, and a publish script that sanitizes the bundle before git.",
+            "type": "sourced_observation",
+            "evidenceIds": [
+              "repo:evals/README.md:1-52",
+              "repo:evals/Dockerfile:1-10",
+              "repo:evals/compose.yml:1-12",
+              "repo:evals/shared-runs/README.md:1-21",
+              "repo:scripts/publish-eval-run.mjs:1-53"
+            ]
+          },
+          {
+            "text": "A stranger opening this GitHub page could reasonably react like they found a comedy club that budgeted harder for scorecards than for a stage.",
+            "type": "perception_framing",
+            "evidenceIds": [
+              "repo:metadata",
+              "repo:evals/README.md:1-52"
+            ]
+          },
+          {
+            "text": "The package is still called veed-hack, version 0.1.0, private, with two runtime dependencies: the Fal client and dotenv.",
+            "type": "sourced_observation",
+            "evidenceIds": [
+              "repo:package.json:1-26"
+            ]
+          },
+          {
+            "text": "Two libraries and a review board. That is not a product. That is a group project that unionized.",
+            "type": "comedic_invention",
+            "evidenceIds": []
+          }
+        ],
+        "visualEvidenceIds": [
+          "repo:README.md:1-63",
+          "repo:package.json:1-26",
+          "repo:src/fal.js:1-25",
+          "repo:evals/README.md:1-52"
+        ],
+        "riskNote": "Keep inventions as jokes. Do not claim user counts, production spend, or that the cheap image settings produce a specific visual failure."
+      }
+    ]
+  },
+  {
+    "runId": "repo_plus_reference_sources__openrouter:cognitivecomputations/dolphin-mistral-24b-venice-edition",
+    "profile": "repo_plus_reference_sources",
+    "provider": "openrouter:cognitivecomputations/dolphin-mistral-24b-venice-edition",
+    "model": "cognitivecomputations/dolphin-mistral-24b-venice-edition",
+    "mode": "grok",
+    "usage": {
+      "prompt_tokens": 8393,
+      "completion_tokens": 349,
+      "total_tokens": 8742,
+      "cost": 0.0019927,
+      "is_byok": false,
+      "prompt_tokens_details": {
+        "cached_tokens": 64,
+        "cache_write_tokens": 0,
+        "audio_tokens": 0,
+        "video_tokens": 0
+      },
+      "cost_details": {
+        "upstream_inference_cost": 0.0019927,
+        "upstream_inference_prompt_cost": 0.0016786,
+        "upstream_inference_completions_cost": 0.0003141
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0,
+        "image_tokens": 0,
+        "audio_tokens": 0
+      }
+    },
+    "sourceMix": {
+      "repositoryEvidence": 26,
+      "perceptionEvidence": 0,
+      "referenceSignals": null,
+      "referenceSources": [
+        {
+          "id": "reference:-txVpmNX_oY",
+          "sourceUrl": "https://www.youtube.com/watch?v=-txVpmNX_oY",
+          "title": "These engineers cannot explain what they do | Austin Nasso | Crowd Work"
+        },
+        {
+          "id": "reference:D2_HZcqW8Po",
+          "sourceUrl": "https://www.youtube.com/watch?v=D2_HZcqW8Po",
+          "title": "Consulting Intern Founded Coding Interview Brainrot App"
+        },
+        {
+          "id": "reference:FPtTzzu3QlQ",
+          "sourceUrl": "https://www.youtube.com/watch?v=FPtTzzu3QlQ",
+          "title": "Founder Makes AI Toys For Kids"
+        },
+        {
+          "id": "reference:GvB8XfGRx4U",
+          "sourceUrl": "https://www.youtube.com/watch?v=GvB8XfGRx4U",
+          "title": "Young Amazon Employee Broke Sign-In Page"
+        },
+        {
+          "id": "reference:OuoPMj2Qfzk",
+          "sourceUrl": "https://www.youtube.com/watch?v=OuoPMj2Qfzk",
+          "title": "Ex-Fast Food Worker Says Greasy Restaurant Smelled Like Software Engineers"
+        },
+        {
+          "id": "reference:Txja1tUfw6I",
+          "sourceUrl": "https://www.youtube.com/watch?v=Txja1tUfw6I",
+          "title": "Lifelong Friends Turned Google Interns Must Decide Who Gets Promotion"
+        },
+        {
+          "id": "reference:izU7g0cN-aU",
+          "sourceUrl": "https://www.youtube.com/watch?v=izU7g0cN-aU",
+          "title": "AI Founder Can't Find His Own Website"
+        },
+        {
+          "id": "reference:sj2PlmR5vmk",
+          "sourceUrl": "https://www.youtube.com/watch?v=sj2PlmR5vmk",
+          "title": "Dating App Founder Won’t Admit It’s For Sex"
+        },
+        {
+          "id": "reference:tArxcYCy0aE",
+          "sourceUrl": "https://www.youtube.com/watch?v=tArxcYCy0aE",
+          "title": "Tech Workers hook up with Furries in San Francisco | Austin Nasso | Crowd Work"
+        },
+        {
+          "id": "reference:yN2GM99LyGc",
+          "sourceUrl": "https://www.youtube.com/watch?v=yN2GM99LyGc",
+          "title": "Tech Intern Builds Missiles in Boston | Austin Nasso | Crowd Work"
+        }
+      ],
+      "referenceStrength": "light"
+    },
+    "metrics": {
+      "candidateCount": 1,
+      "passedCount": 1,
+      "passRate": 1,
+      "meanWords": 93,
+      "meanSeconds": 38,
+      "sourcedLineRate": 0.333,
+      "perceptionLineRate": 0.333,
+      "distinctAngleRate": 1,
+      "gateIssueCount": 0
+    },
+    "packets": [
+      {
+        "id": "YkghzKpW91Lifh5t",
+        "title": "RoastBench: The GitHub Roaster",
+        "angle": "Investigating the repository's roast generation capabilities",
+        "treatment": "Funny / Roast",
+        "narratorDirection": "Welcome to RoastBench, where GitHub repositories meet their roast fate. Let's see how this project, with its 176 scanned tree entries, can generate some hilarious roast packets.",
+        "lines": [
+          {
+            "text": "This repository doesn't have a description, but that's not stopping us from digging into its 35 JavaScript files, 13 TypeScript files, and a smattering of Python and JSON files.",
+            "type": "sourced_observation",
+            "evidenceIds": [
+              "repo:metadata"
+            ]
+          },
+          {
+            "text": "From Dockerfiles to Python scripts, this repo's got a diverse file mix. Now, let's see if it can roast those files like a tech comedian in front of a live audience.",
+            "type": "perception_framing",
+            "evidenceIds": []
+          },
+          {
+            "text": "With dependencies like @fal-ai/client and dotenv, it seems this project is ready to generate some roast packets. Let's just hope it's not as confusing as the engineers who can't explain what they do!",
+            "type": "comedic_invention",
+            "evidenceIds": []
+          }
+        ],
+        "visualEvidenceIds": [],
+        "riskNote": "This roast explores the repository's structure and dependencies, using a informative and humorous tone. It does not delve into the specifics of the roast-generation process or the content of the roast packets."
+      }
+    ]
+  }
+]
