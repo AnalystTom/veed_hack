@@ -1,0 +1,31 @@
+{
+  "name": "popular-ai-products-v1",
+  "purpose": "Creator-reviewed one-line comedy training corpus. Use only prominent public products with enough public product and community context for source-grounded research.",
+  "subjects": [
+    { "id": "n8n", "url": "https://github.com/n8n-io/n8n", "kind": "repository" },
+    { "id": "openhands", "url": "https://github.com/All-Hands-AI/OpenHands", "kind": "repository" },
+    { "id": "vercel", "url": "https://vercel.com", "kind": "product" },
+    { "id": "supabase", "url": "https://supabase.com", "kind": "product" },
+    { "id": "posthog", "url": "https://posthog.com", "kind": "product" },
+    { "id": "hermes-agent", "url": "https://github.com/NousResearch/hermes-agent", "kind": "repository" },
+    { "id": "claude", "url": "https://claude.ai", "kind": "product" },
+    { "id": "claude-code", "url": "https://docs.anthropic.com/en/docs/claude-code/overview", "kind": "product" },
+    { "id": "chatgpt", "url": "https://chatgpt.com", "kind": "product" },
+    { "id": "openai", "url": "https://openai.com", "kind": "product" },
+    { "id": "grok-build", "url": "https://github.com/xai-org/grok-build", "kind": "repository" },
+    { "id": "apple-intelligence", "url": "https://www.apple.com/apple-intelligence/", "kind": "product" },
+    { "id": "google-gemini", "url": "https://gemini.google.com", "kind": "product" },
+    { "id": "meta-ai", "url": "https://www.meta.ai", "kind": "product" },
+    { "id": "perplexity", "url": "https://www.perplexity.ai", "kind": "product" },
+    { "id": "anthropic", "url": "https://www.anthropic.com", "kind": "product" },
+    { "id": "cursor", "url": "https://cursor.com", "kind": "product" },
+    { "id": "replit", "url": "https://replit.com", "kind": "product" },
+    { "id": "lovable", "url": "https://lovable.dev", "kind": "product" },
+    { "id": "bolt-new", "url": "https://bolt.new", "kind": "product" },
+    { "id": "github-copilot", "url": "https://github.com/features/copilot", "kind": "product" },
+    { "id": "midjourney", "url": "https://www.midjourney.com", "kind": "product" },
+    { "id": "huggingface", "url": "https://huggingface.co", "kind": "product" },
+    { "id": "deepseek", "url": "https://www.deepseek.com", "kind": "product" },
+    { "id": "notion-ai", "url": "https://www.notion.com/product/ai", "kind": "product" }
+  ]
+}

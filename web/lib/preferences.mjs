@@ -7,7 +7,9 @@ const repositoryRoot = path.basename(process.cwd()) === "web"
 
 const EXAMPLES_FILENAME = "comedy_examples.json";
 const CORPUS_FILENAME = "comedy_corpus.json";
-const DEFAULT_LIMIT = 5;
+// Inject every curated line into the prompt by default; set COMEDY_EXAMPLE_LIMIT
+// to a positive integer to cap how many are used per template.
+const DEFAULT_LIMIT = Number(process.env.COMEDY_EXAMPLE_LIMIT) || Infinity;
 
 // Pure selector so the curation contract is unit-testable without the filesystem.
 export function selectCuratedExamples(data, templateId, limit = DEFAULT_LIMIT) {

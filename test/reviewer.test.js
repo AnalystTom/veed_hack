@@ -26,3 +26,27 @@ test("pair reviewer rotates challengers instead of leaving Option B static", () 
   assert.equal(pairs.every((pair, index) => index === 0 || pair.right.id !== pairs[index - 1].right.id), true);
   assert.deepEqual(rotatePairs(pairs), pairs);
 });
+
+test("cross-source-only drops same-product matchups but keeps every cross-product pair", () => {
+  const candidates = [
+    { id: "candidate-a", script: "A", sourceBundle: "cursor" },
+    { id: "candidate-b", script: "B", sourceBundle: "cursor" },
+    { id: "candidate-c", script: "C", sourceBundle: "replit" },
+    { id: "candidate-d", script: "D", sourceBundle: "replit" },
+  ];
+  const all = buildPairs(candidates);
+  const cross = buildPairs(candidates, { crossSourceOnly: true });
+  assert.equal(all.length, 6);
+  // Only the four cursor×replit pairings survive; a×b and c×d are excluded.
+  assert.equal(cross.length, 4);
+  const sameBundle = (pair) => {
+    const source = (id) => candidates.find((candidate) => candidate.id === id).sourceBundle;
+    return source(pair.left.id) === source(pair.right.id);
+  };
+  assert.equal(cross.some(sameBundle), false);
+});
+
+test("cross-source-only defaults off and is a no-op without sourceBundle", () => {
+  const candidates = [{ id: "candidate-a", script: "A" }, { id: "candidate-b", script: "B" }, { id: "candidate-c", script: "C" }];
+  assert.equal(buildPairs(candidates, { crossSourceOnly: true }).length, 3);
+});

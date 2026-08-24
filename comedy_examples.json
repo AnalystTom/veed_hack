@@ -1,17 +1,38 @@
 {
-  "_readme": "Curated few-shot examples that steer script generation and calibrate the best-of-N judge. These are VOICE references, not content to reuse. Keep the lines you find funniest, delete the rest, add your own. Order does not matter. Only the 'roast' and 'parody' arrays are read (see web/lib/preferences.mjs); the top few of each are injected into the prompt.",
+  "_readme": "Curated few-shot VOICE references that steer script generation. Match rhythm, economy, and bite; never reuse their wording, subject, or jokes. ALL lines are injected into the prompt by default; set COMEDY_EXAMPLE_LIMIT to cap per template. Sources: comedy_examples.json originals + joke_guidelines.md GOOD/mode examples (human gold) + human A/B pairwise winners from pioneer-pilot-grok-arena.",
   "roast": [
     "OpenClaw went from a weekend lobster project to an OpenAI acquisition, the fastest anyone has failed upward since crypto.",
     "Hand an autonomous beta your messages, your files, and a shell. What could an agent with root access do?",
     "It is not pre-revenue. It is pre-idea.",
     "One user's agent picked a fight with his insurance company. They call that AGI.",
-    "The install is one honest line. curl, pipe, bash, pray."
+    "The install is one honest line. curl, pipe, bash, pray.",
+    "And when version 0.15.0 needed a hotfix, the agent had already learned the most important human skill: releasing before it's ready.",
+    "OpenAI hired the creator. The product's best personal-assistant feature was getting its founder a new job.",
+    "OpenClaw: the personal AI that really does things. So does a toddler with your phone.",
+    "It promises personal automation. Its most automated feature is posting on X.",
+    "The README describes a product that shipped two pivots ago. Beautiful writing about a stranger.",
+    "They committed the API keys. Bold — most startups make you sign an NDA before leaking the secrets.",
+    "Real personal-agent maturity: your assistant now needs alignment sign-off from head office.",
+    "The subreddit already filed the bug. The landing page is still taking a bow.",
+    "Hugging Face is the AI community building the future, until the Epstein Files became the most downloaded dataset, which is one way to advance open science.",
+    "Cursor is your coding agent for building ambitious software, then a Cursor tool reportedly deleted a company database in nine seconds, building ambitious software.",
+    "Hugging Face is the popular AI hub building the future by democratising models, until the most downloaded dataset on the platform is the Epstein Files.",
+    "Hugging Face calls itself the AI community building the future, then its chart-topping download was the Epstein Files.",
+    "Cursor is the coding agent for ambitious software, the one that can turn an idea into a deleted company database in nine seconds.",
+    "Cursor promises agents that turn ideas into code, and the most ambitious idea so far was deleting a company database in nine seconds.",
+    "Hugging Face is the AI community building the future, mostly a public warehouse where downloading a model counts as shipping, still the AI community building the future.",
+    "Hugging Face, the AI community building the future, hosted the Epstein files as the most downloaded dataset, which is a bold look for building the future.",
+    "Cursor is your coding agent for building ambitious software, until a reported agent wipe takes the company database in nine seconds, ambition achieved."
   ],
   "parody": [
     "Hi, I am the Clawfather. My weekend project is now an OpenAI foundation, because nothing says personal like a walled garden holding a shell.",
     "We are pre-revenue, pre-users, and if I am honest, pre-idea. But the deck is stunning.",
     "Our top contributor is Claude, but he's got zero percent equity.",
     "Setup is one line. curl, pipe, bash, no notes.",
-    "I scrolled our testimonial wall for six minutes and never found a single flaw. Suspicious, honestly."
+    "I scrolled our testimonial wall for six minutes and never found a single flaw. Suspicious, honestly.",
+    "Hermes learns from experience, which is why it saw one OpenClaw and immediately learned to copy it.",
+    "gstack brings every stakeholder to the table. There is one chair. I am every stakeholder.",
+    "Our top contributor is an AI. I don't like to say \"co-founder,\" but it did write the part that works.",
+    "Reddit already wrote the review. I prefer to call that \"community-led product discovery.\""
   ]
 }
